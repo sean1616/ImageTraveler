@@ -1,0 +1,12 @@
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\ImageTraveler.csprojAssemblyReference.cache
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\Style_Resources\MainStyle.baml
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\Style_Resources\ProgressBar_sty1.baml
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\App.g.cs
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\Pages\ImageBar_Page.g.cs
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\Pages\Image_Page.g.cs
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\Pages\MediaBar_Page.g.cs
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\Pages\Media_Page.g.cs
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\Style_Resources\ProgressBar_sty1.g.cs
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\GeneratedInternalTypeHelper.g.cs
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\ImageTraveler_MarkupCompile.cache
+D:\SeanWu\Software\ImageTraveler_0912\ImageTraveler\ImageTraveler\obj\x64\Release\ImageTraveler_MarkupCompile.lref

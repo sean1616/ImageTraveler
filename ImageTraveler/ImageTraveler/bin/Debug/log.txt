@@ -1,0 +1,80 @@
+﻿-- logger module started --
+core debug: VLC media player - 2.2.0-xZune Weatherwax
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.0-0-g1349ef2
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-nls' '--disable-upnp' 'host_alias=i686-w64-mingw32' 'PKG_CONFIG_PATH=/mingw32/lib/pkgconfig:/mingw32/share/pkgconfig'
+core debug: using interface module "logger"
+core debug: creating VLM
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+﻿-- logger module started --
+core debug: VLC media player - 2.2.0-xZune Weatherwax
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.0-0-g1349ef2
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-nls' '--disable-upnp' 'host_alias=i686-w64-mingw32' 'PKG_CONFIG_PATH=/mingw32/lib/pkgconfig:/mingw32/share/pkgconfig'
+core debug: using interface module "logger"
+core debug: creating VLM
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+core debug: looking for meta fetcher module matching "any": 1 candidates
+lua debug: Trying Lua scripts in C:\Users\seanwu\AppData\Roaming\vlc\lua\meta\fetcher
+lua debug: Trying Lua scripts in D:\SourceTree\ImageTraveler\ImageTraveler\libvlc\lua\meta\fetcher
+core debug: no meta fetcher modules matched
+core debug: searching art for coaxwire_384x288.wmv
+core debug: looking for art finder module matching "any": 2 candidates
+lua debug: Trying Lua scripts in C:\Users\seanwu\AppData\Roaming\vlc\lua\meta\art
+lua debug: Trying Lua scripts in D:\SourceTree\ImageTraveler\ImageTraveler\libvlc\lua\meta\art
+core debug: no art finder modules matched
+ccororee  ddebug:e bugCr: eaartt noting an in found for pcoaxwire_384ux288.wmvt
+ for 'coaxwire_384x288.wmv'
+core debug: meta ok for (null), need to fetch art
+core debug: looking for meta fetcher module matching "any": 1 candidates
+lua debug: Trying Lua scripts in C:\Users\seanwu\AppData\Roaming\vlc\lua\meta\fetcher
+lua debug: Trying Lua scripts in D:\SourceTree\ImageTraveler\ImageTraveler\libvlc\lua\meta\fetcher
+core debug: no meta fetcher modules matched
+core debug: searching art for coaxwire_384x288.wmv
+core debug: looking for art finder module matching "any": 2 candidates
+lua debug: Trying Lua scripts in C:\Users\seanwu\AppData\Roaming\vlc\lua\meta\art
+lua debug: Trying Lua scripts in D:\SourceTree\ImageTraveler\ImageTraveler\libvlc\lua\meta\art
+core debug: no art finder modules matched
+core debug: art not found for coaxwire_384x288.wmv
+﻿-- logger module started --
+core debug: VLC media player - 2.2.0-xZune Weatherwax
+core debug: Copyright © 1996-2015 the VideoLAN team
+core debug: revision 2.2.0-0-g1349ef2
+core debug: configured with ../extras/package/win32/../../../configure  '--enable-update-check' '--enable-lua' '--enable-faad' '--enable-flac' '--enable-theora' '--enable-twolame' '--enable-quicktime' '--enable-avcodec' '--enable-merge-ffmpeg' '--enable-dca' '--enable-mpc' '--enable-libass' '--enable-x264' '--enable-schroedinger' '--enable-realrtsp' '--enable-live555' '--enable-dvdread' '--enable-shout' '--enable-goom' '--enable-caca' '--disable-sdl' '--enable-qt' '--enable-skins2' '--enable-sse' '--enable-mmx' '--enable-libcddb' '--enable-zvbi' '--disable-telx' '--enable-nls' '--host=i686-w64-mingw32' '--disable-nls' '--disable-upnp' 'host_alias=i686-w64-mingw32' 'PKG_CONFIG_PATH=/mingw32/lib/pkgconfig:/mingw32/share/pkgconfig'
+core debug: using interface module "logger"
+core debug: creating VLM
+core debug: creating audio output
+core debug: looking for audio output module matching "any": 6 candidates
+directsound debug: found 2 devices
+core debug: using audio output module "directsound"
+core debug: keeping audio output
+core debug: looking for meta fetcher module matching "any": 1 candidates
+lua debug: Trying Lua scripts in C:\Users\seanwu\AppData\Roaming\vlc\lua\meta\fetcher
+lua debug: Trying Lua scripts in D:\SourceTree\ImageTraveler\ImageTraveler\libvlc\lua\meta\fetcher
+core debug: no meta fetcher modules matched
+ccoreo deburg: e debug: Creatingsearching art for  coaxwire_384x288.wmva
+n input for 'coaxwire_384x288.wmv'
+core debug: looking for art finder module matching "any": 2 candidates
+lua debug: Trying Lua scripts in C:\Users\seanwu\AppData\Roaming\vlc\lua\meta\art
+lua debug: Trying Lua scripts in D:\SourceTree\ImageTraveler\ImageTraveler\libvlc\lua\meta\art
+core debug: no art finder modules matched
+core debug: art not found for coaxwire_384x288.wmv
+core debug: meta ok for (null), need to fetch art
+core debug: looking for meta fetcher module matching "any": 1 candidates
+lua debug: Trying Lua scripts in C:\Users\seanwu\AppData\Roaming\vlc\lua\meta\fetcher
+lua debug: Trying Lua scripts in D:\SourceTree\ImageTraveler\ImageTraveler\libvlc\lua\meta\fetcher
+core debug: no meta fetcher modules matched
+core debug: searching art for coaxwire_384x288.wmv
+core debug: looking for art finder module matching "any": 2 candidates
+lua debug: Trying Lua scripts in C:\Users\seanwu\AppData\Roaming\vlc\lua\meta\art
+lua debug: Trying Lua scripts in D:\SourceTree\ImageTraveler\ImageTraveler\libvlc\lua\meta\art
+core debug: no art finder modules matched
+core debug: art not found for coaxwire_384x288.wmv

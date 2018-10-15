@@ -1,0 +1,3 @@
+180923 
+titilebar點擊消失問題 -> 修正
+delete圖檔需未更新資訊，造成error產生
