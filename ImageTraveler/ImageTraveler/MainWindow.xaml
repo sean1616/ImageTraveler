@@ -571,7 +571,8 @@
             Grid.RowSpan="5"
             Panel.ZIndex="1"
             d:IsHidden="True"
-            MouseLeftButtonDown="Grid_MouseLeftButtonDown">
+            MouseLeftButtonDown="Grid_MouseLeftButtonDown"
+            MouseLeftButtonUp="Grid_MouseLeftButtonUp">
             <Viewbox>
                 <Frame x:Name="Frame_main" NavigationUIVisibility="Hidden" />
             </Viewbox>

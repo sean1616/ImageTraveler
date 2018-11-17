@@ -31,7 +31,7 @@ namespace ImageTraveler
     {        
         public static Main_Command main_Command { get; set; } = new Main_Command();        
         public static int aa;
-        bool isDragging = false;       
+        bool isDragging = false, media_state_check=false;       
         RenderTargetBitmap rtb1, rtb2;
         DispatcherTimer mousemove_timer;
         Point mouse_position;
@@ -196,22 +196,56 @@ namespace ImageTraveler
 
         private void Grid_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (main_Command.mediaPlayPauseCommand.CanExecute(null))
+            if (main_Command.mediaState == true && media_state_check == true)
             {
-                main_Command.mediaPlayPauseCommand.Execute(null);
+                ellipse_image.Source = new BitmapImage(new Uri(@"Resources/下_1.png", UriKind.Relative));
 
-                if (main_Command.mediaState == false)
+                if (main_Command.mediaPauseCommand.CanExecute(null))
                 {
-                    ellipse_image.Source = new BitmapImage(new Uri(@"Resources/pause.png", UriKind.Relative));
-                }
-                else
-                {
-                    ellipse_image.Source = new BitmapImage(new Uri(@"Resources/下_1.png", UriKind.Relative));
+                    main_Command.mediaPauseCommand.Execute(null);
                 }
 
                 Storyboard mystoryboard = (this.FindResource("Ellipse_start") as Storyboard);
                 mystoryboard.Begin();
+
+                media_state_check = false;
             }
+            
+            //if (main_Command.mediaPauseCommand.CanExecute(null))
+            //{
+            //    main_Command.mediaPauseCommand.Execute(null);
+
+            //    if (main_Command.mediaState == false)
+            //    {
+            //        ellipse_image.Source = new BitmapImage(new Uri(@"Resources/pause.png", UriKind.Relative));
+            //    }
+            //    else
+            //    {
+            //        ellipse_image.Source = new BitmapImage(new Uri(@"Resources/下_1.png", UriKind.Relative));
+            //    }
+
+            //    Storyboard mystoryboard = (this.FindResource("Ellipse_start") as Storyboard);
+            //    mystoryboard.Begin();
+            //}
+        }
+
+        private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (main_Command.mediaState == false && media_state_check ==true)
+            {
+                ellipse_image.Source = new BitmapImage(new Uri(@"Resources/pause.png", UriKind.Relative));
+
+                if (main_Command.mediaPlayCommand.CanExecute(null))
+                {
+                    main_Command.mediaPlayCommand.Execute(null);
+                }
+
+                Storyboard mystoryboard = (this.FindResource("Ellipse_start") as Storyboard);
+                mystoryboard.Begin();
+
+                media_state_check = false;
+            }
+            media_state_check = true;
         }
 
         Point mouse_P, PicP;
@@ -233,7 +267,8 @@ namespace ImageTraveler
             }
         }
 
-       
+        
+
         private void PicBoxView_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)

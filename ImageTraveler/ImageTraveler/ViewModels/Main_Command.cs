@@ -44,7 +44,11 @@ namespace ImageTraveler.ViewModels
         public ICommand JumpToPositionCommand { get { return new Delegatecommand(JumpToPostion); } }
        
         public ICommand mediaPlayPauseCommand { get { return new Delegatecommand(mediaElement_play_pause); } }
-        
+
+        public ICommand mediaPlayCommand { get { return new Delegatecommand(mediaElement_play); } }
+
+        public ICommand mediaPauseCommand { get { return new Delegatecommand(mediaElement_pause); } }
+
         public ICommand MediaStopCommand { get { return new Delegatecommand(mediaElement_Stop); } }
        
         public ICommand MediaMuteCommand { get { return new Delegatecommand(mediaElement_mute); } }
@@ -141,6 +145,36 @@ namespace ImageTraveler.ViewModels
                 else
                 {                    
                     mediaControl.MediaPlay();
+                }
+            }
+        }
+
+        private void mediaElement_play()
+        {
+            if (media_Page.mediaElement.HasVideo)
+            {
+                if (mediaState == true)
+                {
+                    //mediaControl.MediaPause();
+                }
+                else
+                {
+                    mediaControl.MediaPlay();
+                }
+            }
+        }
+
+        private void mediaElement_pause()
+        {
+            if (media_Page.mediaElement.HasVideo)
+            {
+                if (mediaState == true)
+                {
+                    mediaControl.MediaPause();
+                }
+                else
+                {
+                    //mediaControl.MediaPlay();
                 }
             }
         }
