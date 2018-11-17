@@ -20,6 +20,9 @@
                 LoadedBehavior="Manual"
                 MediaEnded="mediaElement_MediaEnded"
                 MediaOpened="mediaElement_MediaOpened"
+                MouseLeftButtonDown="mediaElement_MouseLeftButtonDown"
+                MouseLeftButtonUp="mediaElement_MouseLeftButtonUp"
+                MouseMove="mediaElement_MouseMove"
                 Source="{Binding mediaSource}"
                 Stretch="UniformToFill"
                 Visibility="Visible" />

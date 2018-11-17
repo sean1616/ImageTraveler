@@ -30,6 +30,8 @@ namespace ImageTraveler.Pages
 
         double mediaDurationHours;
         string mediaDuration;
+        bool is_drag_to_control_media = false;
+        Point click_position, new_position;
 
         public Media_Page(Main_Command main_Command)
         {
@@ -169,6 +171,41 @@ namespace ImageTraveler.Pages
             }
 
             main_Command.media_Page.mediaElement.Play(); //在大影片開始前先做視窗調整的動作可先對其進行提前緩衝，原因不明
+        }
+
+        private void mediaElement_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            is_drag_to_control_media = true;
+            click_position = Mouse.GetPosition(this);
+        }
+
+        private void mediaElement_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (is_drag_to_control_media == true)
+            {
+                if (new_position.X - click_position.X > 20)
+                {
+                    var viewModel = (Main_Command)DataContext;
+                    if (viewModel.NextCommand.CanExecute(null))
+                        viewModel.NextCommand.Execute(null);
+                }
+                else if (new_position.X - click_position.X < -20)
+                {
+                    var viewModel = (Main_Command)DataContext;
+                    if (viewModel.PreCommand.CanExecute(null))
+                        viewModel.PreCommand.Execute(null);
+                }
+                is_drag_to_control_media = false;
+            }
+            
+        }
+
+        private void mediaElement_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (is_drag_to_control_media == true)
+            {
+                new_position = Mouse.GetPosition(this);               
+            }
         }
 
         private void mediaElement_MediaEnded(object sender, RoutedEventArgs e)

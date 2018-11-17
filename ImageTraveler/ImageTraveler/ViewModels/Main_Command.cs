@@ -139,7 +139,7 @@ namespace ImageTraveler.ViewModels
                     mediaControl.MediaPause();
                 }
                 else
-                {                   
+                {                    
                     mediaControl.MediaPlay();
                 }
             }

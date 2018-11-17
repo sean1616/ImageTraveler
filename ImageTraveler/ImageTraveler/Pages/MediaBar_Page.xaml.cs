@@ -166,7 +166,7 @@ namespace ImageTraveler.Pages
         {
             main_Command.rec_brush_color = new Color[] { Colors.Transparent, Colors.White, Color.FromArgb(50, 255, 255, 255) };
         }
-
+        
         private void Slider_volume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             main_Command.media_Page.mediaElement.Volume = Slider_volume.Value;

@@ -32,7 +32,7 @@ namespace ImageTraveler.Utils
               
         public void MediaPlay()
         {
-            Thread.Sleep(5); //let animate start first.
+            Thread.Sleep(100); //let animate start first.
             main_Command.media_Page.mediaElement.Play();
             //main_Command.media_Page.vlcPlayer.Play();
             main_Command.mediaState = true;
