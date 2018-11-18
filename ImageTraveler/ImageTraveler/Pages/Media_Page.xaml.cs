@@ -1,19 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using ImageTraveler.ViewModels;
+using Microsoft.Win32;
+using ImageTraveler.Utils;
+using System.Collections.Generic;
+using ImageTraveler.Subtitle;
 
 namespace ImageTraveler.Pages
 {
@@ -28,8 +23,14 @@ namespace ImageTraveler.Pages
 
         Duration mediaNaturalDuration;
 
+        LoadFileClass loadFileClass;
+
+        FormattedText formattedText;
+
+        List<SrtModel> srtModel;
+
         double mediaDurationHours;
-        string mediaDuration;
+        string mediaDuration, sub_path, sub_name;
         bool is_drag_to_control_media = false;
         Point click_position, new_position;
 
@@ -95,7 +96,7 @@ namespace ImageTraveler.Pages
 
             //時間軸timer
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(30);
+            timer.Interval = TimeSpan.FromMilliseconds(40);
             timer.Tick += new EventHandler(timer_Tick);
 
             if (mediaElement.NaturalDuration.HasTimeSpan)
@@ -105,7 +106,7 @@ namespace ImageTraveler.Pages
                 main_Command.mediaBar_Page.Slider_mediabar.SmallChange = 0.01;
                 main_Command.mediaBar_Page.Slider_mediabar.LargeChange = Math.Min(10, ts.Seconds / 10);
             }
-            timer.Start();            
+            timer.Start();                               
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -124,6 +125,8 @@ namespace ImageTraveler.Pages
             {
                 TimeSpan t = TimeSpan.FromSeconds(Math.Round(mediaElement.Position.TotalSeconds));
                 main_Command.mediaBar_mediaDurationTime = string.Format("{0} / " + mediaDuration, t.ToString(@"mm\:ss"));
+
+                subtitle_calculator();
             }
         }
 
@@ -133,6 +136,20 @@ namespace ImageTraveler.Pages
             {
                 TimeSpan t = TimeSpan.FromSeconds(Math.Round(mediaElement.Position.TotalSeconds));
                 main_Command.mediaBar_mediaDurationTime = string.Format("{0} / " + mediaNaturalDuration.ToString(), t.ToString(@"hh\:mm\:ss"));
+
+                subtitle_calculator();
+            }
+        }
+
+        private void subtitle_calculator()
+        {
+            if (srtModel != null)
+            {
+                int timeMiles = (int)main_Command.mediaTimePosition * 1000 + 800;
+
+                string timeString = SrtHelper.GetTimeString(timeMiles);
+
+                Subtitle_TextBlock.Text = timeString;
             }
         }
 
@@ -183,13 +200,13 @@ namespace ImageTraveler.Pages
         {
             if (is_drag_to_control_media == true)
             {
-                if (new_position.X - click_position.X > 20)
+                if (new_position.X - click_position.X > 50)
                 {
                     var viewModel = (Main_Command)DataContext;
                     if (viewModel.NextCommand.CanExecute(null))
                         viewModel.NextCommand.Execute(null);
                 }
-                else if (new_position.X - click_position.X < -20)
+                else if (new_position.X - click_position.X < -50)
                 {
                     var viewModel = (Main_Command)DataContext;
                     if (viewModel.PreCommand.CanExecute(null))
@@ -198,6 +215,30 @@ namespace ImageTraveler.Pages
                 is_drag_to_control_media = false;
             }
             
+        }
+        
+        private void MenuItem_Subtitle_Click(object sender, RoutedEventArgs e)
+        {
+            loadFileClass = new LoadFileClass();
+
+            //取得對話框訊息
+            OpenFileDialog fileDialog = loadFileClass.openFileDialog();
+
+            if (string.IsNullOrEmpty(fileDialog.FileName))
+                return;
+
+            //取得完整路徑
+            sub_path = fileDialog.FileName;
+            //取得檔名
+            sub_name = fileDialog.SafeFileName;
+
+            srtModel = SrtHelper.ParseSrt(sub_path);
+
+            int timeMiles = (int)main_Command.mediaTimePosition * 1000;
+
+            string timeString = SrtHelper.GetTimeString(timeMiles);
+
+            Subtitle_TextBlock.Text = timeString;
         }
 
         private void mediaElement_MouseMove(object sender, MouseEventArgs e)
@@ -213,6 +254,6 @@ namespace ImageTraveler.Pages
             var viewModel = (Main_Command)DataContext;
             if (viewModel.MediaEndedCommand.CanExecute(null))
                 viewModel.MediaEndedCommand.Execute(null);
-        }                
+        }                     
     }
 }

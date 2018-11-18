@@ -13,8 +13,15 @@
     <Grid>
         <!--  MediaElement  -->
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="9*" />
+                <RowDefinition MinHeight="40" />
+            </Grid.RowDefinitions>
+            
             <MediaElement
                 x:Name="mediaElement"
+                Grid.Row="0"
+                Grid.RowSpan="3"
                 BufferingEnded="mediaElement_BufferingEnded"
                 Loaded="mediaElement_Loaded"
                 LoadedBehavior="Manual"
@@ -25,7 +32,21 @@
                 MouseMove="mediaElement_MouseMove"
                 Source="{Binding mediaSource}"
                 Stretch="UniformToFill"
-                Visibility="Visible" />
+                Visibility="Visible">
+                <MediaElement.ContextMenu>
+                    <ContextMenu Name="CM" StaysOpen="True">
+                        <MenuItem Click="MenuItem_Subtitle_Click" Header="Subtitle" />
+                    </ContextMenu>
+                </MediaElement.ContextMenu>
+            </MediaElement>
+
+            <TextBlock
+                x:Name="Subtitle_TextBlock"
+                Grid.Row="1"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Bottom"
+                FontSize="45"
+                Foreground="White" />
         </Grid>
     </Grid>
 </Page>

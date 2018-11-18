@@ -22,7 +22,7 @@ namespace ImageTraveler.Utils
 
             fileDialog = new OpenFileDialog();
 
-            fileDialog.Filter = "圖片文件(*.jpg;*.bmp;*.png..)|*.jpg;*.bmp;*.png;*.gif|影音文件(*.mp3;*.mp4;*.wmv..)|*.mp3;*.mp4;*.wmv;*.flv;*.avi;*.rmvb|(All file(*.*)|*.*";
+            fileDialog.Filter = "(All file(*.*)|*.*|圖片文件(*.jpg;*.bmp;*.png..)|*.jpg;*.bmp;*.png;*.gif|影音文件(*.mp3;*.mp4;*.wmv..)|*.mp3;*.mp4;*.wmv;*.flv;*.avi;*.rmvb";
             fileDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
 
             fileDialog.ShowDialog();

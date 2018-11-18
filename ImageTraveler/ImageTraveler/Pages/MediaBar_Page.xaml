@@ -693,36 +693,6 @@
                         </Button.Resources>
                     </Button>
 
-                    <!--<Button
-                        x:Name="Btn_load"
-                        Grid.Column="1"
-                        Command="{Binding LoadCommand}"
-                        Content="Load"
-                        Focusable="False"
-                        Style="{StaticResource Btn_load_Style}" />
-                    <Button
-                        x:Name="Btn_stop"
-                        Grid.Column="2"
-                        Command="{Binding MediaStopCommand}"
-                        Style="{StaticResource Btn_Stop_Style}" />
-                    <Button
-                        x:Name="Btn_back"
-                        Grid.Column="3"
-                        Command="{Binding BackToCommand}"
-                        Focusable="False"
-                        Style="{StaticResource Btn_Media_previous_Style}" />
-                    <Button
-                        x:Name="Btn_paly_pause"
-                        Grid.Column="4"
-                        Command="{Binding mediaPlayPauseCommand}"
-                        Style="{StaticResource Btn_Media_play_pause_Style}" />
-                    <Button
-                        x:Name="Btn_jump"
-                        Grid.Column="5"
-                        Command="{Binding JumpToCommand}"
-                        Focusable="False"
-                        Style="{StaticResource Btn_Media_next_Style}" />-->
-
                     <Grid Grid.Column="11">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.8*" />
