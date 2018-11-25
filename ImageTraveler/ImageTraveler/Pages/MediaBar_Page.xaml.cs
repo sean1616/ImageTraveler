@@ -9,9 +9,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Media.Animation;
 using ImageTraveler.ViewModels;
 
 namespace ImageTraveler.Pages
@@ -48,9 +46,22 @@ namespace ImageTraveler.Pages
 
             //Center of btn
             c.X = width;
-            c.Y = height;         
-                        
+            c.Y = height;
 
+            //動態改變storyboard的特性值
+            EasingDoubleKeyFrame keyFrame = ((this.Resources["Bar_Volumn"]
+                as Storyboard).Children[1]
+                as DoubleAnimationUsingKeyFrames).KeyFrames[0]
+                as EasingDoubleKeyFrame;
+
+            keyFrame.Value = Slider_volume.ActualWidth * -1;
+
+            EasingDoubleKeyFrame keyFrame2 = ((this.Resources["Bar_Volumn_mouse_leave"]
+                as Storyboard).Children[1]
+                as DoubleAnimationUsingKeyFrames).KeyFrames[0]
+                as EasingDoubleKeyFrame;
+
+            keyFrame2.Value = Slider_volume.ActualWidth * -1;
         }
 
         private void mediaTimeBar_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)

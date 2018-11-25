@@ -44,16 +44,52 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="Bar_Volumn">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="-150" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="volume_txt" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.4" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="Bar_Volumn_mouse_leave">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="volume_txt">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
     <Page.Triggers>
         <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid">
-            <BeginStoryboard Storyboard="{StaticResource Btn_group_StoryBoard1}" />
+            <BeginStoryboard x:Name="Btn_group_StoryBoard1_BeginStoryboard" Storyboard="{StaticResource Btn_group_StoryBoard1}" />
         </EventTrigger>
         <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="grid1">
             <BeginStoryboard x:Name="Btn_group_StoryBoard2_BeginStoryboard" Storyboard="{StaticResource Btn_group_StoryBoard2}" />
         </EventTrigger>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard x:Name="Btn_group_StoryBoard2_BeginStoryboard1" Storyboard="{StaticResource Btn_group_StoryBoard2}" />
+            <BeginStoryboard x:Name="Bar_Volumn_mouse_leave_BeginStoryboard" Storyboard="{StaticResource Bar_Volumn_mouse_leave}" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="rectangle_outer">
+            <StopStoryboard BeginStoryboardName="Bar_Volumn_BeginStoryboard" />
+            <StopStoryboard BeginStoryboardName="Bar_Volumn_BeginStoryboard" />
+            <ResumeStoryboard BeginStoryboardName="Bar_Volumn_BeginStoryboard" />
+            <BeginStoryboard x:Name="Bar_Volumn_BeginStoryboard" Storyboard="{StaticResource Bar_Volumn}" />
+        </EventTrigger>
+        <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="rectangle_outer">
+            <BeginStoryboard x:Name="Bar_Volumn_mouse_leave_BeginStoryboard1" Storyboard="{StaticResource Bar_Volumn_mouse_leave}" />
         </EventTrigger>
     </Page.Triggers>
 
@@ -693,12 +729,13 @@
                         </Button.Resources>
                     </Button>
 
-                    <Grid Grid.Column="11">
+                    <Grid x:Name="rectangle_outer" Grid.Column="11">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.8*" />
                             <ColumnDefinition Width="2*" />
                             <ColumnDefinition Width="0.8*" />
                         </Grid.ColumnDefinitions>
+
                         <Rectangle
                             x:Name="rectangle"
                             Grid.Column="0"
@@ -803,6 +840,7 @@
                             IsMoveToPointEnabled="True"
                             Maximum="1"
                             Minimum="0"
+                            RenderTransformOrigin="0.5,0.5"
                             Style="{DynamicResource Horizontal_Slider}"
                             ValueChanged="Slider_volume_ValueChanged"
                             Value="{Binding media_volume}">
@@ -915,6 +953,14 @@
                                     </Setter>
                                 </Style>
                             </Slider.Resources>
+                            <Slider.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Slider.RenderTransform>
                         </Slider>
                         <Viewbox
                             Grid.Column="2"
@@ -925,7 +971,8 @@
                                 Grid.Column="2"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                Foreground="White" />
+                                Foreground="White"
+                                Text="{Binding media_volume}" />
                         </Viewbox>
                     </Grid>
 
