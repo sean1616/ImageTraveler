@@ -66,8 +66,8 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="volume_txt">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="volume_txt" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>

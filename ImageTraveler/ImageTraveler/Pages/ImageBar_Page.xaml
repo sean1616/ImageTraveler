@@ -62,8 +62,8 @@
         <Grid
             x:Name="grid"
             Background="Transparent"
-            Focusable="False"     
             FocusVisualStyle="{x:Null}"
+            Focusable="False"
             MouseMove="Btn_group_MouseMove">
             <!--<i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseMove">
@@ -92,8 +92,8 @@
                 x:Name="Btn_group"
                 Grid.Row="2"
                 Panel.ZIndex="3"
-                Focusable="False"
                 Background="Transparent"
+                Focusable="False"
                 MouseMove="Btn_group_MouseMove"
                 RenderTransformOrigin="0.5,0.5">
                 <Border.RenderTransform>

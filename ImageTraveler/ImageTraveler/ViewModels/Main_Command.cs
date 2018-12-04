@@ -476,6 +476,7 @@ namespace ImageTraveler.ViewModels
         public string directory = null;
         // 目錄下圖片的集合
         public List<string> imgArray = null;
+        string[] FldArray = null;
 
         int currentIndex, preIndex, nextIndex, rotation_index = 1;
 
@@ -598,6 +599,12 @@ namespace ImageTraveler.ViewModels
             // 取得圖片集合目錄
             directory = Path.GetDirectoryName(imgPath);
 
+            //取得父層資料夾檔名
+            string parentFld = System.IO.Directory.GetParent(System.IO.Directory.GetParent(imgPath).FullName.ToString()).FullName.ToString();
+
+            //取得目錄中子目錄的集合
+            FldArray = System.IO.Directory.GetDirectories(parentFld);
+
             // 取得旋轉後的圖片對象
             imgArray = ImageManager.GetImgCollection(directory);
 
@@ -634,12 +641,13 @@ namespace ImageTraveler.ViewModels
             NextPic();
 
             try
-            {
-                UpdateTitleBarText();
-
+            {                
                 //刪除指定文件至資源回收筒，並顯示進度視窗
                 FileSystem.DeleteFile(destinationFile, UIOption.AllDialogs, RecycleOption.SendToRecycleBin);
-                //File.Delete(destinationFile);                                
+                //File.Delete(destinationFile);           
+
+                //更新imgArray和titlebar
+                UpdateTitleBarText();                
             }
             catch (IOException iox)
             {
@@ -861,6 +869,11 @@ namespace ImageTraveler.ViewModels
                 }
                 imgPath = newbitmap;
             }
+        }
+
+        private void SwitchFolder(int index)
+        {
+            
         }
         #endregion
     }
