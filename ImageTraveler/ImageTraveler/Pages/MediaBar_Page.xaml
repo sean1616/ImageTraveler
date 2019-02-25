@@ -745,13 +745,13 @@
                             Fill="Transparent"
                             Opacity="1"
                             StrokeThickness="1">
-                            <Rectangle.Stroke>
+                            <!--<Rectangle.Stroke>
                                 <LinearGradientBrush StartPoint="{Binding sPosi[5]}" EndPoint="{Binding Posi[5]}">
                                     <GradientStop Color="Transparent" />
                                     <GradientStop Offset="1" Color="White" />
                                     <GradientStop Offset="0.828" Color="#80FFFFFF" />
                                 </LinearGradientBrush>
-                            </Rectangle.Stroke>
+                            </Rectangle.Stroke>-->
                         </Rectangle>
                         <Button
                             x:Name="Btn_volume"
@@ -972,7 +972,17 @@
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
                                 Foreground="White"
+                                MouseLeftButtonDown="Volume_txt_MouseLeftButtonDown"
                                 Text="{Binding media_volume}" />
+                        </Viewbox>
+                        <Viewbox
+                            Grid.Column="2"
+                            MaxHeight="30"
+                            Margin="2">
+                            <TextBox
+                                x:Name="volume_txtbox"
+                                KeyDown="Volume_txtbox_KeyDown"
+                                Visibility="Hidden" />
                         </Viewbox>
                     </Grid>
 

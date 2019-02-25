@@ -113,20 +113,21 @@ namespace ImageTraveler.ViewModels
             if (mediaBar_Page.Slider_volume.Maximum == 1)
             {
                 mediaVolumeSaved_mode1 = media_Page.mediaElement.Volume;
-                mediaBar_Page.Slider_volume.Maximum = 0.2;
+                mediaBar_Page.Slider_volume.Maximum = 0.1;
+                media_volume = 0.05;
                 media_volume = mediaVolumeSaved_mode2;
                 mediaBar_volume_btn_sourcce = "../Resources/Volume-3.png"; //small volume
             }
 
-            else if (mediaBar_Page.Slider_volume.Maximum == 0.2)
+            else if (mediaBar_Page.Slider_volume.Maximum == 0.1)
             {
                 mediaVolumeSaved_mode2 = media_Page.mediaElement.Volume;
                 media_volume = 0;
-                mediaBar_Page.Slider_volume.Maximum = 0.1;                
+                mediaBar_Page.Slider_volume.Maximum = 0.01;                
                 mediaBar_volume_btn_sourcce = "../Resources/Volume-1.png"; //Mute
             }
 
-            else if (mediaBar_Page.Slider_volume.Maximum == 0.1)
+            else if (mediaBar_Page.Slider_volume.Maximum == 0.01)
             {
                 mediaBar_Page.Slider_volume.Maximum = 1;
                 media_volume = mediaVolumeSaved_mode1;
@@ -446,21 +447,21 @@ namespace ImageTraveler.ViewModels
             }
 
             //輸入數字後Enter進行Image轉換
-            else if (args.Key == Key.Enter)
-            {
-                int IKey;
-                bool result = int.TryParse(NumKeyin, out IKey);
+            //else if (args.Key == Key.Enter)
+            //{
+            //    int IKey;
+            //    bool result = int.TryParse(NumKeyin, out IKey);
 
-                if (result == true && IKey > 0 && IKey <= imgArray.Count)
-                {
-                    SwitchImg(IKey - 1);
+            //    if (result == true && IKey > 0 && IKey <= imgArray.Count)
+            //    {
+            //        SwitchImg(IKey - 1);
 
-                    titleBar = string.Format("{0} - {1} / {2} - ImageTraverler", Path.GetFileName(imgArray[IKey - 1]), IKey, imgArray.Count);
-                    //titleBar = Path.GetFileName(imgArray[IKey - 1]) + " - " +
-                    //(IKey) + " / " + imgArray.Count + " - ImageTraveler";
-                }
-                NumKeyin = null;
-            }
+            //        titleBar = string.Format("{0} - {1} / {2} - ImageTraverler", Path.GetFileName(imgArray[IKey - 1]), IKey, imgArray.Count);
+            //        //titleBar = Path.GetFileName(imgArray[IKey - 1]) + " - " +
+            //        //(IKey) + " / " + imgArray.Count + " - ImageTraveler";
+            //    }
+            //    NumKeyin = null;
+            //}
             //Key in 數字鍵
             else
             {

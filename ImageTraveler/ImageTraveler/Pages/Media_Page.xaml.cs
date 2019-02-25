@@ -155,7 +155,7 @@ namespace ImageTraveler.Pages
 
         private void mediaElement_BufferingEnded(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("123");
+            //MessageBox.Show("123");
             //main_Command.media_Page.mediaElement.Play();
         }
 

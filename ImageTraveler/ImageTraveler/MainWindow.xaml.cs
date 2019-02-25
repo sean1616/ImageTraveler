@@ -35,7 +35,7 @@ namespace ImageTraveler
         RenderTargetBitmap rtb1, rtb2;
         DispatcherTimer mousemove_timer;
         Point mouse_position;
-
+        string ini_path = System.AppDomain.CurrentDomain.BaseDirectory;
         public string ini_filename = "ImagTraver.ini";
         public static SetupIniIP ini = new SetupIniIP();
 
@@ -51,18 +51,14 @@ namespace ImageTraveler
             mousemove_timer.Tick += new EventHandler(timer_Tick);
 
             mousemove_timer.Start();
-
-            string ini_path = main_Command.folderName + @"\" + main_Command.ini_filename;
-            if (File.Exists(ini_path))
+            
+            //string ini_path = main_Command.folderName + @"\" + main_Command.ini_filename;
+            if (File.Exists(ini_path + "ImagTraver\\ImagTraver.ini"))
             {
-                
-                if (File.Exists(ini_path))
-                {
-                    //讀取ini media volume
-                    main_Command.media_volume = Convert.ToDouble(main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename));
-                }
-                else
-                    IniSetup(); //創建ini file並寫入基本設定
+                //讀取ini media volume
+                main_Command.media_volume = Convert.ToDouble(main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename));
+                this.Height = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Height", main_Command.ini_filename));
+                this.Width = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Width", main_Command.ini_filename));
             }
             else
             {
@@ -94,17 +90,13 @@ namespace ImageTraveler
 
             mousemove_timer.Start();
 
-            string ini_path = main_Command.folderName + @"\" + main_Command.ini_filename;
-            if (File.Exists(ini_path))
+            //string ini_path = main_Command.folderName + @"\" + main_Command.ini_filename;
+            if (File.Exists(ini_path + "ImagTraver\\ImagTraver.ini"))
             {
-
-                if (File.Exists(ini_path))
-                {
-                    //讀取ini media volume
-                    main_Command.media_volume = Convert.ToDouble(main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename));
-                }
-                else
-                    IniSetup(); //創建ini file並寫入基本設定
+                //讀取ini media volume
+                main_Command.media_volume = Convert.ToDouble(main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename));
+                this.Height = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Height", main_Command.ini_filename));
+                this.Width = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Width", main_Command.ini_filename));
             }
             else
             {
@@ -255,7 +247,13 @@ namespace ImageTraveler
         {
             
         }
-               
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            ini.IniWriteValue("Window", "Height", this.Height.ToString(), ini_filename);
+            ini.IniWriteValue("Window", "Width", this.Width.ToString(), ini_filename);
+        }
+
         private void PicBoxView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (!string.IsNullOrEmpty(main_Command.picSource.ToString()))
@@ -308,6 +306,8 @@ namespace ImageTraveler
         {
             ini.IniWriteValue("Bar", "btn_opa", main_Command.imgbar_opa.ToString(), ini_filename);
             ini.IniWriteValue("Bar", "volume", main_Command.media_volume.ToString(), ini_filename);
+            ini.IniWriteValue("Window", "Height", this.Height.ToString(), ini_filename);
+            ini.IniWriteValue("Window", "Width", this.Width.ToString(), ini_filename);
         }
     }
 
@@ -326,14 +326,16 @@ namespace ImageTraveler
         //ini write
         public void IniWriteValue(string Section, string Key, string Value, string inipath)
         {
-            WritePrivateProfileString(Section, Key, Value, @"d:\ImagTraver\" + inipath);
+            string path = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver\\" + inipath;
+            WritePrivateProfileString(Section, Key, Value, path);
         }
 
         //ini read
         public string IniReadValue(string Section, string Key, string inipath)
         {
+            string path = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver\\" + inipath;
             StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(Section, Key, "", temp, 255, @"d:\ImagTraver\" + inipath);
+            int i = GetPrivateProfileString(Section, Key, "", temp, 255, path);
             return temp.ToString();
         }
     }

@@ -22,14 +22,20 @@ namespace ImageTraveler.Utils
         //ini write
         public void IniWriteValue(string Section, string Key, string Value, string inipath)
         {
-            WritePrivateProfileString(Section, Key, Value, @"d:\ImagTraver\" + inipath);
+            string path = System.AppDomain.CurrentDomain.BaseDirectory;
+            WritePrivateProfileString(Section, Key, Value, @path + inipath);
+            //WritePrivateProfileString(Section, Key, Value, @"d:\ImagTraver\" + inipath);
+
         }
 
         //ini read
         public string IniReadValue(string Section, string Key, string inipath)
         {
+            string path = System.AppDomain.CurrentDomain.BaseDirectory;
             StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(Section, Key, "", temp, 255, @"d:\ImagTraver\" + inipath);
+            int i = GetPrivateProfileString(Section, Key, "", temp, 255, @path +"ImagTraver\\"+ inipath);
+
+            //int i = GetPrivateProfileString(Section, Key, "", temp, 255, @"d:\ImagTraver\" + inipath);
             return temp.ToString();
         }
     }

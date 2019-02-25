@@ -158,8 +158,8 @@ namespace ImageTraveler.Pages
             if (e.XButton1 == MouseButtonState.Pressed)
             {
                 main_Command.mediaVolumeSaved_mode1 = main_Command.media_Page.mediaElement.Volume;
-                Slider_volume.Maximum = 0.2;
-                main_Command.media_volume = 0.1;
+                Slider_volume.Maximum = 0.1;
+                main_Command.media_volume = 0.05;
             }
             else if (e.XButton2 == MouseButtonState.Pressed)
             {
@@ -177,11 +177,44 @@ namespace ImageTraveler.Pages
         {
             main_Command.rec_brush_color = new Color[] { Colors.Transparent, Colors.White, Color.FromArgb(50, 255, 255, 255) };
         }
+
+        private void Volume_txt_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            volume_txt.Visibility = Visibility.Hidden;
+            volume_txtbox.Visibility = Visibility.Visible;
+            volume_txtbox.Text = volume_txt.Text;
+            volume_txtbox.Tag = true;
+            volume_txtbox.SelectAll();
+            volume_txtbox.Focus();
+        }
         
+        private void Volume_txtbox_KeyDown(object sender, KeyEventArgs e)
+        {
+            float txt_i;
+            if (e.Key == Key.Enter)
+            {
+                if (float.TryParse(volume_txtbox.Text, out txt_i))
+                {
+                    main_Command.media_volume = Math.Round(float.Parse(volume_txtbox.Text), 1) / 100;
+                    //MessageBox.Show((Math.Round(float.Parse(volume_txtbox.Text), 1) / 100).ToString());
+                    volume_txtbox.Visibility = Visibility.Hidden;
+                    volume_txt.Visibility = Visibility.Visible;
+                }
+            }
+        }                         
+
         private void Slider_volume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             main_Command.media_Page.mediaElement.Volume = Slider_volume.Value;
-            volume_txt.Text = Math.Round(main_Command.media_volume * 100).ToString();
+            if (Slider_volume.Maximum == 1)
+            {
+                volume_txt.Text = Math.Round(main_Command.media_volume * 100).ToString();
+            }
+            else
+            {
+                volume_txt.Text = Math.Round(main_Command.media_volume * 100, 1).ToString();
+            }
+            
         }
 
         //mediabar position jump to mouse position

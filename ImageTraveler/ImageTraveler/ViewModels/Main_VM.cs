@@ -44,8 +44,8 @@ namespace ImageTraveler.ViewModels
                 OnPropertyChanged("ini");
             }
         }
-
-        private string _folderName = @"d:\ImagTraver";
+        //string ini_path = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver";
+        private string _folderName = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver";
         public string folderName
         {
             get { return _folderName; }

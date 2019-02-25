@@ -22,6 +22,7 @@
     MouseMove="Window_MouseMove"
     ResizeMode="CanResizeWithGrip"
     WindowStartupLocation="CenterScreen"
+    SizeChanged="Window_SizeChanged"
     WindowState="{Binding windowState}"
     WindowStyle="None"
     mc:Ignorable="d">
