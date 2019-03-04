@@ -21,8 +21,8 @@
     KeyboardNavigation.TabNavigation="None"
     MouseMove="Window_MouseMove"
     ResizeMode="CanResizeWithGrip"
-    WindowStartupLocation="CenterScreen"
     SizeChanged="Window_SizeChanged"
+    WindowStartupLocation="CenterScreen"
     WindowState="{Binding windowState}"
     WindowStyle="None"
     mc:Ignorable="d">
@@ -179,8 +179,6 @@
             <RowDefinition Height="6*" />
             <RowDefinition Height="1.3*" MaxHeight="140" />
         </Grid.RowDefinitions>
-
-
 
         <!--  TitleBar  -->
         <Grid

@@ -252,19 +252,35 @@ namespace ImageTraveler.ViewModels
 
         private void grid_generalize_maximum_MouseDown()
         {
-            if (windowState == WindowState.Maximized)
-                windowState = WindowState.Normal;
-            else
-            {                
-                //取得可獲得之工作視窗大小(不含工作列)                
-                App.mainWindow.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; var a = SystemParameters.WorkArea;
-                App.mainWindow.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+            //取得可獲得之工作視窗大小(不含工作列)                
+            App.mainWindow.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight;
+            App.mainWindow.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
+            Rect workArea = new Rect(0, 0, App.mainWindow.MaxWidth, App.mainWindow.MaxHeight);  //transfer max-height and max-width to a work area rectangular
 
+            if (windowState == WindowState.Maximized)
+            {                
+                //設定視窗至螢幕中央         
+                if (App.mainWindow.Left >= 0)
+                {
+                    App.mainWindow.MaxHeight = App.mainWindow.MaxHeight * 2 / 3; //Set Max Screen size
+                    App.mainWindow.MaxWidth = App.mainWindow.MaxWidth * 2 / 3;
+                    App.mainWindow.Left = workArea.Width / 7;
+                    App.mainWindow.Top = workArea.Height / 7;
+                }
+                else
+                {
+                    Rect minor_screen = new Rect(App.mainWindow.Width * -1, 0, App.mainWindow.Width, App.mainWindow.Height);
+                    App.mainWindow.MaxHeight = minor_screen.Height * 2 / 3; //Set Max Screen size
+                    App.mainWindow.MaxWidth = minor_screen.Width * 2 / 3;
+                    //App.mainWindow.Left = minor_screen.X * 8 / 9;
+                    //App.mainWindow.Top = workArea.Height / 7;
+                }
+                windowState = WindowState.Normal;
+
+                fit_image();
+            }      
+            else
                 windowState = WindowState.Maximized;
-                
-                //AutoClosingMessageBox.Show("","",90);
-                //fit_image();
-            }           
         }
 
         private void mouseLeftButtonUp()
@@ -446,23 +462,6 @@ namespace ImageTraveler.ViewModels
                 }
             }
 
-            //輸入數字後Enter進行Image轉換
-            //else if (args.Key == Key.Enter)
-            //{
-            //    int IKey;
-            //    bool result = int.TryParse(NumKeyin, out IKey);
-
-            //    if (result == true && IKey > 0 && IKey <= imgArray.Count)
-            //    {
-            //        SwitchImg(IKey - 1);
-
-            //        titleBar = string.Format("{0} - {1} / {2} - ImageTraverler", Path.GetFileName(imgArray[IKey - 1]), IKey, imgArray.Count);
-            //        //titleBar = Path.GetFileName(imgArray[IKey - 1]) + " - " +
-            //        //(IKey) + " / " + imgArray.Count + " - ImageTraveler";
-            //    }
-            //    NumKeyin = null;
-            //}
-            //Key in 數字鍵
             else
             {
                 var key_input = args.Key.ToString();
@@ -535,11 +534,10 @@ namespace ImageTraveler.ViewModels
                     pic_error_code = 1; //image is not exist
                     //picSource = null;
                 }
-                //picSource = new BitmapImage(new Uri(imgPath, UriKind.RelativeOrAbsolute));                               
 
                 mediaSource = null;
                 zIndex_group = new int[] { 0, 0, 0 };
-
+                               
                 //設定視窗至螢幕中央
                 Rect workArea = System.Windows.SystemParameters.WorkArea;
                 var height_dif = workArea.Height - App.mainWindow.Height;
@@ -548,12 +546,7 @@ namespace ImageTraveler.ViewModels
                 {
                     App.mainWindow.Left = (workArea.Width - App.mainWindow.Width) / 2 + workArea.Left;
                     App.mainWindow.Top = (workArea.Height - App.mainWindow.Height) / 2 + workArea.Top;
-                }
-                fit_image();
-                //取得可獲得之工作視窗大小(不含工作列)                
-                //App.mainWindow.MaxHeight = SystemParameters.MaximizedPrimaryScreenHeight; var a = SystemParameters.WorkArea;
-                //App.mainWindow.MaxWidth = SystemParameters.MaximizedPrimaryScreenWidth;
-                //windowState = WindowState.Maximized;
+                }                
             }
 
             //Media
@@ -591,7 +584,7 @@ namespace ImageTraveler.ViewModels
             GroupOpacity = new double[] { 0, 0, 0 };
             
             initial_picSource = null;
-            
+            //fit_image();
         }
 
         //計算圖片所在資料夾之圖片陣列並顯示TitleBar文字

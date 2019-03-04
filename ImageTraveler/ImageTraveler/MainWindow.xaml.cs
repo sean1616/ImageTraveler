@@ -31,8 +31,7 @@ namespace ImageTraveler
     {        
         public static Main_Command main_Command { get; set; } = new Main_Command();        
         public static int aa;
-        bool isDragging = false, media_state_check=false;       
-        RenderTargetBitmap rtb1, rtb2;
+        bool isDragging = false, media_state_check=false;      
         DispatcherTimer mousemove_timer;
         Point mouse_position;
         string ini_path = System.AppDomain.CurrentDomain.BaseDirectory;
