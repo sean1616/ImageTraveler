@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Runtime.InteropServices;
 using ImageTraveler.ViewModels;
 
 namespace ImageTraveler.Pages
@@ -20,6 +21,7 @@ namespace ImageTraveler.Pages
     public partial class MediaBar_Page : Page
     {
         Main_Command main_Command;
+        public static SetupIniIP ini = new SetupIniIP();
 
         double width, height, radius;
         double[] L = new double[7];
@@ -32,8 +34,7 @@ namespace ImageTraveler.Pages
             InitializeComponent();
 
             this.DataContext = main_Command;
-            this.main_Command = main_Command;
-            
+            this.main_Command = main_Command; 
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
@@ -105,11 +106,7 @@ namespace ImageTraveler.Pages
                 {
                     p[i].X = Math.Pow(((p[i].X - c.X) / (2 * width)) - 0.5, 3) + 1;
                 }
-                //else
-                //{
-                //    p[i].X = 0;
-                //}
-
+               
                 if (p[i].Y < 0)
                 {
                     p[i].Y = Math.Pow(((p[i].Y - c.Y) / (2 * height)) + 0.5, 3);
@@ -118,13 +115,6 @@ namespace ImageTraveler.Pages
                 {
                     p[i].Y = Math.Pow(((p[i].Y - c.Y) / (2 * height)) - 0.5, 3) + 1;
                 }
-                //else
-                //{
-                //    p[i].Y = 0;
-                //}
-
-                //p[i].X = (p[i].X - c.X) / (2 * width) +0.5;
-                //p[i].Y = (p[i].Y - c.Y) / (2 * height) +0.5;
             }
 
             main_Command.Posi = p;
@@ -138,23 +128,6 @@ namespace ImageTraveler.Pages
 
         private void Btn_volume_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            //if (Slider_volume.Maximum == 1)
-            //{
-            //    main_Command.mediaVolumeSaved = main_Command.media_Page.mediaElement.Volume;
-            //    Slider_volume.Maximum = 0.2;
-            //    main_Command.media_volume = 0.1;
-            //}
-            //else if (Slider_volume.Maximum == 0.2)
-            //{
-            //    Slider_volume.Maximum = 0;
-            //    main_Command.media_volume = 0;
-            //}
-            //else
-            //{
-            //    Slider_volume.Maximum = 1;
-            //    main_Command.media_volume = main_Command.mediaVolumeSaved;
-            //}
-
             if (e.XButton1 == MouseButtonState.Pressed)
             {
                 main_Command.mediaVolumeSaved_mode1 = main_Command.media_Page.mediaElement.Volume;
@@ -169,52 +142,44 @@ namespace ImageTraveler.Pages
         }
 
         private void Btn_Load_MouseEnter(object sender, MouseEventArgs e)
-        {
-            main_Command.rec_brush_color = new Color[] { Colors.White, Colors.White, Colors.White };
+        {            
+            //main_Command.rec_brush_color = new Color[] { Colors.White, Colors.White, Colors.White };
         }
 
         private void Btn_Load_MouseLeave(object sender, MouseEventArgs e)
         {
-            main_Command.rec_brush_color = new Color[] { Colors.Transparent, Colors.White, Color.FromArgb(50, 255, 255, 255) };
-        }
-
-        private void Volume_txt_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            volume_txt.Visibility = Visibility.Hidden;
-            volume_txtbox.Visibility = Visibility.Visible;
-            volume_txtbox.Text = volume_txt.Text;
-            volume_txtbox.Tag = true;
-            volume_txtbox.SelectAll();
-            volume_txtbox.Focus();
+            //main_Command.rec_brush_color = new Color[] { Colors.Transparent, Colors.White, Color.FromArgb(50, 255, 255, 255) };
         }
         
         private void Volume_txtbox_KeyDown(object sender, KeyEventArgs e)
         {
-            float txt_i;
+
             if (e.Key == Key.Enter)
             {
-                if (float.TryParse(volume_txtbox.Text, out txt_i))
-                {
-                    main_Command.media_volume = Math.Round(float.Parse(volume_txtbox.Text), 1) / 100;
-                    //MessageBox.Show((Math.Round(float.Parse(volume_txtbox.Text), 1) / 100).ToString());
-                    volume_txtbox.Visibility = Visibility.Hidden;
-                    volume_txt.Visibility = Visibility.Visible;
-                }
-            }
-        }                         
+                TextBox obj = (TextBox)sender;
+                main_Command.media_volume = double.Parse(obj.Text);
 
+                //Change focus to next UI item
+                //obj.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
+
+                Keyboard.Focus(Btn_fullscreen);
+            }
+        }
+               
         private void Slider_volume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            main_Command.media_Page.mediaElement.Volume = Slider_volume.Value;
-            if (Slider_volume.Maximum == 1)
-            {
-                volume_txt.Text = Math.Round(main_Command.media_volume * 100).ToString();
-            }
-            else
-            {
-                volume_txt.Text = Math.Round(main_Command.media_volume * 100, 1).ToString();
-            }
-            
+            //if (main_Command == null) return;
+
+            //double x = Slider_volume.Value;
+            //double y = Math.Pow(x /6, 2);
+            //main_Command.media_Page.mediaElement.Volume = y / 100;
+
+            //if (Slider_volume.Maximum == 1)
+            //    volume_txt.Text = Math.Round(main_Command.media_volume * 100).ToString();
+            //else
+            //    volume_txt.Text = Math.Round(main_Command.media_volume * 100, 1).ToString();
+
+            //ini.IniWriteValue("Bar", "volume", main_Command.media_volume.ToString(), "ImagTraver.ini");
         }
 
         //mediabar position jump to mouse position
@@ -232,6 +197,35 @@ namespace ImageTraveler.Pages
             Slider_mediabar.Value = percentOfpoint * Slider_mediabar.Maximum;
 
             main_Command.media_Page.mediaElement.Position = TimeSpan.FromSeconds(Slider_mediabar.Value);
+        }
+    }
+
+    public class SetupIniIP
+    {
+        public string path;
+
+        [DllImport("kernel32", CharSet = CharSet.Unicode)]
+        private static extern long WritePrivateProfileString(string section,
+        string key, string val, string filePath);
+        [DllImport("kernel32", CharSet = CharSet.Unicode)]
+        private static extern int GetPrivateProfileString(string section,
+        string key, string def, StringBuilder retVal,
+        int size, string filePath);
+
+        //ini write
+        public void IniWriteValue(string Section, string Key, string Value, string inipath)
+        {
+            string path = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver\\" + inipath;
+            WritePrivateProfileString(Section, Key, Value, path);
+        }
+
+        //ini read
+        public string IniReadValue(string Section, string Key, string inipath)
+        {
+            string path = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver\\" + inipath;
+            StringBuilder temp = new StringBuilder(255);
+            int i = GetPrivateProfileString(Section, Key, "", temp, 255, path);
+            return temp.ToString();
         }
     }
 }

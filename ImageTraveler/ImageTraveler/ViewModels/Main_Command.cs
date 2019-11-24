@@ -36,7 +36,11 @@ namespace ImageTraveler.ViewModels
         public ICommand PreCommand { get { return new Delegatecommand(PrePic); } }
        
         public ICommand NextCommand { get { return new Delegatecommand(NextPic); } }
-        
+
+        public ICommand PreFld { get { return new Delegatecommand(preFld); } }
+
+        public ICommand NextFld { get { return new Delegatecommand(nextFld); } }
+
         public ICommand BackToCommand { get { return new Delegatecommand(BackTo); } }
         
         public ICommand JumpToCommand { get { return new Delegatecommand(JumpTo); } }
@@ -310,8 +314,6 @@ namespace ImageTraveler.ViewModels
                 //var point = ((Window)Main_e.Sender).PointToScreen(e.MouseDevice.GetPosition((Window)Main_e.Sender));
                 App.mainWindow.Left = point.X - percentOfpoint;
                 App.mainWindow.Top = 0;
-                //((Window)Main_e.Sender).Left = point.X - (((Window)Main_e.Sender).RestoreBounds.Width * 0.5);
-                //((Window)Main_e.Sender).Top = point.Y;
 
                 App.mainWindow.Height = App.mainWindow.RestoreBounds.Height;
                 App.mainWindow.Width = App.mainWindow.RestoreBounds.Width;
@@ -329,7 +331,6 @@ namespace ImageTraveler.ViewModels
         }
 
         private bool mRestoreForDragMove;
-
         //MVVM傳遞object sender的方法
         private EventToCommandArgs Main_e;
         private void titleBar_MouseLeftButtonUp(EventToCommandArgs e)
@@ -342,23 +343,10 @@ namespace ImageTraveler.ViewModels
             //判斷滑鼠點擊次數
             if (args.ClickCount == 2)
             {
-                if ((App.mainWindow.ResizeMode != ResizeMode.CanResize) && (App.mainWindow.ResizeMode != ResizeMode.CanResizeWithGrip))
-                {
-                    return;
-                }
-
+                if ((App.mainWindow.ResizeMode != ResizeMode.CanResize) && (App.mainWindow.ResizeMode != ResizeMode.CanResizeWithGrip)) return;
                 windowState = windowState == WindowState.Maximized ? WindowState.Normal : WindowState.Maximized; //雙擊最大化
-
-                //fit_image();
-                //AutoClosingMessageBox.Show("Text", "Caption", 80);
             }
-            else
-            {
-                mRestoreForDragMove = windowState == WindowState.Maximized || windowState == WindowState.Normal;
-                //App.mainWindow.DragMove();  //拖曳結束後會激發mouseEnter事件
-                //App.mainWindow.TitleBar_ControlGrid.MouseMove+=
-                //((Window)Main_e.Sender).DragMove();
-            }
+            else mRestoreForDragMove = windowState == WindowState.Maximized || windowState == WindowState.Normal;
         }
 
         private void fit_image()
@@ -366,118 +354,83 @@ namespace ImageTraveler.ViewModels
             scaleXY = 1;
             picX = 0;
             picY = 0;
-            //Thread.Sleep(500);
-            //MessageBox.Show("123");
-            //AutoClosingMessageBox.Show("Text", "Caption", 30);
         }
 
         private void windowMouseWheel(MouseWheelEventArgs e)
         {
-            if (picSource == null)
-                return;
-
-            if (scaleXY >= 0.3 && scaleXY <= 3.3)
-                scaleXY = e.Delta > 0 ? scaleXY + .1 : scaleXY - .1;
-            else if (scaleXY < 0.3 && e.Delta > 0)
-                scaleXY += 0.1;
-            //else if (scaleXY < 0.3 && e.Delta < 0)
-            //    scaleXY = 0.3;
-            //else if (scaleXY > 3.3 && e.Delta > 0)
-            //    scaleXY = 3.3;
-            else if (scaleXY > 3.3 && e.Delta < 0)
-                scaleXY -= 0.1;
+            if (picSource == null) return;
+            if (scaleXY >= 0.3 && scaleXY <= 3.3) scaleXY = e.Delta > 0 ? scaleXY + .1 : scaleXY - .1;
+            else if (scaleXY < 0.3 && e.Delta > 0) scaleXY += 0.1;
+            else if (scaleXY > 3.3 && e.Delta < 0) scaleXY -= 0.1;
         }
                 
         private void windowMouseDown(MouseButtonEventArgs e)
         {
             if (picSource != null)
             {
-                if (e.MiddleButton == MouseButtonState.Pressed)
-                {
-                    fit_image();
-                }                  
-                else if (e.XButton1 == MouseButtonState.Pressed)
-                    PrePic();
-                else if (e.XButton2 == MouseButtonState.Pressed)
-                    NextPic();                
+                if (e.MiddleButton == MouseButtonState.Pressed) fit_image();
+                else if (e.XButton1 == MouseButtonState.Pressed) PrePic();
+                else if (e.XButton2 == MouseButtonState.Pressed) NextPic();
             }
             else if (mediaSource != null)
             {
                 if (e.MiddleButton == MouseButtonState.Pressed)
                 {
-                    if (mediaState)
-                    {
-                        mediaControl.MediaPause();
-                    }
-                    else
-                    {
-                        mediaControl.MediaPlay();
-                    }
+                    if (mediaState) mediaControl.MediaPause();
+                    else mediaControl.MediaPlay();                    
                 }
-
-                else if (e.XButton1 == MouseButtonState.Pressed)
-                    mediaControl.MediaJumpTo();
-                else if (e.XButton2 == MouseButtonState.Pressed)
-                    BackTo();
+                else if (e.XButton1 == MouseButtonState.Pressed) mediaControl.MediaJumpTo();
+                else if (e.XButton2 == MouseButtonState.Pressed) BackTo();
             }
         }
-
-
+        
         public bool mediaState = true;
         string NumKeyin;
 
         public void WindowKeyEventHandler(KeyEventArgs args)
         {
-            if (args.Key == Key.Right)
-                NextPic();
-
-            else if (args.Key == Key.Down)
-                NextPic();
-
-            else if (args.Key == Key.Left)
-                PrePic();
-
-            else if (args.Key == Key.Up)
-                PrePic();
-
-            else if (args.Key == Key.Delete)
-                DeleteImage();
-
-            else if (args.Key == Key.Space)
-            {
-                if (media_Page.mediaElement.HasVideo)
-                {
-                    if (mediaState == true)
-                    {
-                        //media_Page.mediaElement.Pause();
-                        //mediaState = false;
-                        mediaControl.MediaPause();
-                    }
-                    else
-                    {
-                        //media_Page.mediaElement.Play();
-                        //mediaState = true;
-                        mediaControl.MediaPlay();
-                    }
-                }
-            }
+            if ((Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl)) && args.Key == Key.Right) { nextFld(); }
+            else if ((Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl)) && args.Key == Key.Left) { preFld(); }
 
             else
             {
-                var key_input = args.Key.ToString();
-                string intStr = Regex.Replace(key_input, "[^0-9]", "");
-                NumKeyin = NumKeyin + intStr;
-            }
+                if (args.Key == Key.Right)
+                    NextPic();
+
+                else if (args.Key == Key.Down)
+                    NextPic();
+
+                else if (args.Key == Key.Left)
+                    PrePic();
+
+                else if (args.Key == Key.Up)
+                    PrePic();
+
+                else if (args.Key == Key.Delete)
+                    DeleteImage();
+
+                else if (args.Key == Key.Space)
+                {
+                    if (media_Page.mediaElement.HasVideo)
+                    {
+                        if (mediaState == true) { mediaControl.MediaPause(); }
+                        else { mediaControl.MediaPlay(); }
+                    }
+                }
+                else
+                {
+                    var key_input = args.Key.ToString();
+                    string intStr = Regex.Replace(key_input, "[^0-9]", "");
+                    NumKeyin = NumKeyin + intStr;
+                }
+            }            
         }
 
         LoadFileClass loadFileClass;
-
-        // 打開圖片的目錄
-        public string directory = null;
-        // 目錄下圖片的集合
-        public List<string> imgArray = null;
+                
+        public string directory = null;  // 打開圖片的目錄
+        public List<string> imgArray = null;  // 目錄下圖片的集合
         string[] FldArray = null;
-
         int currentIndex, preIndex, nextIndex, rotation_index = 1;
 
         private void LoadPic()
@@ -489,15 +442,12 @@ namespace ImageTraveler.ViewModels
                 //取得對話框訊息
                 OpenFileDialog fileDialog = loadFileClass.openFileDialog();
 
-                if (string.IsNullOrEmpty(fileDialog.FileName))
-                    return;
-
-                //取得完整路徑
-                imgPath = fileDialog.FileName;
-                //取得檔名
-                fileName = fileDialog.SafeFileName;
+                if (string.IsNullOrEmpty(fileDialog.FileName)) return;
+                                
+                imgPath = fileDialog.FileName;  //取得完整路徑
+               
+                fileName = fileDialog.SafeFileName;  //取得檔名
             }
-
             InitialLoadFile(); //進行載入檔案並進行初始化設定
         }
 
@@ -525,15 +475,8 @@ namespace ImageTraveler.ViewModels
 
                 UpdateTitleBarText();
 
-                try
-                {
-                    picSource = BitmapFromUri(new Uri(imgPath));
-                }
-                catch
-                {
-                    pic_error_code = 1; //image is not exist
-                    //picSource = null;
-                }
+                try { picSource = BitmapFromUri(new Uri(imgPath)); }
+                catch {  pic_error_code = 1; }  //image is not exist
 
                 mediaSource = null;
                 zIndex_group = new int[] { 0, 0, 0 };
@@ -546,13 +489,13 @@ namespace ImageTraveler.ViewModels
                 {
                     App.mainWindow.Left = (workArea.Width - App.mainWindow.Width) / 2 + workArea.Left;
                     App.mainWindow.Top = (workArea.Height - App.mainWindow.Height) / 2 + workArea.Top;
-                }                
+                }          
+                
             }
 
             //Media
             else if (string.Compare(fileName_Extension, ".mp3", true) == 0 || string.Compare(fileName_Extension, ".mp4", true) == 0
-                 || string.Compare(fileName_Extension, ".avi", true) == 0 || string.Compare(fileName_Extension, ".wmv", true) == 0 
-                )            
+                 || string.Compare(fileName_Extension, ".avi", true) == 0 || string.Compare(fileName_Extension, ".wmv", true) == 0)
             {
                 media_Page = new Media_Page(this);
                 mediaBar_Page = new MediaBar_Page(this);
@@ -569,41 +512,72 @@ namespace ImageTraveler.ViewModels
                
                 titleBar_ico_source = "../Resources/下_1.png";  //set title bar icon image
                 mediaBtn_play_pause = "../Resources/pause.png";
-                                           
-                //Set MediaElement source
-
+                                
                 picSource = null;
                 zIndex_group = new int[] { 0, 0, 2 };
                 sliderVisible = Visibility.Visible;
 
                 titleBar = fileName + " - ImageTraveler";
-
-                //media_Page.mediaElement.Play();                
-            }
-            
-            GroupOpacity = new double[] { 0, 0, 0 };
-            
+            }            
+            GroupOpacity = new double[] { 0, 0, 0 };            
             initial_picSource = null;
-            //fit_image();
         }
-
-        //計算圖片所在資料夾之圖片陣列並顯示TitleBar文字
-        private void UpdateTitleBarText()
+                
+        private void UpdateTitleBarText()  //計算圖片所在資料夾之圖片陣列並顯示TitleBar文字
         {
-            // 取得圖片集合目錄
+            // 取得此層資料夾路徑(圖片集合目錄)
             directory = Path.GetDirectoryName(imgPath);
 
-            //取得父層資料夾檔名
+            //取得父層資料夾路徑
             string parentFld = System.IO.Directory.GetParent(System.IO.Directory.GetParent(imgPath).FullName.ToString()).FullName.ToString();
 
-            //取得目錄中子目錄的集合
+            //取得父層資料夾中所有資料夾
             FldArray = System.IO.Directory.GetDirectories(parentFld);
 
-            // 取得旋轉後的圖片對象
+            // 取得旋轉後的圖片對象(取得此層資料夾中的所有圖片)
             imgArray = ImageManager.GetImgCollection(directory);
 
             titleBar = string.Format("{0} - {1} / {2} - ImageTraveler",
                     Path.GetFileName(imgArray[GetIndex(imgPath)]), (GetIndex(imgPath) + 1), imgArray.Count);
+        }
+
+        private void FindNextFld_in_parentFld(bool pre_or_next)
+        {
+            // 取得此層資料夾路徑(圖片集合目錄)
+            directory = Path.GetDirectoryName(imgPath);
+
+            //取得父層資料夾路徑
+            string parentFld = System.IO.Directory.GetParent(System.IO.Directory.GetParent(imgPath).FullName.ToString()).FullName.ToString();
+
+            //取得父層資料夾中所有資料夾
+            FldArray = System.IO.Directory.GetDirectories(parentFld);
+
+            int count_Fld = 0;
+            foreach(string s in FldArray)
+            {
+                if (s != directory) count_Fld++;
+                else break;
+            }
+
+            string nextFld;  //下一個資料夾
+            if (pre_or_next == true)   //找下一個
+            {
+                if (count_Fld >= FldArray.Length - 1)  //超出陣列
+                    nextFld = FldArray[0];
+                else //陣列內
+                    nextFld = FldArray[count_Fld + 1];
+            }
+            else   //找上一個
+            {
+                if (count_Fld <= 0)  //超出陣列
+                    nextFld = FldArray[FldArray.Length - 1];
+                else //陣列內
+                    nextFld = FldArray[count_Fld - 1];
+            }
+
+            // 取得旋轉後的圖片對象(取得此層資料夾中的所有圖片)
+            imgArray = ImageManager.GetImgCollection(nextFld);
+            imgPath = imgArray[0];
         }
 
         // load an image into memory and use it as an image source, and the image could be delete when it was used by process
@@ -694,6 +668,20 @@ namespace ImageTraveler.ViewModels
             }
             //else
             //    Initial_PicBoxView.Source = new BitmapImage(new Uri(@"../Resources/1442760789 - 複製.jpg", UriKind.RelativeOrAbsolute)); ;
+        }
+
+        private void nextFld()
+        {
+            FindNextFld_in_parentFld(true);
+
+            InitialLoadFile();
+        }
+
+        private void preFld()
+        {
+            FindNextFld_in_parentFld(false);
+
+            InitialLoadFile();
         }
 
         private void NextPic()

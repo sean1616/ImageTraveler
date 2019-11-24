@@ -121,6 +121,7 @@ namespace ImageTraveler.ViewModels
             set
             {
                 _volume_show = value;
+                media_volume = Math.Round(float.Parse(value), 1) / 100;
                 OnPropertyChanged("volume_show");
             }
         }
@@ -180,20 +181,51 @@ namespace ImageTraveler.ViewModels
             get { return _escClickCount; }
         }
 
-        static private double _media_volume = 0.1;
+        private Media_Page _media_Page;
+        public Media_Page media_Page
+        {
+            set { SetProperty(ref _media_Page, value); }
+            get { return _media_Page; }
+        }
+
+        static private double _media_volume = 100;
         public double media_volume
         {
             set
             {
-                volume_show = value.ToString();
-                
                 _media_volume = value;
+                if (media_Page != null)
+                {
+                    double y = Math.Pow(value / 6, 2);
+                    media_Page.mediaElement.Volume = value / 100;
+                }
                 ini.IniWriteValue("Bar", "volume", _media_volume.ToString(), ini_filename); //覆寫ini音量設定
                 OnPropertyChanged("media_volume");
             }
             get {
-                //_media_volume = Convert.ToDouble(ini.IniReadValue("Bar", "volume", ini_filename));
-                return _media_volume; }
+                return Math.Round(_media_volume, 0); }
+        }
+
+        private GridLength _btn_gridLength = new GridLength(0.3, GridUnitType.Star);
+        public GridLength btn_gridLength
+        {
+            get { return _btn_gridLength; }
+            set
+            {
+                _btn_gridLength = value;
+                OnPropertyChanged("btn_gridLength");
+            }
+        }
+
+        private GridLength _btnGap_gridLength = new GridLength(0.2, GridUnitType.Star);
+        public GridLength btnGap_gridLength
+        {
+            get { return _btnGap_gridLength; }
+            set
+            {
+                _btnGap_gridLength = value;
+                OnPropertyChanged("btnGap_gridLength");
+            }
         }
 
         private string _titleBar_ico_source = "../Resources/Image_icon.png";
@@ -282,12 +314,7 @@ namespace ImageTraveler.ViewModels
             get { return _mediaBar_Page; }
         }
 
-        private Media_Page _media_Page;
-        public Media_Page media_Page
-        {
-            set { SetProperty(ref _media_Page, value); }
-            get { return _media_Page; }
-        }
+        
                 
         private MediaControl _mediaControl;
         public MediaControl mediaControl

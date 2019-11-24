@@ -94,13 +94,14 @@ namespace ImageTraveler
             {
                 //讀取ini media volume
                 main_Command.media_volume = Convert.ToDouble(main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename));
-                this.Height = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Height", main_Command.ini_filename));
-                this.Width = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Width", main_Command.ini_filename));
+                //this.Height = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Height", main_Command.ini_filename));
+                //this.Width = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Width", main_Command.ini_filename));                
             }
             else
             {
                 Directory.CreateDirectory(main_Command.folderName);  //建立資料夾      
                 IniSetup(); //創建ini file並寫入基本設定
+                
             }
         }
 

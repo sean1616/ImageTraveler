@@ -593,7 +593,7 @@
             <Button
                 x:Name="Btn_Previous"
                 Grid.Column="0"
-                Command="{Binding PreCommand}"
+                Command="{Binding PreFld}"
                 Focusable="False"
                 Opacity="0"
                 Style="{DynamicResource ButtonStyle1}">
@@ -656,7 +656,7 @@
             <Button
                 x:Name="Btn_Next"
                 Grid.Column="2"
-                Command="{Binding NextCommand}"
+                Command="{Binding NextFld}"
                 Focusable="False"
                 Opacity="0"
                 Style="{DynamicResource ButtonStyle1}">

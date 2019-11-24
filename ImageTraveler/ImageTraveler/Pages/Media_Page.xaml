@@ -36,6 +36,10 @@
                 <MediaElement.ContextMenu>
                     <ContextMenu Name="CM" StaysOpen="True">
                         <MenuItem Click="MenuItem_Subtitle_Click" Header="Subtitle" />
+                        <MenuItem
+                            Name="MenuItem_tune_subtitle"
+                            Click="MenuItem_tune_subtitle_Click"
+                            Header="Tune Subtitle" />
                     </ContextMenu>
                 </MediaElement.ContextMenu>
             </MediaElement>

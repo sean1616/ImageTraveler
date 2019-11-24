@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
@@ -9,6 +10,8 @@ using Microsoft.Win32;
 using ImageTraveler.Utils;
 using System.Collections.Generic;
 using ImageTraveler.Subtitle;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace ImageTraveler.Pages
 {
@@ -46,6 +49,8 @@ namespace ImageTraveler.Pages
                 
         private void mediaElement_MediaOpened(object sender, RoutedEventArgs e)
         {
+            mediaElement.Volume = main_Command.media_volume / 100;
+
             //設定視窗為影片原始寬高
             //App.mainWindow.Height = mediaElement.NaturalVideoHeight;
             //App.mainWindow.Width = mediaElement.NaturalVideoWidth;
@@ -194,6 +199,52 @@ namespace ImageTraveler.Pages
         {
             is_drag_to_control_media = true;
             click_position = Mouse.GetPosition(this);
+        }
+        
+        private static Regex unit = new Regex(
+            @"(?<sequence>\d+)\r\n(?<start>\d{2}\:\d{2}\:\d{2},\d{3}) --\> (?<end>\d{2}\:\d{2}\:\d{2},\d{3})\r\n(?<text>[\s\S]*?\r\n\r\n)",
+            RegexOptions.Compiled | RegexOptions.ECMAScript);
+
+        private void MenuItem_tune_subtitle_Click(object sender, RoutedEventArgs e)
+        {
+            string[] args = new string[] { "///", "" };
+
+                if (args.Length != 1)
+                throw new ArgumentException("filename is missing");
+
+            if (!File.Exists(args[0]))
+                throw new FileNotFoundException("file not found", args[0]);
+
+            int sequence = 1;
+            double offset = 0;
+            Console.Write("offset, in seconds (+1.1, -2.75): ");
+            while (!Double.TryParse(Console.ReadLine(), out offset))
+            {
+                Console.WriteLine("Invalid value, try again");
+            }
+
+            using (StreamReader file = new StreamReader(args[0], Encoding.Default))
+            {
+                using (StreamWriter output = new StreamWriter(args[0] + ".srt", false, Encoding.Default))
+                {
+                    output.Write(
+                        unit.Replace(file.ReadToEnd(), delegate (Match m)
+                        {
+                            return m.Value.Replace(
+                                String.Format("{0}\r\n{1} --> {2}\r\n",
+                                    m.Groups["sequence"].Value,
+                                    m.Groups["start"].Value,
+                                    m.Groups["end"].Value),
+                                String.Format("{0}\r\n{1:HH\\:mm\\:ss\\,fff} --> {2:HH\\:mm\\:ss\\,fff}\r\n",
+                                    sequence++,
+                                    DateTime.Parse(m.Groups["start"].Value.Replace(",", ".")).AddSeconds(offset),
+                                    DateTime.Parse(m.Groups["end"].Value.Replace(",", ".")).AddSeconds(offset)));
+                        }));
+                }
+            }
+            Console.WriteLine("Done ({0} units).", sequence);
+
+
         }
 
         private void mediaElement_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)

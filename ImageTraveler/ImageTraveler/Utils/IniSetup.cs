@@ -23,7 +23,7 @@ namespace ImageTraveler.Utils
         public void IniWriteValue(string Section, string Key, string Value, string inipath)
         {
             string path = System.AppDomain.CurrentDomain.BaseDirectory;
-            WritePrivateProfileString(Section, Key, Value, @path + inipath);
+            WritePrivateProfileString(Section, Key, Value, @path + "ImagTraver\\" + inipath);
             //WritePrivateProfileString(Section, Key, Value, @"d:\ImagTraver\" + inipath);
 
         }
