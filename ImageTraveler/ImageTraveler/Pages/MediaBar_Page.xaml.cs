@@ -165,21 +165,20 @@ namespace ImageTraveler.Pages
                 Keyboard.Focus(Btn_fullscreen);
             }
         }
-               
-        private void Slider_volume_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+
+        private void Media_Speed_KeyDown(object sender, KeyEventArgs e)
         {
-            //if (main_Command == null) return;
 
-            //double x = Slider_volume.Value;
-            //double y = Math.Pow(x /6, 2);
-            //main_Command.media_Page.mediaElement.Volume = y / 100;
+            if (e.Key == Key.Enter)
+            {
+                TextBox obj = (TextBox)sender;
+                main_Command.media_speed = double.Parse(obj.Text);
 
-            //if (Slider_volume.Maximum == 1)
-            //    volume_txt.Text = Math.Round(main_Command.media_volume * 100).ToString();
-            //else
-            //    volume_txt.Text = Math.Round(main_Command.media_volume * 100, 1).ToString();
+                //Change focus to next UI item
+                //obj.MoveFocus(new TraversalRequest(FocusNavigationDirection.Next));
 
-            //ini.IniWriteValue("Bar", "volume", main_Command.media_volume.ToString(), "ImagTraver.ini");
+                //Keyboard.Focus(Btn_fullscreen);
+            }
         }
 
         //mediabar position jump to mouse position

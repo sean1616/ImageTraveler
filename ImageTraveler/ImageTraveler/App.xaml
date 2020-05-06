@@ -8,17 +8,17 @@
     d1p1:Ignorable="d">
     <Application.Resources>
         <!--<ResourceDictionary>-->
-            <!--<vm:ViewModelLocator
+        <!--<vm:ViewModelLocator
                 xmlns:vm="clr-namespace:ImageTraveler.ViewModel"
                 x:Key="Locator"
                 d:IsDataSource="True" />-->
         <!--</ResourceDictionary>-->
-        
+
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Style_Resources/UI_Style.xaml" />
                 <!--  MahApps.Metro resource dictionaries. Make sure that all file names are Case Sensitive!  -->
-                
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

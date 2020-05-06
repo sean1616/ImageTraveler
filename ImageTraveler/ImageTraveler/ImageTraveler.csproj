@@ -160,6 +160,7 @@
     <Compile Include="Utils\IniSetup.cs" />
     <Compile Include="Utils\LoadFileClass.cs" />
     <Compile Include="Utils\MediaControl.cs" />
+    <Compile Include="Utils\MediaManager.cs" />
     <Compile Include="Utils\NotifyBase.cs" />
     <Compile Include="ViewModels\ImageBarPage_VM.cs" />
     <Compile Include="ViewModels\Main_Command.cs" />
@@ -357,6 +358,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Volume-1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Media_SpeedMeter_W.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets" Condition="Exists('..\packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets')" />

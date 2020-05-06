@@ -333,6 +333,16 @@ namespace ImageTraveler.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
+        internal static System.Drawing.Bitmap Media_SpeedMeter_W {
+            get {
+                object obj = ResourceManager.GetObject("Media_SpeedMeter_W", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
+        /// </summary>
         internal static System.Drawing.Bitmap min_1 {
             get {
                 object obj = ResourceManager.GetObject("min_1", resourceCulture);

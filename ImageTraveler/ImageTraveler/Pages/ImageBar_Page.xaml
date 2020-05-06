@@ -12,6 +12,10 @@
     KeyboardNavigation.TabNavigation="None"
     mc:Ignorable="d">
 
+    <Page.DataContext>
+        <vm:Main_Command />
+    </Page.DataContext>
+
     <Page.Resources>
         <Storyboard x:Key="Btn_group_StoryBoard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(UIElement.Opacity)">
@@ -74,10 +78,10 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>-->
             <Grid.RowDefinitions>
-                <RowDefinition Height="15*" />
-                <RowDefinition Height="15*" />
-                <RowDefinition Height="50*" />
-                <RowDefinition Height="20*" />
+                <RowDefinition Height="0.6*" />
+                <RowDefinition Height="1.4*" />
+                <RowDefinition Height="2*" />
+                <RowDefinition Height="0.8*" />
             </Grid.RowDefinitions>
             <!--  Opacity="{Binding GroupOpacity[2]}"  -->
 
@@ -106,614 +110,85 @@
                 </Border.RenderTransform>
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="5.5*" />
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="0.2*" />
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="0.2*" />
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="0.2*" />
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="0.2*" />
-                        <ColumnDefinition />
-                        <ColumnDefinition Width="0.2*" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="4.5*" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btnGap_gridLength}" MinWidth="10" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btnGap_gridLength}" MinWidth="10" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btnGap_gridLength}" MinWidth="10" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btnGap_gridLength}" MinWidth="10" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btnGap_gridLength}" MinWidth="10" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
                         <ColumnDefinition Width="4*" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
                         <ColumnDefinition Width="0.5*" />
                     </Grid.ColumnDefinitions>
-
-                    <!--<StackPanel Margin="5">
-                        <TextBlock
-                            x:Name="txt"
-                            Foreground="White"
-                            Text="{Binding Posi[3], FallbackValue=123}" />
-                        <TextBlock
-                            x:Name="txt2"
-                            Foreground="White"
-                            Text="{Binding sPosi[3], FallbackValue=123}" />
-
-                    </StackPanel>-->
-
 
                     <Button
                         x:Name="Btn_Load"
                         Grid.Column="1"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding LoadCommand}"
                         Focusable="False"
-                        Style="{DynamicResource ButtonStyle1}">
-                        <Button.Resources>
-                            <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid>
-                                                <Grid.Triggers>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid2">
-                                                        <BeginStoryboard x:Name="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard">
-                                                            <Storyboard>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                                                    <DiscreteColorKeyFrame KeyTime="0:0:0.04" Value="#FF686868" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                                <!--<ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                                    <EasingColorKeyFrame KeyTime="0:0:0.04" Value="White" />
-                                                                </ColorAnimationUsingKeyFrames>-->
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="grid2">
-                                                        <RemoveStoryboard BeginStoryboardName="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard" />
-                                                    </EventTrigger>
-                                                </Grid.Triggers>
-                                                <Grid x:Name="grid2">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.2*" />
-                                                        <RowDefinition />
-                                                        <RowDefinition Height="0.2*" />
-                                                    </Grid.RowDefinitions>
-                                                    <Rectangle
-                                                        x:Name="rectangle"
-                                                        Grid.RowSpan="3"
-                                                        Fill="Transparent"
-                                                        Loaded="Page_Loaded"
-                                                        Opacity="{Binding imgbar_opa}"
-                                                        StrokeThickness="0.5">
-                                                        <Rectangle.Stroke>
-                                                            <LinearGradientBrush StartPoint="{Binding sPosi[0]}" EndPoint="{Binding Posi[0]}">
-                                                                <GradientStop Color="Transparent" />
-                                                                <GradientStop Offset="1" Color="White" />
-                                                                <GradientStop Offset="0.828" Color="#80FFFFFF" />
-                                                            </LinearGradientBrush>
-                                                        </Rectangle.Stroke>
-                                                    </Rectangle>
-                                                    <Image
-                                                        x:Name="ImageName"
-                                                        Grid.Row="1"
-                                                        Margin="0"
-                                                        Source="../Resources/001-share.png"
-                                                        Stretch="Uniform" />
-                                                </Grid>
-                                                <ContentPresenter
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    RecognizesAccessKey="True"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsFocused" Value="True" />
-                                                <Trigger Property="IsDefaulted" Value="True" />
-                                                <Trigger Property="IsMouseOver" Value="True" />
-                                                <Trigger Property="IsPressed" Value="True" />
-                                                <Trigger Property="IsEnabled" Value="False" />
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                        Style="{DynamicResource ButtonStyle}"
+                        Tag="../Resources/001-share.png" />
 
                     <Button
                         x:Name="Btn_Fit"
                         Grid.Column="3"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding FitCommand}"
                         Focusable="False"
-                        Style="{DynamicResource ButtonStyle1}">
-                        <Button.Resources>
-                            <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid>
-                                                <Grid.Triggers>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid2">
-                                                        <BeginStoryboard x:Name="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard">
-                                                            <Storyboard>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                                                    <DiscreteColorKeyFrame KeyTime="0:0:0.033" Value="#FF686868" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                                    <EasingColorKeyFrame KeyTime="0:0:0.033" Value="White" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="grid2">
-                                                        <RemoveStoryboard BeginStoryboardName="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard" />
-                                                    </EventTrigger>
-                                                </Grid.Triggers>
-                                                <Grid x:Name="grid2">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.2*" />
-                                                        <RowDefinition />
-                                                        <RowDefinition Height="0.2*" />
-                                                    </Grid.RowDefinitions>
-                                                    <Rectangle
-                                                        x:Name="rectangle"
-                                                        Grid.RowSpan="3"
-                                                        Fill="Transparent"
-                                                        Opacity="{Binding imgbar_opa}"
-                                                        StrokeThickness="0.5">
-                                                        <Rectangle.Stroke>
-                                                            <LinearGradientBrush StartPoint="{Binding sPosi[1]}" EndPoint="{Binding Posi[1]}">
-                                                                <GradientStop Color="Transparent" />
-                                                                <GradientStop Offset="1" Color="White" />
-                                                                <GradientStop Offset="0.828" Color="#80FFFFFF" />
-                                                            </LinearGradientBrush>
-                                                        </Rectangle.Stroke>
-                                                    </Rectangle>
-                                                    <Image
-                                                        x:Name="ImageName"
-                                                        Grid.Row="1"
-                                                        Margin="0"
-                                                        Source="../Resources/Fit-1.png"
-                                                        Stretch="Uniform" />
-                                                </Grid>
-                                                <ContentPresenter
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    RecognizesAccessKey="True"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsFocused" Value="True" />
-                                                <Trigger Property="IsDefaulted" Value="True" />
-                                                <Trigger Property="IsMouseOver" Value="True" />
-                                                <Trigger Property="IsPressed" Value="True" />
-                                                <Trigger Property="IsEnabled" Value="False" />
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                        Style="{DynamicResource ButtonStyle}"
+                        Tag="../Resources/Fit-1.png" />
 
                     <Button
                         x:Name="Btn_Previous"
                         Grid.Column="5"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding PreCommand}"
                         Focusable="False"
-                        Style="{DynamicResource ButtonStyle1}">
-                        <Button.Resources>
-                            <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid>
-                                                <Grid.Triggers>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid2">
-                                                        <BeginStoryboard x:Name="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard">
-                                                            <Storyboard>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                                                    <DiscreteColorKeyFrame KeyTime="0:0:0.033" Value="#FF686868" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                                    <EasingColorKeyFrame KeyTime="0:0:0.033" Value="White" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="grid2">
-                                                        <RemoveStoryboard BeginStoryboardName="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard" />
-                                                    </EventTrigger>
-                                                </Grid.Triggers>
-                                                <Grid x:Name="grid2">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.2*" />
-                                                        <RowDefinition />
-                                                        <RowDefinition Height="0.2*" />
-                                                    </Grid.RowDefinitions>
-                                                    <Rectangle
-                                                        x:Name="rectangle"
-                                                        Grid.RowSpan="3"
-                                                        Fill="Transparent"
-                                                        Opacity="{Binding imgbar_opa}"
-                                                        StrokeThickness="0.5">
-                                                        <Rectangle.Stroke>
-                                                            <LinearGradientBrush StartPoint="{Binding sPosi[2]}" EndPoint="{Binding Posi[2]}">
-                                                                <GradientStop Color="Transparent" />
-                                                                <GradientStop Offset="1" Color="White" />
-                                                                <GradientStop Offset="0.828" Color="#80FFFFFF" />
-                                                            </LinearGradientBrush>
-                                                        </Rectangle.Stroke>
-                                                    </Rectangle>
-                                                    <Image
-                                                        x:Name="ImageName"
-                                                        Grid.Row="1"
-                                                        Margin="0"
-                                                        Source="../Resources/上_1.png"
-                                                        Stretch="Uniform" />
-                                                </Grid>
-                                                <ContentPresenter
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    RecognizesAccessKey="True"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsFocused" Value="True" />
-                                                <Trigger Property="IsDefaulted" Value="True" />
-                                                <Trigger Property="IsMouseOver" Value="True" />
-                                                <Trigger Property="IsPressed" Value="True" />
-                                                <Trigger Property="IsEnabled" Value="False" />
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                        Style="{DynamicResource ButtonStyle}"
+                        Tag="../Resources/上_1.png" />
 
                     <Button
                         x:Name="Btn_Next"
                         Grid.Column="7"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding NextCommand}"
                         Focusable="False"
-                        Style="{DynamicResource ButtonStyle1}">
-                        <Button.Resources>
-                            <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid>
-                                                <Grid.Triggers>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid2">
-                                                        <BeginStoryboard x:Name="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard">
-                                                            <Storyboard>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                                                    <DiscreteColorKeyFrame KeyTime="0:0:0.033" Value="#FF686868" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                                    <EasingColorKeyFrame KeyTime="0:0:0.033" Value="White" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="grid2">
-                                                        <RemoveStoryboard BeginStoryboardName="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard" />
-                                                    </EventTrigger>
-                                                </Grid.Triggers>
-                                                <Grid x:Name="grid2">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.2*" />
-                                                        <RowDefinition />
-                                                        <RowDefinition Height="0.2*" />
-                                                    </Grid.RowDefinitions>
-                                                    <Rectangle
-                                                        x:Name="rectangle"
-                                                        Grid.RowSpan="3"
-                                                        Fill="Transparent"
-                                                        Opacity="{Binding imgbar_opa}"
-                                                        StrokeThickness="0.5">
-                                                        <Rectangle.Stroke>
-                                                            <LinearGradientBrush StartPoint="{Binding sPosi[3]}" EndPoint="{Binding Posi[3]}">
-                                                                <GradientStop Color="Transparent" />
-                                                                <GradientStop Offset="1" Color="White" />
-                                                                <GradientStop Offset="0.828" Color="#80FFFFFF" />
-                                                            </LinearGradientBrush>
-                                                        </Rectangle.Stroke>
-                                                    </Rectangle>
-                                                    <Image
-                                                        x:Name="ImageName"
-                                                        Grid.Row="1"
-                                                        Margin="0"
-                                                        Source="../Resources/下_1.png"
-                                                        Stretch="Uniform" />
-                                                </Grid>
-                                                <ContentPresenter
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    RecognizesAccessKey="True"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsFocused" Value="True" />
-                                                <Trigger Property="IsDefaulted" Value="True" />
-                                                <Trigger Property="IsMouseOver" Value="True" />
-                                                <Trigger Property="IsPressed" Value="True" />
-                                                <Trigger Property="IsEnabled" Value="False" />
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                        Style="{DynamicResource ButtonStyle}"
+                        Tag="../Resources/下_1.png" />
 
                     <Button
                         x:Name="Btn_Rotation"
                         Grid.Column="9"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding RotaCommand}"
                         Focusable="False"
-                        Style="{DynamicResource ButtonStyle1}">
-                        <Button.Resources>
-                            <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid>
-                                                <Grid.Triggers>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid2">
-                                                        <BeginStoryboard x:Name="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard">
-                                                            <Storyboard>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                                                    <DiscreteColorKeyFrame KeyTime="0:0:0.033" Value="#FF686868" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                                    <EasingColorKeyFrame KeyTime="0:0:0.033" Value="White" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="grid2">
-                                                        <RemoveStoryboard BeginStoryboardName="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard" />
-                                                    </EventTrigger>
-                                                </Grid.Triggers>
-                                                <Grid x:Name="grid2">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.2*" />
-                                                        <RowDefinition />
-                                                        <RowDefinition Height="0.2*" />
-                                                    </Grid.RowDefinitions>
-                                                    <Rectangle
-                                                        x:Name="rectangle"
-                                                        Grid.RowSpan="3"
-                                                        Fill="Transparent"
-                                                        Loaded="Page_Loaded"
-                                                        Opacity="{Binding imgbar_opa}"
-                                                        StrokeThickness="0.5">
-                                                        <Rectangle.Stroke>
-                                                            <LinearGradientBrush StartPoint="{Binding sPosi[4]}" EndPoint="{Binding Posi[4]}">
-                                                                <GradientStop Color="Transparent" />
-                                                                <GradientStop Offset="1" Color="White" />
-                                                                <GradientStop Offset="0.828" Color="#80FFFFFF" />
-                                                            </LinearGradientBrush>
-                                                        </Rectangle.Stroke>
-                                                    </Rectangle>
-                                                    <Image
-                                                        x:Name="ImageName"
-                                                        Grid.Row="1"
-                                                        Margin="0"
-                                                        Source="../Resources/rotating-arrow-to-the-left_1.png"
-                                                        Stretch="Uniform" />
-                                                </Grid>
-                                                <ContentPresenter
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    RecognizesAccessKey="True"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsFocused" Value="True" />
-                                                <Trigger Property="IsDefaulted" Value="True" />
-                                                <Trigger Property="IsMouseOver" Value="True" />
-                                                <Trigger Property="IsPressed" Value="True" />
-                                                <Trigger Property="IsEnabled" Value="False" />
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                        Style="{DynamicResource ButtonStyle}"
+                        Tag="../Resources/rotating-arrow-to-the-left_1.png" />
 
                     <Button
                         x:Name="Btn_Detele"
                         Grid.Column="11"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding DeleteCommand}"
                         Focusable="False"
-                        Style="{DynamicResource ButtonStyle1}">
-                        <Button.Resources>
-                            <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid>
-                                                <Grid.Triggers>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid2">
-                                                        <BeginStoryboard x:Name="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard">
-                                                            <Storyboard>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                                                    <DiscreteColorKeyFrame KeyTime="0:0:0.033" Value="#FF686868" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                                    <EasingColorKeyFrame KeyTime="0:0:0.033" Value="White" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="grid2">
-                                                        <RemoveStoryboard BeginStoryboardName="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard" />
-                                                    </EventTrigger>
-                                                </Grid.Triggers>
-                                                <Grid x:Name="grid2">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.2*" />
-                                                        <RowDefinition />
-                                                        <RowDefinition Height="0.2*" />
-                                                    </Grid.RowDefinitions>
-                                                    <Rectangle
-                                                        x:Name="rectangle"
-                                                        Grid.RowSpan="3"
-                                                        Fill="Transparent"
-                                                        Loaded="Page_Loaded"
-                                                        Opacity="{Binding imgbar_opa}"
-                                                        StrokeThickness="0.5">
-                                                        <Rectangle.Stroke>
-                                                            <LinearGradientBrush StartPoint="{Binding sPosi[5]}" EndPoint="{Binding Posi[5]}">
-                                                                <GradientStop Color="Transparent" />
-                                                                <GradientStop Offset="1" Color="White" />
-                                                                <GradientStop Offset="0.828" Color="#80FFFFFF" />
-                                                            </LinearGradientBrush>
-                                                        </Rectangle.Stroke>
-                                                    </Rectangle>
-                                                    <Image
-                                                        x:Name="ImageName"
-                                                        Grid.Row="1"
-                                                        Margin="0"
-                                                        Source="../Resources/cancel-music_1.png"
-                                                        Stretch="Uniform" />
-                                                </Grid>
-                                                <ContentPresenter
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    RecognizesAccessKey="True"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsFocused" Value="True" />
-                                                <Trigger Property="IsDefaulted" Value="True" />
-                                                <Trigger Property="IsMouseOver" Value="True" />
-                                                <Trigger Property="IsPressed" Value="True" />
-                                                <Trigger Property="IsEnabled" Value="False" />
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
+                        Style="{DynamicResource ButtonStyle}"
+                        Tag="../Resources/cancel-music_1.png" />
 
                     <Button
                         x:Name="Btn_Fullscreen"
                         Grid.Column="13"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding MaximumCommand}"
                         Focusable="False"
-                        Style="{DynamicResource ButtonStyle1}">
-                        <Button.Resources>
-                            <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Grid>
-                                                <Grid.Triggers>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid2">
-                                                        <BeginStoryboard x:Name="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard">
-                                                            <Storyboard>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Fill).(SolidColorBrush.Color)">
-                                                                    <DiscreteColorKeyFrame KeyTime="0:0:0.033" Value="#FF686868" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                                <ColorAnimationUsingKeyFrames Storyboard.TargetName="rectangle" Storyboard.TargetProperty="(Shape.Stroke).(GradientBrush.GradientStops)[0].(GradientStop.Color)">
-                                                                    <EasingColorKeyFrame KeyTime="0:0:0.033" Value="White" />
-                                                                </ColorAnimationUsingKeyFrames>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger>
-                                                    <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="grid2">
-                                                        <RemoveStoryboard BeginStoryboardName="Btn_Load_MouseEnter_StoryBoard_BeginStoryboard" />
-                                                    </EventTrigger>
-                                                </Grid.Triggers>
-                                                <Grid x:Name="grid2">
-                                                    <Grid.RowDefinitions>
-                                                        <RowDefinition Height="0.2*" />
-                                                        <RowDefinition />
-                                                        <RowDefinition Height="0.2*" />
-                                                    </Grid.RowDefinitions>
-                                                    <Rectangle
-                                                        x:Name="rectangle"
-                                                        Grid.RowSpan="3"
-                                                        Fill="Transparent"
-                                                        Loaded="Page_Loaded"
-                                                        Opacity="{Binding imgbar_opa}"
-                                                        StrokeThickness="0.5">
-                                                        <Rectangle.Stroke>
-                                                            <LinearGradientBrush StartPoint="{Binding sPosi[6]}" EndPoint="{Binding Posi[6]}">
-                                                                <GradientStop Color="Transparent" />
-                                                                <GradientStop Offset="1" Color="White" />
-                                                                <GradientStop Offset="0.828" Color="#80FFFFFF" />
-                                                            </LinearGradientBrush>
-                                                        </Rectangle.Stroke>
-                                                    </Rectangle>
-                                                    <Image
-                                                        x:Name="ImageName"
-                                                        Grid.Row="1"
-                                                        Margin="0"
-                                                        Source="../Resources/full.png"
-                                                        Stretch="Uniform" />
-                                                </Grid>
-                                                <ContentPresenter
-                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                    RecognizesAccessKey="True"
-                                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                            </Grid>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsFocused" Value="True" />
-                                                <Trigger Property="IsDefaulted" Value="True" />
-                                                <Trigger Property="IsMouseOver" Value="True" />
-                                                <Trigger Property="IsPressed" Value="True" />
-                                                <Trigger Property="IsEnabled" Value="False" />
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Resources>
-                    </Button>
-
-                    <!--<Button
-                        x:Name="Btn_load"
-                        Grid.Column="1"
-                        Command="{Binding LoadCommand}"
-                        Content="Load"
-                        Focusable="False"
-                        Style="{StaticResource Btn_load_Style}" >
-                    </Button>
-                    <Button
-                        x:Name="Btn_Fit"
-                        Grid.Column="2"
-                        Command="{Binding FitCommand}"
-                        Focusable="False"
-                        Style="{StaticResource Btn_Fit_Style}" />
-                    <Button
-                        x:Name="Btn_previous"
-                        Grid.Column="3"
-                        Command="{Binding PreCommand}"
-                        Focusable="False"
-                        Style="{StaticResource Btn_previous_Style}" />
-                    <Button
-                        x:Name="Btn_next"
-                        Grid.Column="4"
-                        Command="{Binding NextCommand}"
-                        Focusable="False"
-                        Style="{StaticResource Btn_next_Style}" />
-                    <Button
-                        x:Name="Btn_rotation"
-                        Grid.Column="5"
-                        Command="{Binding RotaCommand}"
-                        Focusable="False"
-                        Style="{StaticResource Btn_rotation_Style}" />
-                    <Button
-                        x:Name="Btn_delete"
-                        Grid.Column="6"
-                        Command="{Binding DeleteCommand}"
-                        Style="{StaticResource Btn_Delete_Style}" />
-                    <Button
-                        x:Name="Btn_FullScreen"
-                        Grid.Column="8"
-                        Command="{Binding MaximumCommand}"
-                        Style="{StaticResource Btn_FullScreen_Style}" />-->
+                        Style="{DynamicResource ButtonStyle}"
+                        Tag="../Resources/full.png" />
                 </Grid>
             </Border>
         </Grid>

@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Threading;
 using System.Windows.Media.Animation;
 using Microsoft.Win32;
+using ImageTraveler;
 using ImageTraveler.Utils;
 using ImageTraveler.Pages;
 using Microsoft.Practices.Composite.Events;
@@ -204,6 +205,39 @@ namespace ImageTraveler.ViewModels
             }
             get {
                 return Math.Round(_media_volume, 0); }
+        }
+
+        private double _media_speed = 1;
+        public double media_speed
+        {
+            set
+            {
+                _media_speed = value;
+                media_Page.mediaElement.SpeedRatio = Math.Round(value, 1);
+                OnPropertyChanged("media_speed");
+            }
+            get
+            {
+                return Math.Round(_media_speed, 1);
+            }
+        }
+
+        private Visibility _MediaSpeed_sliderVisible = Visibility.Hidden;
+        public Visibility MediaSpeed_sliderVisible
+        {
+            set
+            {
+                _MediaSpeed_sliderVisible = value;
+                OnPropertyChanged_Normal("MediaSpeed_sliderVisible");
+            }
+            get { return _MediaSpeed_sliderVisible; }
+        }
+
+        private int _ImgOrMedia = 0;  //0 is Img, 1 is Media
+        public int ImgOrMedia
+        {
+            get { return _ImgOrMedia; }
+            set { _ImgOrMedia = value; }
         }
 
         private GridLength _btn_gridLength = new GridLength(0.3, GridUnitType.Star);
@@ -509,6 +543,15 @@ namespace ImageTraveler.ViewModels
                 OnPropertyChanged_Normal("Visible1");
             }
             get { return _Visible1; }
+        }
+
+        public ImageManager imgManager { get; set; }
+
+        private bool _ImgPaintMode = false;
+        public bool ImgPaintMode
+        {
+            set { SetProperty(ref _ImgPaintMode, value); }
+            get { return _ImgPaintMode; }
         }
 
         private bool _btnPre;

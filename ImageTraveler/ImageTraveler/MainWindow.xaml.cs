@@ -21,6 +21,7 @@ using ImageTraveler.ViewModels;
 using ImageTraveler.Pages;
 using System.Windows.Media.Animation;
 using System.Runtime.InteropServices;
+using System.Drawing.Imaging;
 
 namespace ImageTraveler
 {
@@ -122,14 +123,180 @@ namespace ImageTraveler
 
         private void Btn_Pointer_Click(object sender, RoutedEventArgs e)
         {
+            main_Command.ImgPaintMode = false;
             main_Command.EditingMode = InkCanvasEditingMode.None; //修改inkcanvas 模式
+            Ink1.Visibility = Visibility.Collapsed;
             main_Command.zIndex_group[1] = 0;
         }
-                       
-        private void inkCanvas_KeyDown(object sender, KeyEventArgs e)
+
+        private void Btn_Pen_Click(object sender, RoutedEventArgs e)
         {
-            //if (e.Key == Key.Escape)
-            //    this.inkCanvas.EditingMode = InkCanvasEditingMode.None;
+            main_Command.ImgPaintMode = true;
+
+            main_Command.EditingMode = InkCanvasEditingMode.None; //修改inkcanvas 模式
+
+            Ink1.Visibility = Visibility.Visible;
+
+            System.Drawing.Bitmap bitmap = ImageManager.ImageSourceToBitmap(PicBoxView.Source);
+
+            //Ink1.Width = bitmap.Width;
+            //Ink1.Height = bitmap.Height;
+            
+        }
+
+        private void Btn_Save_Click(object sender, RoutedEventArgs e)
+        {
+            //將Image.source轉成bitmap
+            System.Drawing.Bitmap bitmap = ImageManager.ImageSourceToBitmap(PicBoxView.Source);
+            
+
+            //get the dimensions of the ink control
+            int margin = (int)this.Ink1.Margin.Left;
+            int width = (int)this.Ink1.ActualWidth;
+            int height = (int)this.Ink1.ActualHeight;
+            
+            if (width == 0 || height == 0) return;
+
+            //render ink to bitmap
+            RenderTargetBitmap rtb =
+               new RenderTargetBitmap(width, height, 96d, 96d, PixelFormats.Default);
+            rtb.Render(Ink1);
+
+            //save the ink to a memory stream
+            BmpBitmapEncoder encoder = new BmpBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+            byte[] bitmapBytesInk,bitmapBytes;            
+                       
+            using (MemoryStream ms = new MemoryStream())
+            {
+                //save stream to encoder
+                encoder.Save(ms);
+
+                //將Stream轉成Bitmap
+                System.Drawing.Bitmap bmInk = (System.Drawing.Bitmap)System.Drawing.Image.FromStream(ms);
+
+                //get the bitmap bytes from the memory stream
+                ms.Position = 0;
+                bitmapBytesInk = ms.ToArray();
+
+                FileStream fileStream = new FileStream("C:\\Users\\user\\Pictures\\圖片1.png", FileMode.OpenOrCreate, FileAccess.ReadWrite);
+                               
+                fileStream.Write(bitmapBytesInk, 0, (int)ms.Length);
+                fileStream.Dispose();
+
+
+
+                //將PictureBoxView內的圖存到BitmapEncoder中
+                MemoryStream mms = new MemoryStream();
+                System.Windows.Media.Imaging.BmpBitmapEncoder bbe = new BmpBitmapEncoder();
+                bbe.Frames.Add(BitmapFrame.Create(new Uri(PicBoxView.Source.ToString(), UriKind.RelativeOrAbsolute)));
+
+                //將BitmapEncoder轉成stream
+                bbe.Save(mms);
+                //將stream轉成image
+                System.Drawing.Image img2 = System.Drawing.Image.FromStream(mms);
+                //儲存Image
+                img2.Save("C:\\Users\\user\\Pictures\\Test1.png");
+
+
+
+
+                #region 將已存在的圖讀取成stream後修改再儲存
+
+                //自圖檔路徑讀取成FileStream
+                MemoryStream mmss = new MemoryStream();
+                Stream stream1 = new FileStream("C:\\Users\\user\\Pictures\\圖片1 - copy.png", FileMode.Open, FileAccess.Read, FileShare.Read);
+
+                //將FileStream轉成MemoryStream
+                stream1.CopyTo(mmss);
+                //stream1.Dispose();
+
+                //將Stream轉成陣列
+                bitmapBytes = mmss.ToArray();
+
+                //將Stream轉成Bitmap
+                System.Drawing.Bitmap bm = (System.Drawing.Bitmap)System.Drawing.Image.FromStream(mmss);
+
+                System.Drawing.Color color_tranparent = System.Drawing.Color.FromArgb(255, 0, 0, 0);
+
+                for (int i = 0; i < bmInk.Width; i++)
+                {
+                    for (int j = 0; j < bmInk.Height; j++)
+                    {                        
+                        if (bmInk.GetPixel(i, j) != color_tranparent)
+                        {
+                            bm.SetPixel(i, j, bmInk.GetPixel(i, j));
+                        }
+                    }
+                }
+
+                //將bitmap轉成
+                bm.Save("C:\\Users\\user\\Pictures\\Test3.png");
+
+                //將陣列轉成System.Drawing.Image
+                System.Drawing.Image image = BufferToImage(bitmapBytes);
+
+                // Get the color of a pixel within myBitmap.
+                System.Drawing.Color pixelColor = bm.GetPixel(50, 50);
+
+                // Transform color to solidbrush
+                System.Drawing.SolidBrush pixelBrush = new System.Drawing.SolidBrush(pixelColor);
+
+                //儲存Image
+                image.Save("C:\\Users\\user\\Pictures\\Test2.png");
+                #endregion                
+            }
+        }
+
+        
+
+        private System.Drawing.Image BufferToImage(byte[] Buffer)
+        {
+            byte[] data = null;
+            System.Drawing.Image oImage = null;
+            MemoryStream oMemoryStream = null;
+            System.Drawing.Bitmap oBitmap = null;
+            //建立副本
+            data = (byte[])Buffer.Clone();
+            try
+            {
+                oMemoryStream = new MemoryStream(data);
+                //設定資料流位置
+                oMemoryStream.Position = 0;
+                oImage = System.Drawing.Image.FromStream(oMemoryStream);
+                //建立副本
+                oBitmap = new System.Drawing.Bitmap(oImage);
+            }
+            catch
+            {
+                throw;
+            }
+            finally
+            {
+                oMemoryStream.Close();
+                oMemoryStream.Dispose();
+                oMemoryStream = null;
+            }
+            return oImage;
+            //return oBitmap;
+        }
+
+        //private void inkCanvas_KeyDown(object sender, KeyEventArgs e)
+        //{
+        //    if (e.Key == Key.Escape)
+        //        main_Command.EditingMode = InkCanvasEditingMode.None;
+        //}
+
+        bool _isBackgroundColorChanged = false;
+        private void Btn_Background_Click(object sender, RoutedEventArgs e)
+        {
+            //設定PictureBox 背景顏色
+            if (!_isBackgroundColorChanged)
+                Grid_PicBoxView.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            else
+                Grid_PicBoxView.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
+           
+            _isBackgroundColorChanged = !_isBackgroundColorChanged;
         }
 
         public void ExportToPng(string path, Image surface)
@@ -256,31 +423,39 @@ namespace ImageTraveler
 
         private void PicBoxView_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-            if (!string.IsNullOrEmpty(main_Command.picSource.ToString()))
+            if (!main_Command.ImgPaintMode)
             {
-                //mouse_P = Mouse.GetPosition(this);
-                mouse_P = e.GetPosition(mainGrid);
-                PicP.X = main_Command.picX;
-                PicP.Y = main_Command.picY;
-            }
+                if (main_Command.picSource != null)
+                {
+                    if (!string.IsNullOrEmpty(main_Command.picSource.ToString()))
+                    {
+                        //mouse_P = Mouse.GetPosition(this);
+                        mouse_P = e.GetPosition(mainGrid);
+                        PicP.X = main_Command.picX;
+                        PicP.Y = main_Command.picY;
+                    }
+                }
+            } 
         }
 
         
-
         private void PicBoxView_MouseMove(object sender, MouseEventArgs e)
         {
-            if (e.LeftButton == MouseButtonState.Pressed)
+            if (!main_Command.ImgPaintMode)
             {
-                //dx = (Mouse.GetPosition(this).X - mouse_P.X) ;
-                //dy = (Mouse.GetPosition(this).Y - mouse_P.Y) ;
-                dx = (e.GetPosition(mainGrid).X - mouse_P.X);
-                dy = (e.GetPosition(mainGrid).Y - mouse_P.Y);
+                if (e.LeftButton == MouseButtonState.Pressed)
+                {
+                    //dx = (Mouse.GetPosition(this).X - mouse_P.X) ;
+                    //dy = (Mouse.GetPosition(this).Y - mouse_P.Y) ;
+                    dx = (e.GetPosition(mainGrid).X - mouse_P.X);
+                    dy = (e.GetPosition(mainGrid).Y - mouse_P.Y);
 
-                main_Command.picX += dx;
-                main_Command.picY += dy;                              
-                                
-                mouse_P = e.GetPosition(mainGrid);
-            }                        
+                    main_Command.picX += dx;
+                    main_Command.picY += dy;
+
+                    mouse_P = e.GetPosition(mainGrid);
+                }
+            }                            
         }
                 
         //Transform Bitmap bytes into BitmapImage

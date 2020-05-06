@@ -13,9 +13,6 @@ using ImageTraveler.Pages;
 using Cinch;
 using Microsoft.Win32;
 using Microsoft.VisualBasic.FileIO;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading;
 
 namespace ImageTraveler.ViewModels
 {
@@ -44,7 +41,9 @@ namespace ImageTraveler.ViewModels
         public ICommand BackToCommand { get { return new Delegatecommand(BackTo); } }
         
         public ICommand JumpToCommand { get { return new Delegatecommand(JumpTo); } }
-       
+
+        public ICommand MediaSpeedCommand { get { return new Delegatecommand(MediaSpeed); } }
+
         public ICommand JumpToPositionCommand { get { return new Delegatecommand(JumpToPostion); } }
        
         public ICommand mediaPlayPauseCommand { get { return new Delegatecommand(mediaElement_play_pause); } }
@@ -203,7 +202,7 @@ namespace ImageTraveler.ViewModels
             else
             {
                 //點擊媒體開始
-                InitialLoadFile();                
+                ImgOrMedia = InitialLoadFile();                
             }
 
             ArgsInput = false;
@@ -448,12 +447,14 @@ namespace ImageTraveler.ViewModels
                
                 fileName = fileDialog.SafeFileName;  //取得檔名
             }
-            InitialLoadFile(); //進行載入檔案並進行初始化設定
+            ImgOrMedia = InitialLoadFile(); //進行載入檔案並進行初始化設定
         }
 
         //進行載入檔案並進行初始化設定
-        private void InitialLoadFile()
+        private int InitialLoadFile()
         {
+            int ImgOrMedia = 0;  //0 is Img, 1 is Media
+
             //取得副檔名
             fileName_Extension = Path.GetExtension(imgPath);
 
@@ -489,8 +490,11 @@ namespace ImageTraveler.ViewModels
                 {
                     App.mainWindow.Left = (workArea.Width - App.mainWindow.Width) / 2 + workArea.Left;
                     App.mainWindow.Top = (workArea.Height - App.mainWindow.Height) / 2 + workArea.Top;
-                }          
-                
+                }
+
+                imgManager = new ImageManager();
+
+                ImgOrMedia = 0;
             }
 
             //Media
@@ -506,8 +510,7 @@ namespace ImageTraveler.ViewModels
                     App.mainWindow.Frame_main.Content = media_Page;
                     App.mainWindow.Frame_bar.Content = mediaBar_Page;
                 }
-
-                //media_Page.mediaElement.BeginInit();
+                
                 mediaSource = imgPath;
                
                 titleBar_ico_source = "../Resources/下_1.png";  //set title bar icon image
@@ -518,9 +521,13 @@ namespace ImageTraveler.ViewModels
                 sliderVisible = Visibility.Visible;
 
                 titleBar = fileName + " - ImageTraveler";
+
+                ImgOrMedia = 1;
             }            
             GroupOpacity = new double[] { 0, 0, 0 };            
             initial_picSource = null;
+
+            return ImgOrMedia;
         }
                 
         private void UpdateTitleBarText()  //計算圖片所在資料夾之圖片陣列並顯示TitleBar文字
@@ -529,16 +536,21 @@ namespace ImageTraveler.ViewModels
             directory = Path.GetDirectoryName(imgPath);
 
             //取得父層資料夾路徑
-            string parentFld = System.IO.Directory.GetParent(System.IO.Directory.GetParent(imgPath).FullName.ToString()).FullName.ToString();
+            string parentFld = "";
+            try
+            {
+                parentFld = System.IO.Directory.GetParent(System.IO.Directory.GetParent(imgPath).FullName.ToString()).FullName.ToString();
 
-            //取得父層資料夾中所有資料夾
-            FldArray = System.IO.Directory.GetDirectories(parentFld);
+                //取得父層資料夾中所有資料夾
+                FldArray = System.IO.Directory.GetDirectories(parentFld);
 
-            // 取得旋轉後的圖片對象(取得此層資料夾中的所有圖片)
-            imgArray = ImageManager.GetImgCollection(directory);
+                // 取得旋轉後的圖片對象(取得此層資料夾中的所有圖片)
+                imgArray = ImageManager.GetImgCollection(directory);
 
-            titleBar = string.Format("{0} - {1} / {2} - ImageTraveler",
-                    Path.GetFileName(imgArray[GetIndex(imgPath)]), (GetIndex(imgPath) + 1), imgArray.Count);
+                titleBar = string.Format("{0} - {1} / {2} - ImageTraveler",
+                        Path.GetFileName(imgArray[GetIndex(imgPath)]), (GetIndex(imgPath) + 1), imgArray.Count);
+            }
+            catch { }            
         }
 
         private void FindNextFld_in_parentFld(bool pre_or_next)
@@ -546,38 +558,75 @@ namespace ImageTraveler.ViewModels
             // 取得此層資料夾路徑(圖片集合目錄)
             directory = Path.GetDirectoryName(imgPath);
 
-            //取得父層資料夾路徑
-            string parentFld = System.IO.Directory.GetParent(System.IO.Directory.GetParent(imgPath).FullName.ToString()).FullName.ToString();
-
-            //取得父層資料夾中所有資料夾
-            FldArray = System.IO.Directory.GetDirectories(parentFld);
-
-            int count_Fld = 0;
-            foreach(string s in FldArray)
+            try
             {
-                if (s != directory) count_Fld++;
-                else break;
-            }
+                //取得父層資料夾路徑
+                string parentFld = System.IO.Directory.GetParent(System.IO.Directory.GetParent(imgPath).FullName.ToString()).FullName.ToString();
 
-            string nextFld;  //下一個資料夾
-            if (pre_or_next == true)   //找下一個
-            {
-                if (count_Fld >= FldArray.Length - 1)  //超出陣列
-                    nextFld = FldArray[0];
-                else //陣列內
-                    nextFld = FldArray[count_Fld + 1];
-            }
-            else   //找上一個
-            {
-                if (count_Fld <= 0)  //超出陣列
-                    nextFld = FldArray[FldArray.Length - 1];
-                else //陣列內
-                    nextFld = FldArray[count_Fld - 1];
-            }
+                //取得父層資料夾中所有資料夾
+                FldArray = System.IO.Directory.GetDirectories(parentFld);
 
-            // 取得旋轉後的圖片對象(取得此層資料夾中的所有圖片)
-            imgArray = ImageManager.GetImgCollection(nextFld);
-            imgPath = imgArray[0];
+                if (FldArray.Length == 0) return;
+
+                int count_Fld = 0;
+                foreach (string s in FldArray)
+                {
+                    if (s != directory) count_Fld++;
+                    else break;
+                }
+
+                string nextFld;  //下一個資料夾
+                if (pre_or_next == true)   //找下一個
+                {
+                    if (count_Fld >= FldArray.Length - 1)  //超出陣列
+                        nextFld = FldArray[0];
+                    else //陣列內
+                        nextFld = FldArray[count_Fld + 1];
+                }
+                else   //找上一個
+                {
+                    if (count_Fld <= 0)  //超出陣列
+                        nextFld = FldArray[FldArray.Length - 1];
+                    else //陣列內
+                        nextFld = FldArray[count_Fld - 1];
+                }
+
+                // 取得旋轉後的圖片對象(取得此層資料夾中的所有圖片)
+                if (ImgOrMedia == 0) imgArray = ImageManager.GetImgCollection(nextFld);
+                else imgArray = MediaManager.GetMediaCollection(nextFld);
+
+                //如果此資料夾內無圖片檔
+                for (int i = 0; i < FldArray.Length; i++)
+                {
+                    if (imgArray.Count == 0)
+                    {                      
+                        if (pre_or_next == true)   //找下一個
+                        {
+                            count_Fld++;
+                            if (count_Fld >= FldArray.Length - 1)  //超出陣列
+                                nextFld = FldArray[0];
+                            else //陣列內
+                                nextFld = FldArray[count_Fld + 1];
+                        }
+                        else   //找上一個
+                        {
+                            count_Fld--;
+                            if (count_Fld <= 0)  //超出陣列
+                                nextFld = FldArray[FldArray.Length - 1];
+                            else //陣列內
+                                nextFld = FldArray[count_Fld - 1];
+                        }
+                        if (ImgOrMedia == 0) imgArray = ImageManager.GetImgCollection(nextFld);
+                        else imgArray = MediaManager.GetMediaCollection(nextFld);
+                    }
+                    else
+                    {
+                        imgPath = imgArray[0];
+                        break;
+                    }
+                }                
+            }
+            catch { }
         }
 
         // load an image into memory and use it as an image source, and the image could be delete when it was used by process
@@ -740,6 +789,14 @@ namespace ImageTraveler.ViewModels
             TimeSpan ts = new TimeSpan(0, 0, 0, 5);
 
             media_Page.mediaElement.Position = media_Page.mediaElement.Position + ts;
+        }
+
+        private void MediaSpeed()
+        {
+            if (MediaSpeed_sliderVisible == Visibility.Visible)
+                MediaSpeed_sliderVisible = Visibility.Hidden;
+            else
+                MediaSpeed_sliderVisible = Visibility.Visible;
         }
 
         private void BackTo()

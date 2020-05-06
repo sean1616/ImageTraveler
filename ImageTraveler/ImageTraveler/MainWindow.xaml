@@ -498,6 +498,8 @@
             </Border>
         </Grid>
 
+        <Border x:Name="Border_Test" Grid.Row="1" />
+
         <!--  MainPictureBox  -->
         <Grid
             x:Name="Grid_PicBoxView"
@@ -511,10 +513,24 @@
             PreviewMouseLeftButtonUp="PicBoxView_PreviewMouseLeftButtonUp">
             <Grid.ContextMenu>
                 <ContextMenu>
-                    <MenuItem x:Name="Btn_Pointer" Header="Pointer" />
-                    <MenuItem x:Name="Btn_Pen" Header="Pen" />
+                    <MenuItem
+                        x:Name="Btn_Pointer"
+                        Click="Btn_Pointer_Click"
+                        Header="Pointer" />
+                    <MenuItem
+                        x:Name="Btn_Pen"
+                        Click="Btn_Pen_Click"
+                        Header="Pen" />
                     <MenuItem Header="Drag" />
+                    <MenuItem
+                        x:Name="Btn_Save"
+                        Click="Btn_Save_Click"
+                        Header="Save" />
                     <Separator />
+                    <MenuItem
+                        x:Name="Btn_Background"
+                        Click="Btn_Background_Click"
+                        Header="Background" />
                     <MenuItem Header="Setting" />
                 </ContextMenu>
             </Grid.ContextMenu>
@@ -544,6 +560,18 @@
                     </Image>
                 </Viewbox>
             </Border>
+
+            <InkCanvas
+                x:Name="Ink1"
+                Width="{Binding ActualWidth, ElementName=PicBorder, Mode=OneWay}"
+                Height="{Binding ActualHeight, ElementName=PicBorder, Mode=OneWay}"
+                Background="Transparent"
+                EditingMode="Ink"
+                Visibility="Collapsed">
+                <InkCanvas.DefaultDrawingAttributes>
+                    <DrawingAttributes Width="6" Color="Red" />
+                </InkCanvas.DefaultDrawingAttributes>
+            </InkCanvas>
         </Grid>
 
         <!--  InitialBoard  -->
@@ -594,128 +622,20 @@
                 x:Name="Btn_Previous"
                 Grid.Column="0"
                 Command="{Binding PreFld}"
+                FocusVisualStyle="{x:Null}"
                 Focusable="False"
                 Opacity="0"
-                Style="{DynamicResource ButtonStyle1}">
-                <Button.Resources>
-                    <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Grid>
-                                        <Grid x:Name="grid2">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="0.2*" />
-                                                <RowDefinition />
-                                                <RowDefinition Height="0.2*" />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="5*" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <Rectangle
-                                                x:Name="rectangle"
-                                                Grid.RowSpan="3"
-                                                Grid.ColumnSpan="3"
-                                                Fill="Black">
-                                                <Rectangle.OpacityMask>
-                                                    <LinearGradientBrush StartPoint="0,0.5" EndPoint="1,0.5">
-                                                        <GradientStop Offset="0" Color="Black" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush>
-                                                </Rectangle.OpacityMask>
-                                            </Rectangle>
-                                            <Image
-                                                x:Name="ImageName"
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Margin="0"
-                                                Source="Resources/Image_Previous_1.png"
-                                                Stretch="Uniform" />
-                                        </Grid>
-                                        <ContentPresenter
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            RecognizesAccessKey="True"
-                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsFocused" Value="True" />
-                                        <Trigger Property="IsDefaulted" Value="True" />
-                                        <Trigger Property="IsMouseOver" Value="True" />
-                                        <Trigger Property="IsPressed" Value="True" />
-                                        <Trigger Property="IsEnabled" Value="False" />
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Resources>
-            </Button>
+                Style="{DynamicResource ButtonStyle_Gradient_L}"
+                Tag="../Resources/Image_Previous_1.png" />
             <Button
                 x:Name="Btn_Next"
                 Grid.Column="2"
                 Command="{Binding NextFld}"
+                FocusVisualStyle="{x:Null}"
                 Focusable="False"
                 Opacity="0"
-                Style="{DynamicResource ButtonStyle1}">
-                <Button.Resources>
-                    <Style x:Key="ButtonStyle1" TargetType="{x:Type Button}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type Button}">
-                                    <Grid>
-                                        <Grid x:Name="grid2">
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="0.2*" />
-                                                <RowDefinition />
-                                                <RowDefinition Height="0.2*" />
-                                            </Grid.RowDefinitions>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition Width="5*" />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <Rectangle
-                                                x:Name="rectangle"
-                                                Grid.RowSpan="3"
-                                                Grid.ColumnSpan="3"
-                                                Fill="Black">
-                                                <Rectangle.OpacityMask>
-                                                    <LinearGradientBrush StartPoint="1,0.5" EndPoint="0,0.5">
-                                                        <GradientStop Color="Black" />
-                                                        <GradientStop Offset="1" Color="Transparent" />
-                                                    </LinearGradientBrush>
-                                                </Rectangle.OpacityMask>
-                                            </Rectangle>
-                                            <Image
-                                                x:Name="ImageName"
-                                                Grid.Row="1"
-                                                Grid.Column="1"
-                                                Margin="0"
-                                                Source="Resources/Image_Next_1.png"
-                                                Stretch="Uniform" />
-                                        </Grid>
-                                        <ContentPresenter
-                                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                            RecognizesAccessKey="True"
-                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsFocused" Value="True" />
-                                        <Trigger Property="IsDefaulted" Value="True" />
-                                        <Trigger Property="IsMouseOver" Value="True" />
-                                        <Trigger Property="IsPressed" Value="True" />
-                                        <Trigger Property="IsEnabled" Value="False" />
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </Button.Resources>
-            </Button>
+                Style="{DynamicResource ButtonStyle_Gradient_R}"
+                Tag="../Resources/Image_Next_1.png" />
             <Ellipse
                 x:Name="ellipse"
                 Grid.Column="1"
@@ -763,6 +683,7 @@
             Grid.Row="2"
             Panel.ZIndex="3"
             d:IsHidden="True"
+            FocusVisualStyle="{x:Null}"
             Focusable="False">
             <Frame
                 x:Name="Frame_bar"
