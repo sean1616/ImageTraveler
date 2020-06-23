@@ -133,14 +133,8 @@
   <data name="_004_arrow_down_sign_to_navigate_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\004-arrow-down-sign-to-navigate_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="上_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\上_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="上_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\上_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="下_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\下_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="下_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\下_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -156,9 +150,6 @@
   </data>
   <data name="_1442760873___複製" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\1442760873 - 複製.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1442760873___複製1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1442760873 - 複製1.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="_1442760873___複製2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\1442760873 - 複製2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
@@ -199,9 +190,6 @@
   <data name="Media_Previous_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Media_Previous_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="mute" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\mute.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -229,9 +217,6 @@
   <data name="full" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\full.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="rotating_arrow_to_the_left_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\rotating-arrow-to-the-left_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Volume_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Volume-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -243,5 +228,17 @@
   </data>
   <data name="Media_SpeedMeter_W" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Media_SpeedMeter_W.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pause" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pause.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="rotating_arrow_to_the_left_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\rotating-arrow-to-the-left_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="上_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\上_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="下_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\下_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

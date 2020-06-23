@@ -143,16 +143,6 @@ namespace ImageTraveler.Properties {
         /// <summary>
         ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
         /// </summary>
-        internal static System.Drawing.Bitmap _1442760873___複製1 {
-            get {
-                object obj = ResourceManager.GetObject("_1442760873___複製1", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   查詢類型 System.Drawing.Bitmap 的當地語系化資源。
-        /// </summary>
         internal static System.Drawing.Bitmap _1442760873___複製2 {
             get {
                 object obj = ResourceManager.GetObject("_1442760873___複製2", resourceCulture);

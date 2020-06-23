@@ -8,11 +8,12 @@
     Title="Media_Page"
     d:DesignHeight="300"
     d:DesignWidth="300"
+    FocusVisualStyle="{x:Null}"
     mc:Ignorable="d">
 
     <Grid>
         <!--  MediaElement  -->
-        <Grid>
+        <Grid x:Name="grid_mediaElement" Focusable="True">
             <Grid.RowDefinitions>
                 <RowDefinition Height="9*" />
                 <RowDefinition MinHeight="40" />
@@ -23,6 +24,7 @@
                 Grid.Row="0"
                 Grid.RowSpan="3"
                 BufferingEnded="mediaElement_BufferingEnded"
+                FocusVisualStyle="{x:Null}"
                 Loaded="mediaElement_Loaded"
                 LoadedBehavior="Manual"
                 MediaEnded="mediaElement_MediaEnded"

@@ -13,6 +13,7 @@
     Title="MediaBar_Page"
     d:DesignHeight="120"
     d:DesignWidth="1000"
+    FocusVisualStyle="{x:Null}"
     KeyboardNavigation.TabNavigation="None"
     Loaded="Page_Loaded"
     mc:Ignorable="d">
@@ -37,6 +38,11 @@
                 <EasingDoubleKeyFrame KeyTime="0" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
             </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid_Top_Function" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1" />
+            </DoubleAnimationUsingKeyFrames>
+
         </Storyboard>
         <Storyboard x:Key="Btn_group_StoryBoard2">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="BackBorer" Storyboard.TargetProperty="(UIElement.Opacity)">
@@ -48,16 +54,19 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Btn_group" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0" />
             </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="grid_Top_Function" Storyboard.TargetProperty="(UIElement.Opacity)">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.6" Value="0" />
+            </DoubleAnimationUsingKeyFrames>
         </Storyboard>
         <Storyboard x:Key="Bar_Volumn">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="1" />
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="{Binding ActualWidth, ElementName=rectangle_outer}" />
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
-            </DoubleAnimationUsingKeyFrames>
+            </DoubleAnimationUsingKeyFrames>-->
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="volume_txt" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="0" />
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
@@ -68,9 +77,9 @@
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
             </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
+            <!--<DoubleAnimationUsingKeyFrames Storyboard.TargetName="Slider_volume" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
-            </DoubleAnimationUsingKeyFrames>
+            </DoubleAnimationUsingKeyFrames>-->
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="volume_txt" Storyboard.TargetProperty="(UIElement.Opacity)">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0" />
             </DoubleAnimationUsingKeyFrames>
@@ -86,26 +95,25 @@
         </EventTrigger>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard x:Name="Btn_group_StoryBoard2_BeginStoryboard1" Storyboard="{StaticResource Btn_group_StoryBoard2}" />
-            <BeginStoryboard x:Name="Bar_Volumn_mouse_leave_BeginStoryboard" Storyboard="{StaticResource Bar_Volumn_mouse_leave}" />
+            <!--<BeginStoryboard x:Name="Bar_Volumn_mouse_leave_BeginStoryboard" Storyboard="{StaticResource Bar_Volumn_mouse_leave}" />-->
         </EventTrigger>
-        <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="rectangle_outer">
-            <StopStoryboard BeginStoryboardName="Bar_Volumn_BeginStoryboard" />
+        <!--<EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="rectangle_outer">
             <StopStoryboard BeginStoryboardName="Bar_Volumn_BeginStoryboard" />
             <ResumeStoryboard BeginStoryboardName="Bar_Volumn_BeginStoryboard" />
             <BeginStoryboard x:Name="Bar_Volumn_BeginStoryboard" Storyboard="{StaticResource Bar_Volumn}" />
-        </EventTrigger>
-        <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="rectangle_outer">
+        </EventTrigger>-->
+        <!--<EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="rectangle_outer">
             <BeginStoryboard x:Name="Bar_Volumn_mouse_leave_BeginStoryboard1" Storyboard="{StaticResource Bar_Volumn_mouse_leave}" />
-        </EventTrigger>
+        </EventTrigger>-->
     </Page.Triggers>
-
-
 
     <Grid
         x:Name="grid"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
-        FocusVisualStyle="{x:Null}">
+        FocusVisualStyle="{x:Null}"
+        Focusable="False"
+        KeyboardNavigation.ControlTabNavigation="None">
         <Grid.Resources>
             <ResourceDictionary>
                 <ResourceDictionary.MergedDictionaries>
@@ -113,11 +121,18 @@
                 </ResourceDictionary.MergedDictionaries>
             </ResourceDictionary>
         </Grid.Resources>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="331*" />
+            <ColumnDefinition Width="169*" />
+        </Grid.ColumnDefinitions>
         <!--  Btn_Group  -->
         <Grid
             x:Name="grid1"
+            Grid.ColumnSpan="2"
             Background="Transparent"
-            FocusVisualStyle="{x:Null}">
+            FocusVisualStyle="{x:Null}"
+            Focusable="False"
+            KeyboardNavigation.ControlTabNavigation="None">
             <!--<i:Interaction.Triggers>
                 <i:EventTrigger EventName="MouseEnter">
                     <i:InvokeCommandAction Command="{Binding MouseMoveCommand}" />
@@ -153,21 +168,23 @@
             <Border
                 x:Name="grid_slider"
                 Grid.Row="2"
+                Focusable="False"
                 MouseMove="BackBorer_MouseMove"
-                SizeChanged="grid_slider_SizeChanged">
+                SizeChanged="grid_slider_SizeChanged"
+                Visibility="{Binding vis_mediaSlider}">
                 <Slider
                     x:Name="Slider_mediabar"
                     Grid.Row="2"
                     HorizontalAlignment="Stretch"
                     Panel.ZIndex="3"
                     Focusable="False"
+                    IsTabStop="False"
                     Maximum="500"
                     Mouse.PreviewMouseDown="Slider_mediabar_PreviewMouseDown"
                     Opacity="{Binding GroupOpacity[0]}"
                     Style="{DynamicResource Horizontal_Slider}"
                     Thumb.DragCompleted="mediaTimeBar_DragCompleted"
                     Thumb.DragStarted="mediaTimeBar_DragStarted"
-                    Visibility="{Binding sliderVisible}"
                     Value="{Binding mediaTimePosition}">
                     <Slider.Resources>
                         <Style x:Key="Horizontal_Slider" TargetType="{x:Type Slider}">
@@ -280,7 +297,11 @@
                 </Slider>
             </Border>
 
-            <Grid Grid.Row="0" Grid.RowSpan="4">
+            <Grid
+                x:Name="grid_Top_Function"
+                Grid.Row="0"
+                Grid.RowSpan="4"
+                Focusable="False">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="159*" />
                     <ColumnDefinition Width="159*" />
@@ -290,59 +311,69 @@
                     <ColumnDefinition Width="159*" />
                     <ColumnDefinition Width="158*" />
                 </Grid.ColumnDefinitions>
-                <!--<Border Grid.Column="3" Grid.ColumnSpan="2" Background="LightGray" Visibility="{Binding MediaSpeed_sliderVisible}"/>-->
-                <Border Grid.Column="3" Margin="0,-40,0,40">
-                    <Slider
-                        x:Name="Slider_MediaSpeed"
+                <Grid
+                    x:Name="grid_mediaSpeed_Slider"
+                    Grid.Column="3"
+                    Grid.ColumnSpan="2"
+                    Visibility="{Binding MediaSpeed_sliderVisible}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="158*" />
+                        <ColumnDefinition Width="48" />
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0">
+                        <Slider
+                            x:Name="Slider_MediaSpeed"
+                            Grid.Column="1"
+                            Margin="20,0,0,0"
+                            HorizontalAlignment="Stretch"
+                            VerticalAlignment="Center"
+                            FocusVisualStyle="{x:Null}"
+                            Focusable="True"
+                            IsMoveToPointEnabled="True"
+                            IsTabStop="False"
+                            Maximum="3"
+                            Minimum="0"
+                            RenderTransformOrigin="0.5,0.5"
+                            Style="{DynamicResource Horizontal_Slider}"
+                            TickFrequency="0.1"
+                            Value="{Binding media_speed}">
+                            <Slider.RenderTransform>
+                                <TransformGroup>
+                                    <ScaleTransform />
+                                    <SkewTransform />
+                                    <RotateTransform />
+                                    <TranslateTransform />
+                                </TransformGroup>
+                            </Slider.RenderTransform>
+                        </Slider>
+                    </Border>
+                    <Viewbox
                         Grid.Column="1"
-                        Margin="20,0,0,0"
-                        HorizontalAlignment="Stretch"
-                        VerticalAlignment="Center"
-                        FocusVisualStyle="{x:Null}"
-                        Focusable="False"
-                        IsMoveToPointEnabled="True"
-                        Maximum="3"
-                        Minimum="0"
-                        RenderTransformOrigin="0.5,0.5"
-                        Style="{DynamicResource Horizontal_Slider}"
-                        TickFrequency="0.1"
-                        Visibility="{Binding MediaSpeed_sliderVisible}"
-                        Value="{Binding media_speed}">
-                        <Slider.RenderTransform>
-                            <TransformGroup>
-                                <ScaleTransform />
-                                <SkewTransform />
-                                <RotateTransform />
-                                <TranslateTransform />
-                            </TransformGroup>
-                        </Slider.RenderTransform>
-                    </Slider>
-                </Border>
-                <Viewbox
-                    Grid.Column="4"
-                    MaxHeight="30"
-                    Margin="0,-36,0,40"
-                    RenderTransformOrigin="0.761,-0.141">
-                    <TextBox
-                        x:Name="media_speed_txt"
-                        Grid.Column="2"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        FocusVisualStyle="{x:Null}"
-                        Focusable="True"
-                        KeyDown="Media_Speed_KeyDown"
-                        Style="{StaticResource style_txtbox}"
-                        Text="{Binding media_speed}"
-                        Visibility="{Binding MediaSpeed_sliderVisible}" />
-                </Viewbox>
+                        MaxHeight="30"
+                        RenderTransformOrigin="0.761,-0.141">
+                        <TextBox
+                            x:Name="media_speed_txt"
+                            Grid.Column="2"
+                            HorizontalAlignment="Center"
+                            VerticalAlignment="Center"
+                            FocusVisualStyle="{x:Null}"
+                            Focusable="True"
+                            GotFocus="txt_GotFocus"
+                            IsTabStop="False"
+                            KeyDown="Media_Speed_KeyDown"
+                            LostFocus="txt_LostFocus"
+                            Style="{StaticResource style_txtbox}"
+                            Text="{Binding media_speed}" />
+                    </Viewbox>
+                </Grid>
             </Grid>
 
             <Border
                 x:Name="Btn_group"
                 Grid.Row="4"
-                Panel.ZIndex="3"
                 Background="Transparent"
-                MouseMove="BackBorer_MouseMove">
+                MouseMove="BackBorer_MouseMove"
+                PreviewMouseLeftButtonDown="BackBorer_PreviewMouseLeftButtonDown">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4.7*" />
@@ -381,7 +412,12 @@
                             Grid.Row="1"
                             Grid.Column="1"
                             HorizontalAlignment="Left">
-                            <ContentControl Content="{Binding mediaBar_mediaDurationTime}" Foreground="White" />
+                            <TextBlock
+                                MinWidth="50"
+                                FocusVisualStyle="{x:Null}"
+                                Focusable="False"
+                                Foreground="White"
+                                Text="{Binding mediaBar_mediaDurationTime}" />
                         </Viewbox>
                     </Grid>
 
@@ -390,56 +426,60 @@
                         Grid.Column="1"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding LoadCommand}"
-                        FocusVisualStyle="{x:Null}"
                         MouseEnter="Btn_Load_MouseEnter"
                         MouseLeave="Btn_Load_MouseLeave"
-                        Style="{StaticResource ButtonStyle}"
-                        Tag="../Resources/001-share.png" />
+                        Style="{StaticResource ButtonStyle}">
+                        <Image Source="../Resources/001-share.png" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_Stop"
                         Grid.Column="3"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding MediaStopCommand}"
-                        FocusVisualStyle="{x:Null}"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/Stop-1.png" />
+                        Tag="../Resources/Stop-1.png">
+                        <Image Source="../Resources/Stop-1.png" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_Back"
                         Grid.Column="5"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding BackToCommand}"
-                        FocusVisualStyle="{x:Null}"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/media_back_1.png" />
+                        Tag="../Resources/media_back_1.png">
+                        <Image Source="../Resources/media_back_1.png" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_paly_pause"
                         Grid.Column="7"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding mediaPlayPauseCommand}"
-                        FocusVisualStyle="{x:Null}"
-                        Style="{DynamicResource ButtonStyle}"
-                        Tag="{Binding mediaBtn_play_pause}" />
+                        Style="{DynamicResource ButtonStyle}">
+                        <Image Source="{Binding mediaBtn_play_pause}" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_Jump"
                         Grid.Column="9"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding JumpToCommand}"
-                        FocusVisualStyle="{x:Null}"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/media_jump_1.png" />
+                        Tag="../Resources/media_jump_1.png">
+                        <Image Source="../Resources/media_jump_1.png" Visibility="Collapsed" />
+                    </Button>
 
-                    <Button
+                    <ToggleButton
                         x:Name="Btn_Speed"
                         Grid.Column="11"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
-                        Command="{Binding MediaSpeedCommand}"
-                        FocusVisualStyle="{x:Null}"
-                        Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/Media_SpeedMeter_W.png" />
+                        IsChecked="{Binding bool_mediaSpeed, Mode=OneWayToSource}"
+                        Style="{DynamicResource ToggleButtonStyle}"
+                        Tag="../Resources/Media_SpeedMeter_W.png">
+                        <Image Source="../Resources/Media_SpeedMeter_W.png" Visibility="Collapsed" />
+                    </ToggleButton>
 
                     <Grid
                         x:Name="rectangle_outer"
@@ -464,10 +504,10 @@
                             Grid.Column="0"
                             Width="{Binding ActualHeight, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                             Command="{Binding MediaMuteCommand}"
-                            FocusVisualStyle="{x:Null}"
                             MouseDown="Btn_volume_MouseDown"
-                            Style="{DynamicResource ButtonStyle}"
-                            Tag="{Binding mediaBar_volume_btn_sourcce}" />
+                            Style="{DynamicResource ButtonStyle}">
+                            <Image Source="{Binding mediaBar_volume_btn_sourcce}" Visibility="Collapsed" />
+                        </Button>
                         <Border Grid.Column="1">
                             <Slider
                                 x:Name="Slider_volume"
@@ -611,9 +651,16 @@
                                 Grid.Column="2"
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
+                                FocusManager.IsFocusScope="False"
                                 FocusVisualStyle="{x:Null}"
-                                Focusable="True"
+                                GotFocus="txt_GotFocus"
+                                IsTabStop="False"
                                 KeyDown="Volume_txtbox_KeyDown"
+                                KeyboardNavigation.AcceptsReturn="False"
+                                KeyboardNavigation.ControlTabNavigation="None"
+                                KeyboardNavigation.DirectionalNavigation="None"
+                                KeyboardNavigation.TabNavigation="None"
+                                LostFocus="txt_LostFocus"
                                 Style="{StaticResource style_txtbox}"
                                 Text="{Binding media_volume}" />
                         </Viewbox>
@@ -624,9 +671,10 @@
                         Grid.Column="15"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding MaximumCommand}"
-                        FocusVisualStyle="{x:Null}"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/full.png" />
+                        Tag="../Resources/full.png">
+                        <Image Source="../Resources/full.png" Visibility="Collapsed" />
+                    </Button>
 
                     <!--<Button
                         x:Name="Btn_fullscreen"

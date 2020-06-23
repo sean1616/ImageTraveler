@@ -133,8 +133,9 @@
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding LoadCommand}"
                         Focusable="False"
-                        Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/001-share.png" />
+                        Style="{DynamicResource ButtonStyle}">
+                        <Image Source="../Resources/001-share.png" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_Fit"
@@ -143,7 +144,9 @@
                         Command="{Binding FitCommand}"
                         Focusable="False"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/Fit-1.png" />
+                        Tag="../Resources/Fit-1.png">
+                        <Image Source="../Resources/Fit-1.png" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_Previous"
@@ -152,7 +155,9 @@
                         Command="{Binding PreCommand}"
                         Focusable="False"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/上_1.png" />
+                        Tag="../Resources/上_1.png">
+                        <Image Source="../Resources/上_1.png" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_Next"
@@ -161,7 +166,9 @@
                         Command="{Binding NextCommand}"
                         Focusable="False"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/下_1.png" />
+                        Tag="../Resources/下_1.png">
+                        <Image Source="../Resources/下_1.png" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_Rotation"
@@ -170,7 +177,9 @@
                         Command="{Binding RotaCommand}"
                         Focusable="False"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/rotating-arrow-to-the-left_1.png" />
+                        Tag="../Resources/rotating-arrow-to-the-left_1.png">
+                        <Image Source="../Resources/rotating-arrow-to-the-left_1.png" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_Detele"
@@ -179,7 +188,9 @@
                         Command="{Binding DeleteCommand}"
                         Focusable="False"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/cancel-music_1.png" />
+                        Tag="../Resources/cancel-music_1.png">
+                        <Image Source="../Resources/cancel-music_1.png" Visibility="Collapsed" />
+                    </Button>
 
                     <Button
                         x:Name="Btn_Fullscreen"
@@ -188,7 +199,9 @@
                         Command="{Binding MaximumCommand}"
                         Focusable="False"
                         Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/full.png" />
+                        Tag="../Resources/full.png">
+                        <Image Source="../Resources/full.png" Visibility="Collapsed" />
+                    </Button>
                 </Grid>
             </Border>
         </Grid>

@@ -34,16 +34,14 @@ namespace ImageTraveler.ViewModels
        
         public ICommand NextCommand { get { return new Delegatecommand(NextPic); } }
 
-        public ICommand PreFld { get { return new Delegatecommand(preFld); } }
+        public ICommand PreMedia { get { return new Delegatecommand(preMedia); } }
 
-        public ICommand NextFld { get { return new Delegatecommand(nextFld); } }
+        public ICommand NextMedia { get { return new Delegatecommand(nextMedia); } }
 
         public ICommand BackToCommand { get { return new Delegatecommand(BackTo); } }
         
         public ICommand JumpToCommand { get { return new Delegatecommand(JumpTo); } }
-
-        public ICommand MediaSpeedCommand { get { return new Delegatecommand(MediaSpeed); } }
-
+        
         public ICommand JumpToPositionCommand { get { return new Delegatecommand(JumpToPostion); } }
        
         public ICommand mediaPlayPauseCommand { get { return new Delegatecommand(mediaElement_play_pause); } }
@@ -107,32 +105,21 @@ namespace ImageTraveler.ViewModels
             mediaBtn_play_pause = "../Resources/下_1.png";
         }
 
-        public double mediaVolumeSaved_mode1, mediaVolumeSaved_mode2 = 0.1;
+        public double mediaVolumeSaved_mode1 = 0;
         private void mediaElement_mute()
         {
             if (mediaSource == null)
                 return;
 
-            if (mediaBar_Page.Slider_volume.Maximum == 1)
+            if (media_volume > 0)
             {
-                mediaVolumeSaved_mode1 = media_Page.mediaElement.Volume;
-                mediaBar_Page.Slider_volume.Maximum = 0.1;
-                media_volume = 0.05;
-                media_volume = mediaVolumeSaved_mode2;
-                mediaBar_volume_btn_sourcce = "../Resources/Volume-3.png"; //small volume
-            }
-
-            else if (mediaBar_Page.Slider_volume.Maximum == 0.1)
-            {
-                mediaVolumeSaved_mode2 = media_Page.mediaElement.Volume;
+                mediaVolumeSaved_mode1 = media_volume;
                 media_volume = 0;
-                mediaBar_Page.Slider_volume.Maximum = 0.01;                
                 mediaBar_volume_btn_sourcce = "../Resources/Volume-1.png"; //Mute
             }
-
-            else if (mediaBar_Page.Slider_volume.Maximum == 0.01)
+                        
+            else
             {
-                mediaBar_Page.Slider_volume.Maximum = 1;
                 media_volume = mediaVolumeSaved_mode1;
                 mediaBar_volume_btn_sourcce = "../Resources/Volume-2.png"; //General volume
             }           
@@ -201,7 +188,7 @@ namespace ImageTraveler.ViewModels
                 App.mainWindow.Frame_bar.Content = imageBar_Page;
             else
             {
-                //點擊媒體開始
+                //點擊媒體開始               
                 ImgOrMedia = InitialLoadFile();                
             }
 
@@ -214,7 +201,16 @@ namespace ImageTraveler.ViewModels
         }
 
         private void grid_close_MouseDown()
-        {            
+        {
+            try
+            {
+                port_Arduino.Write("0");
+                port_Arduino.DiscardInBuffer();
+                port_Arduino.DiscardOutBuffer();
+                port_Arduino.Close();
+            }
+            catch { }
+            
             App.mainWindow.Close();
         }
 
@@ -385,37 +381,67 @@ namespace ImageTraveler.ViewModels
         
         public bool mediaState = true;
         string NumKeyin;
-
+                
         public void WindowKeyEventHandler(KeyEventArgs args)
         {
-            if ((Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl)) && args.Key == Key.Right) { nextFld(); }
-            else if ((Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl)) && args.Key == Key.Left) { preFld(); }
+            
+            if (args == null)   //因使用KeyBinding的方法來避免特殊鍵，在此定義為空白鍵的暫停動作
+            {
+                if (media_Page.mediaElement.HasVideo)
+                {
+                    if (mediaState == true) { mediaControl.MediaPause(); }
+                    else { mediaControl.MediaPlay(); }
+                }
+
+                return;
+            }
+
+            if ((Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl)) && args.Key == Key.Right) { nextMedia(); }
+
+            else if ((Keyboard.IsKeyDown(Key.RightCtrl) || Keyboard.IsKeyDown(Key.LeftCtrl)) && args.Key == Key.Left) { preMedia(); }
 
             else
             {
                 if (args.Key == Key.Right)
+                {
                     NextPic();
-
-                else if (args.Key == Key.Down)
-                    NextPic();
+                    //FocusManager.SetFocusedElement(main, mediaBar_Page.BackBorer);
+                    //MessageBox.Show(FocusManager.GetFocusedElement(mediaBar_Page).ToString());
+                }
 
                 else if (args.Key == Key.Left)
+                {
                     PrePic();
+                    //FocusManager.SetFocusedElement(mediaBar_Page, mediaBar_Page.BackBorer);
+                    //MessageBox.Show(FocusManager.GetFocusedElement(mediaBar_Page).ToString());
+                }
 
                 else if (args.Key == Key.Up)
-                    PrePic();
+                {
+                    if(ImgOrMedia==1)
+                        media_speed = media_speed + 0.1;
+                }
+                    
+
+                else if (args.Key == Key.Down)
+                {
+                    if(ImgOrMedia==1)
+                        media_speed = media_speed - 0.1;
+                }
+                   
 
                 else if (args.Key == Key.Delete)
                     DeleteImage();
 
-                else if (args.Key == Key.Space)
-                {
-                    if (media_Page.mediaElement.HasVideo)
-                    {
-                        if (mediaState == true) { mediaControl.MediaPause(); }
-                        else { mediaControl.MediaPlay(); }
-                    }
-                }
+                //else if (args.Key == Key.Space)
+                //{
+                //    if (media_Page.mediaElement.HasVideo)
+                //    {
+                //        if (mediaState == true) { mediaControl.MediaPause(); }
+                //        else { mediaControl.MediaPlay(); }
+                //    }
+                //}
+
                 else
                 {
                     var key_input = args.Key.ToString();
@@ -434,8 +460,9 @@ namespace ImageTraveler.ViewModels
 
         private void LoadPic()
         {
+           
             if (ArgsInput == false)
-            {
+            {                
                 loadFileClass = new LoadFileClass();
 
                 //取得對話框訊息
@@ -457,7 +484,7 @@ namespace ImageTraveler.ViewModels
 
             //取得副檔名
             fileName_Extension = Path.GetExtension(imgPath);
-
+            
             //先判斷選取物件種類
             //Image            
             if (string.Compare(fileName_Extension, ".png", true) == 0 || string.Compare(fileName_Extension, ".jpg", true) == 0
@@ -501,16 +528,19 @@ namespace ImageTraveler.ViewModels
             else if (string.Compare(fileName_Extension, ".mp3", true) == 0 || string.Compare(fileName_Extension, ".mp4", true) == 0
                  || string.Compare(fileName_Extension, ".avi", true) == 0 || string.Compare(fileName_Extension, ".wmv", true) == 0)
             {
-                media_Page = new Media_Page(this);
-                mediaBar_Page = new MediaBar_Page(this);
-                mediaControl = new MediaControl(this);
-                //Navigate to Media Page
-                if (true)
+                if (media_Page == null)
                 {
+                    media_Page = new Media_Page(this);
+                    mediaBar_Page = new MediaBar_Page(this);
+                    mediaControl = new MediaControl(this);
+
+                    //Navigate to Media Page
                     App.mainWindow.Frame_main.Content = media_Page;
                     App.mainWindow.Frame_bar.Content = mediaBar_Page;
                 }
-                
+                else
+                    fileName = Path.GetFileName(imgPath);
+
                 mediaSource = imgPath;
                
                 titleBar_ico_source = "../Resources/下_1.png";  //set title bar icon image
@@ -518,7 +548,7 @@ namespace ImageTraveler.ViewModels
                                 
                 picSource = null;
                 zIndex_group = new int[] { 0, 0, 2 };
-                sliderVisible = Visibility.Visible;
+                //sliderVisible = Visibility.Visible;
 
                 titleBar = fileName + " - ImageTraveler";
 
@@ -551,6 +581,53 @@ namespace ImageTraveler.ViewModels
                         Path.GetFileName(imgArray[GetIndex(imgPath)]), (GetIndex(imgPath) + 1), imgArray.Count);
             }
             catch { }            
+        }
+
+        private void FindNextMedia_in_thisFld(bool pre_or_next)
+        {            
+            try
+            {
+                //取得本資料夾路徑
+                string thisFld = System.IO.Directory.GetParent(imgPath).FullName.ToString();
+
+                //取得本層資料夾中所有資料夾
+                //FldArray = System.IO.Directory.GetDirectories(thisFld);
+
+                //if (FldArray.Length == 0) return;
+
+                //int count_Fld = 0;
+                //foreach (string s in FldArray)
+                //{
+                //    if (s != directory) count_Fld++;
+                //    else break;
+                //}
+
+                string nextMedia="";  //下一個影片               
+
+                // 取得旋轉後的圖片對象(取得此層資料夾中的所有影片)
+                imgArray = MediaManager.GetMediaCollection(thisFld);
+
+                int mediaIndex = imgArray.FindIndex(x => x == imgPath);
+                                
+                if (pre_or_next == true)   //找下一個
+                {
+                    mediaIndex++;
+                    if (mediaIndex > imgArray.Count)  //超出陣列
+                        nextMedia = imgArray[0];
+                    else //陣列內
+                        nextMedia = imgArray[mediaIndex];
+                }
+                else   //找上一個
+                {
+                    mediaIndex--;
+                    if (mediaIndex < 0)  //超出陣列
+                        nextMedia = imgArray[imgArray.Count - 1];
+                    else //陣列內
+                        nextMedia = imgArray[mediaIndex];
+                }
+                imgPath = nextMedia;
+            }
+            catch { }
         }
 
         private void FindNextFld_in_parentFld(bool pre_or_next)
@@ -590,7 +667,7 @@ namespace ImageTraveler.ViewModels
                     else //陣列內
                         nextFld = FldArray[count_Fld - 1];
                 }
-
+                
                 // 取得旋轉後的圖片對象(取得此層資料夾中的所有圖片)
                 if (ImgOrMedia == 0) imgArray = ImageManager.GetImgCollection(nextFld);
                 else imgArray = MediaManager.GetMediaCollection(nextFld);
@@ -719,16 +796,22 @@ namespace ImageTraveler.ViewModels
             //    Initial_PicBoxView.Source = new BitmapImage(new Uri(@"../Resources/1442760789 - 複製.jpg", UriKind.RelativeOrAbsolute)); ;
         }
 
-        private void nextFld()
+        private void nextMedia()
         {
-            FindNextFld_in_parentFld(true);
+            if (ImgOrMedia == 0)  //Picture
+                FindNextFld_in_parentFld(true);
+            else
+                FindNextMedia_in_thisFld(true);
 
             InitialLoadFile();
         }
 
-        private void preFld()
+        private void preMedia()
         {
-            FindNextFld_in_parentFld(false);
+            if (ImgOrMedia == 0)   //Picture
+                FindNextFld_in_parentFld(false);
+            else
+                FindNextMedia_in_thisFld(false);
 
             InitialLoadFile();
         }
@@ -773,7 +856,7 @@ namespace ImageTraveler.ViewModels
             {
                 // Overloaded constructor takes the arguments days, hours, minutes, seconds, miniseconds.
                 // Create a TimeSpan with miliseconds equal to the slider value.
-                TimeSpan ts = new TimeSpan(0, 0, 0, 5);
+                TimeSpan ts = new TimeSpan(0, 0, 0, 4);
 
                 media_Page.mediaElement.Position = media_Page.mediaElement.Position + ts;
             }
@@ -791,13 +874,7 @@ namespace ImageTraveler.ViewModels
             media_Page.mediaElement.Position = media_Page.mediaElement.Position + ts;
         }
 
-        private void MediaSpeed()
-        {
-            if (MediaSpeed_sliderVisible == Visibility.Visible)
-                MediaSpeed_sliderVisible = Visibility.Hidden;
-            else
-                MediaSpeed_sliderVisible = Visibility.Visible;
-        }
+       
 
         private void BackTo()
         {

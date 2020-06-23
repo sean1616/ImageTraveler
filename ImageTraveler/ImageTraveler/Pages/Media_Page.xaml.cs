@@ -1,17 +1,21 @@
 ﻿using System;
 using System.IO;
+using System.IO.Ports;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+using System.Management;
+using System.Text.RegularExpressions;
+
 using ImageTraveler.ViewModels;
 using Microsoft.Win32;
 using ImageTraveler.Utils;
-using System.Collections.Generic;
 using ImageTraveler.Subtitle;
-using System.Text;
-using System.Text.RegularExpressions;
 
 namespace ImageTraveler.Pages
 {
@@ -23,7 +27,7 @@ namespace ImageTraveler.Pages
         Main_Command main_Command;
 
         DispatcherTimer timer, timer_show;
-
+                
         Duration mediaNaturalDuration;
 
         LoadFileClass loadFileClass;
@@ -37,6 +41,8 @@ namespace ImageTraveler.Pages
         bool is_drag_to_control_media = false;
         Point click_position, new_position;
 
+        
+
         public Media_Page(Main_Command main_Command)
         {
             InitializeComponent();
@@ -44,7 +50,54 @@ namespace ImageTraveler.Pages
             this.DataContext = main_Command;
             this.main_Command = main_Command;
 
-            //aaa = main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename);
+            Arduino_Setting();   //Arduino rotator連線設定
+        }
+
+        private async void Arduino_Setting()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    var searcher = new ManagementObjectSearcher("SELECT DeviceID,Caption FROM WIN32_SerialPort");
+
+                    foreach (ManagementObject port in searcher.Get())  //取得所有Comport / Comport名稱
+                    {
+                        string description = port.GetPropertyValue("Caption").ToString();
+                        // ex: Arduino Uno (COM7)                    
+
+                        string[] port_description = description.Split(' ');
+                        List<string> list_description = new List<string>(port_description);
+                        if (list_description.Contains("Arduino"))
+                        {
+                            // ex: COM7
+                            string comport = port.GetPropertyValue("DeviceID").ToString();
+                            main_Command.port_Arduino = new SerialPort(comport, 9600);
+                            break;
+                        }
+                    }                    
+
+                    main_Command.port_Arduino.Open();
+
+                    main_Command.port_Arduino.DiscardInBuffer();
+                    main_Command.port_Arduino.DiscardOutBuffer();
+
+                    main_Command.port_Arduino.Write("0");
+
+                    Task.Delay(100);
+
+                    string port_read= main_Command.port_Arduino.ReadLine();
+
+                    if (port_read.Replace("\r", "") == "Rotator")
+                    {
+                        main_Command.port_Arduino.Write("1");
+                        Task.Delay(100);
+                        _isPort_Arduino_Open = true;
+                    }                        
+                    else _isPort_Arduino_Open = false;
+                }
+                catch { _isPort_Arduino_Open = false; }
+            });
         }
                 
         private void mediaElement_MediaOpened(object sender, RoutedEventArgs e)
@@ -101,7 +154,7 @@ namespace ImageTraveler.Pages
 
             //時間軸timer
             timer = new DispatcherTimer();
-            timer.Interval = TimeSpan.FromMilliseconds(40);
+            timer.Interval = TimeSpan.FromMilliseconds(120);
             timer.Tick += new EventHandler(timer_Tick);
 
             if (mediaElement.NaturalDuration.HasTimeSpan)
@@ -111,9 +164,11 @@ namespace ImageTraveler.Pages
                 main_Command.mediaBar_Page.Slider_mediabar.SmallChange = 0.01;
                 main_Command.mediaBar_Page.Slider_mediabar.LargeChange = Math.Min(10, ts.Seconds / 10);
             }
-            timer.Start();                               
+            timer.Start();            
         }
 
+        bool _isPort_Arduino_Open = false;
+        string savedArduinoValue = "";
         private void timer_Tick(object sender, EventArgs e)
         {
             if (!main_Command.isDragging)
@@ -121,6 +176,24 @@ namespace ImageTraveler.Pages
                 //動態更新media slider bar
                 //main_Command.mediaBar_Page.Slider_mediabar.Value = mediaElement.Position.TotalSeconds;
                 main_Command.mediaTimePosition = mediaElement.Position.TotalSeconds;
+
+                if (_isPort_Arduino_Open)
+                {
+                    #region 分析Arduino讀回訊息
+                    string s = main_Command.port_Arduino.ReadLine();
+                    
+                    s = s.Replace("\r", "");
+                    if (string.IsNullOrEmpty(s)) return;
+
+                    int result = 1;
+                    int.TryParse(s, out result);  //失敗為0，成功為1
+                    if (result == 0) return;
+
+                    if (savedArduinoValue != s) main_Command.media_volume = Convert.ToInt32(s) * 100 / 378;
+
+                    savedArduinoValue = s;
+                    #endregion
+                }
             }
         }
                 
@@ -141,7 +214,7 @@ namespace ImageTraveler.Pages
             {
                 TimeSpan t = TimeSpan.FromSeconds(Math.Round(mediaElement.Position.TotalSeconds));
                 main_Command.mediaBar_mediaDurationTime = string.Format("{0} / " + mediaNaturalDuration.ToString(), t.ToString(@"hh\:mm\:ss"));
-
+                                
                 subtitle_calculator();
             }
         }

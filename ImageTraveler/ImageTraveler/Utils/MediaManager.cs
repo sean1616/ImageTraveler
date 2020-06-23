@@ -13,8 +13,8 @@ namespace ImageTraveler.Utils
         {
             string[] mediaarray = Directory.GetFiles(path);
             var result = from mediastring in mediaarray
-                         where mediastring.EndsWith("jpg", StringComparison.OrdinalIgnoreCase)
-                         select mediastring;
+                         where mediastring.EndsWith("mp4", StringComparison.OrdinalIgnoreCase)
+                         select mediastring;            
             return result.ToList();
         }
     }

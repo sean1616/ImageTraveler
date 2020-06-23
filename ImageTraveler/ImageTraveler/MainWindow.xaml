@@ -12,12 +12,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:vm="clr-namespace:ImageTraveler.ViewModels"
     Title="MainWindow"
-    Width="1100"
-    Height="650"
+    Width="1080"
+    Height="700"
     MinWidth="950"
     MinHeight="550"
     AllowsTransparency="True"
     Background="Transparent"
+    KeyboardNavigation.ControlTabNavigation="None"
     KeyboardNavigation.TabNavigation="None"
     MouseMove="Window_MouseMove"
     ResizeMode="CanResizeWithGrip"
@@ -165,6 +166,10 @@
         </ik:KeyTrigger>
     </i:Interaction.Triggers>
 
+    <Window.InputBindings>
+        <KeyBinding Key="Space" Command="{Binding WindowKey}" />
+    </Window.InputBindings>
+
     <Grid x:Name="mainGrid" Background="Black">
         <Grid.Resources>
             <ResourceDictionary>
@@ -279,6 +284,7 @@
                     <Button
                         Grid.Column="2"
                         Command="{Binding Grid_minimize_MouseDown}"
+                        IsTabStop="False"
                         Style="{DynamicResource Btn_style_min}">
                         <Button.Resources>
                             <Style x:Key="Btn_style_min" TargetType="{x:Type Button}">
@@ -352,6 +358,7 @@
                     <Button
                         Grid.Column="3"
                         Command="{Binding Grid_generalize_maximum_MouseDown}"
+                        IsTabStop="False"
                         Style="{DynamicResource Btn_style_gen}">
                         <Button.Resources>
                             <Style x:Key="Btn_style_gen" TargetType="{x:Type Button}">
@@ -425,6 +432,7 @@
                     <Button
                         Grid.Column="4"
                         Command="{Binding Grid_close_MouseDown}"
+                        IsTabStop="False"
                         Style="{DynamicResource Btn_style_gen}">
                         <Button.Resources>
                             <Style x:Key="Btn_style_gen" TargetType="{x:Type Button}">
@@ -498,7 +506,7 @@
             </Border>
         </Grid>
 
-        <Border x:Name="Border_Test" Grid.Row="1" />
+
 
         <!--  MainPictureBox  -->
         <Grid
@@ -509,8 +517,7 @@
             d:IsHidden="True"
             Focusable="False"
             MouseMove="PicBoxView_MouseMove"
-            PreviewMouseLeftButtonDown="PicBoxView_PreviewMouseLeftButtonDown"
-            PreviewMouseLeftButtonUp="PicBoxView_PreviewMouseLeftButtonUp">
+            PreviewMouseLeftButtonDown="PicBoxView_PreviewMouseLeftButtonDown">
             <Grid.ContextMenu>
                 <ContextMenu>
                     <MenuItem
@@ -575,7 +582,7 @@
         </Grid>
 
         <!--  InitialBoard  -->
-        <Border
+        <!--<Border
             x:Name="Initial_Border"
             Grid.Row="1"
             Grid.RowSpan="4"
@@ -588,9 +595,8 @@
                 d:IsHidden="True"
                 MouseMove="PicBoxView_MouseMove"
                 PreviewMouseLeftButtonDown="PicBoxView_PreviewMouseLeftButtonDown"
-                PreviewMouseLeftButtonUp="PicBoxView_PreviewMouseLeftButtonUp"
                 RenderTransformOrigin="0.5,0.5" />
-        </Border>
+        </Border>-->
 
         <!--  Main_View  -->
         <Grid
@@ -621,7 +627,7 @@
             <Button
                 x:Name="Btn_Previous"
                 Grid.Column="0"
-                Command="{Binding PreFld}"
+                Command="{Binding PreMedia}"
                 FocusVisualStyle="{x:Null}"
                 Focusable="False"
                 Opacity="0"
@@ -630,7 +636,7 @@
             <Button
                 x:Name="Btn_Next"
                 Grid.Column="2"
-                Command="{Binding NextFld}"
+                Command="{Binding NextMedia}"
                 FocusVisualStyle="{x:Null}"
                 Focusable="False"
                 Opacity="0"
@@ -699,5 +705,26 @@
             BorderBrush="Orange"
             BorderThickness="0.5"
             Opacity="{Binding GroupOpacity[0]}" />
+
+        <Grid Grid.Row="0" Grid.RowSpan="4">
+            <Grid.RowDefinitions>
+                <RowDefinition />
+                <RowDefinition Height="9*" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="9*" />
+            </Grid.ColumnDefinitions>
+            <Image
+                x:Name="img_girl_background"
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Panel.ZIndex="{Binding zIndex_group[0]}"
+                MouseRightButtonDown="Img_girl_background_MouseRightButtonDown"
+                Source="Resources/1442760789 - 複製.jpg"
+                Visibility="Visible" />
+        </Grid>
     </Grid>
 </Window>

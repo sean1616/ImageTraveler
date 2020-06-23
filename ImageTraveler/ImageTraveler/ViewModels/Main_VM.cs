@@ -5,8 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows;
-using System.ComponentModel;
 using System.IO;
+using System.IO.Ports;
 using System.Windows.Media;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -24,6 +24,19 @@ namespace ImageTraveler.ViewModels
 {
     public class Main_VM : NotifyBase
     {
+        public System.Timers.Timer timer_Arduino = new System.Timers.Timer();
+        
+
+        private SerialPort _port_Arduino = new SerialPort("COM8", 9600);
+        public SerialPort port_Arduino
+        {
+            get { return _port_Arduino; }
+            set
+            {
+                _port_Arduino = value;
+            }
+        }
+
         private Color[] _rec_brush_color = new Color[3] { Colors.Transparent, Colors.White, Color.FromArgb(50,255,255,255) };
         public Color[] rec_brush_color
         {
@@ -182,6 +195,26 @@ namespace ImageTraveler.ViewModels
             get { return _escClickCount; }
         }
 
+        public async Task AccessDelayAsync(int delayTime)
+        {
+            await Task.Delay(delayTime);
+        }
+
+        public async Task mediaVolume_ReadArduino()
+        {
+            port_Arduino.Open();
+
+            timer_Arduino.Start();
+            
+            //string s = port_Arduino.ReadLine();
+
+            //s = s.Replace("\r", "");
+
+            //media_volume = Convert.ToInt32(s) * 100 / 378;
+
+            //await AccessDelayAsync(200);
+        }
+
         private Media_Page _media_Page;
         public Media_Page media_Page
         {
@@ -195,11 +228,19 @@ namespace ImageTraveler.ViewModels
             set
             {
                 _media_volume = value;
+                if (_media_volume >= 100) _media_volume = 100;
+
                 if (media_Page != null)
                 {
-                    double y = Math.Pow(value / 6, 2);
-                    media_Page.mediaElement.Volume = value / 100;
+                    double y = Math.Pow(_media_volume / 6, 2);
+                    media_Page.mediaElement.Volume = _media_volume / 100;
                 }
+
+                if (_media_volume <= 0) 
+                    mediaBar_volume_btn_sourcce = "../Resources/Volume-1.png"; //Mute
+                else
+                    mediaBar_volume_btn_sourcce = "../Resources/Volume-2.png"; //Mute
+
                 ini.IniWriteValue("Bar", "volume", _media_volume.ToString(), ini_filename); //覆寫ini音量設定
                 OnPropertyChanged("media_volume");
             }
@@ -219,6 +260,38 @@ namespace ImageTraveler.ViewModels
             get
             {
                 return Math.Round(_media_speed, 1);
+            }
+        }
+
+        private Visibility _vis_mediaSlider = Visibility.Visible;
+        public Visibility vis_mediaSlider
+        {
+            get { return _vis_mediaSlider; }
+            set
+            {
+                _vis_mediaSlider = value;
+                OnPropertyChanged("vis_mediaSlider");
+            }
+        }
+
+        private bool _bool_mediaSpeed = false;
+        public bool bool_mediaSpeed
+        {
+            get { return _bool_mediaSpeed; }
+            set
+            {
+                _bool_mediaSpeed = value;
+                if (value)
+                {
+                    MediaSpeed_sliderVisible = Visibility.Visible;
+                    vis_mediaSlider = Visibility.Hidden;
+                }
+                else
+                {
+                    MediaSpeed_sliderVisible = Visibility.Collapsed;
+                    vis_mediaSlider = Visibility.Visible;
+                }
+                OnPropertyChanged("bool_mediaSpeed");
             }
         }
 
@@ -284,7 +357,7 @@ namespace ImageTraveler.ViewModels
             get { return _mediaBar_volume_btn_sourcce; }
         }
 
-        private string _mediaBar_mediaDurationTime ;
+        private string _mediaBar_mediaDurationTime = "-- / --" ;
         public string mediaBar_mediaDurationTime
         {
             set
@@ -516,16 +589,16 @@ namespace ImageTraveler.ViewModels
             }
         }
 
-        private Visibility _sliderVisible = Visibility.Collapsed;
-        public Visibility sliderVisible
-        {
-            set
-            {
-                _sliderVisible = value;
-                OnPropertyChanged_Normal("sliderOpa");
-            }
-            get { return _sliderVisible; }
-        }
+        //private Visibility _sliderVisible = Visibility.Collapsed;
+        //public Visibility sliderVisible
+        //{
+        //    set
+        //    {
+        //        _sliderVisible = value;
+        //        OnPropertyChanged_Normal("sliderOpa");
+        //    }
+        //    get { return _sliderVisible; }
+        //}
 
         private string _Btn_Group_Source = "ImageTraveler";
         public string Btn_Group_Source

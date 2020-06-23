@@ -51,21 +51,30 @@ namespace ImageTraveler
             mousemove_timer.Tick += new EventHandler(timer_Tick);
 
             mousemove_timer.Start();
-            
-            //string ini_path = main_Command.folderName + @"\" + main_Command.ini_filename;
+
             if (File.Exists(ini_path + "ImagTraver\\ImagTraver.ini"))
             {
                 //讀取ini media volume
                 main_Command.media_volume = Convert.ToDouble(main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename));
                 this.Height = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Height", main_Command.ini_filename));
                 this.Width = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Width", main_Command.ini_filename));
+
+                try
+                {
+                    _isBackgroundImg_show = Convert.ToBoolean(ini.IniReadValue("Window", "Background_Image", ini_filename));
+                    //設定初始背景圖片
+                    if (!_isBackgroundImg_show)
+                        img_girl_background.Visibility = Visibility.Collapsed;
+                    else
+                        img_girl_background.Visibility = Visibility.Visible;
+                }
+                catch { }
             }
             else
             {
                 Directory.CreateDirectory(main_Command.folderName);  //建立資料夾      
                 IniSetup(); //創建ini file並寫入基本設定
             }
-               
         }
 
         //泛型初始化
@@ -73,9 +82,7 @@ namespace ImageTraveler
         {
             InitializeComponent();
             
-            main_Command = (Main_Command)DataContext;
-
-            main_Command.media_volume = Convert.ToDouble(main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename));
+            main_Command = (Main_Command)DataContext;            
 
             //圖片路徑、檔名、輸入狀態設定
             main_Command.imgPath = args;
@@ -89,20 +96,27 @@ namespace ImageTraveler
             mousemove_timer.Tick += new EventHandler(timer_Tick);
 
             mousemove_timer.Start();
-
-            //string ini_path = main_Command.folderName + @"\" + main_Command.ini_filename;
-            if (File.Exists(ini_path + "ImagTraver\\ImagTraver.ini"))
+                        
+            if (File.Exists(ini_path + "ImagTraver\\ImagTraver.ini") || main_Command.ImgOrMedia == 1)
             {
                 //讀取ini media volume
                 main_Command.media_volume = Convert.ToDouble(main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename));
-                //this.Height = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Height", main_Command.ini_filename));
-                //this.Width = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Width", main_Command.ini_filename));                
+
+                try
+                {
+                    _isBackgroundImg_show = Convert.ToBoolean(ini.IniReadValue("Window", "Background_Image", ini_filename));
+                    //設定初始背景圖片
+                    if (!_isBackgroundImg_show)
+                        img_girl_background.Visibility = Visibility.Collapsed;
+                    else
+                        img_girl_background.Visibility = Visibility.Visible;
+                }
+                catch { }
             }
             else
             {
                 Directory.CreateDirectory(main_Command.folderName);  //建立資料夾      
-                IniSetup(); //創建ini file並寫入基本設定
-                
+                IniSetup(); //創建ini file並寫入基本設定                
             }
         }
 
@@ -287,16 +301,18 @@ namespace ImageTraveler
         //        main_Command.EditingMode = InkCanvasEditingMode.None;
         //}
 
-        bool _isBackgroundColorChanged = false;
+        bool _isBackgroundImg_show = false;
         private void Btn_Background_Click(object sender, RoutedEventArgs e)
         {
-            //設定PictureBox 背景顏色
-            if (!_isBackgroundColorChanged)
-                Grid_PicBoxView.Background = new SolidColorBrush(Color.FromRgb(255, 255, 255));
+            _isBackgroundImg_show = !_isBackgroundImg_show;
+
+            //設定初始背景圖是否顯示
+            if (!_isBackgroundImg_show)
+                img_girl_background.Visibility = Visibility.Collapsed;
             else
-                Grid_PicBoxView.Background = new SolidColorBrush(Color.FromRgb(0, 0, 0));
-           
-            _isBackgroundColorChanged = !_isBackgroundColorChanged;
+                img_girl_background.Visibility = Visibility.Visible;
+
+            ini.IniWriteValue("Window", "Background_Image", (_isBackgroundImg_show).ToString(), ini_filename);
         }
 
         public void ExportToPng(string path, Image surface)
@@ -410,11 +426,6 @@ namespace ImageTraveler
         Point mouse_P, PicP;
         double dx, dy;
 
-        private void PicBoxView_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            
-        }
-
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             ini.IniWriteValue("Window", "Height", this.Height.ToString(), ini_filename);
@@ -438,7 +449,19 @@ namespace ImageTraveler
             } 
         }
 
-        
+        private void Img_girl_background_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            _isBackgroundImg_show = !_isBackgroundImg_show;
+
+            //設定初始背景圖是否顯示
+            if (!_isBackgroundImg_show)
+                img_girl_background.Visibility = Visibility.Collapsed;
+            else
+                img_girl_background.Visibility = Visibility.Visible;                        
+
+            ini.IniWriteValue("Window", "Background_Image", (_isBackgroundImg_show).ToString(), ini_filename);
+        }
+
         private void PicBoxView_MouseMove(object sender, MouseEventArgs e)
         {
             if (!main_Command.ImgPaintMode)
@@ -485,7 +508,7 @@ namespace ImageTraveler
             ini.IniWriteValue("Window", "Width", this.Width.ToString(), ini_filename);
         }
     }
-
+    
     public class SetupIniIP
     {
         public string path;

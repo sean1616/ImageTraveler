@@ -95,6 +95,7 @@
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -240,13 +241,9 @@
   <ItemGroup>
     <Resource Include="Resources\Volume-2.png" />
     <Resource Include="Resources\Volume-3.png" />
-    <Resource Include="Resources\上_1.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\上_2.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\下_1.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\下_2.png" />
@@ -277,9 +274,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\1442760873 - 複製.jpg" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\1442760873 - 複製1.jpg" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\1442760873 - 複製2.jpg" />
@@ -318,9 +312,6 @@
     <None Include="Resources\min-1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\pause.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\mute.png" />
   </ItemGroup>
   <ItemGroup>
@@ -351,9 +342,6 @@
     <Resource Include="Resources\cancel-music_1.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Resources\rotating-arrow-to-the-left_1.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="Resources\Fit-1.png" />
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +349,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Media_SpeedMeter_W.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\下_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\上_1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\rotating-arrow-to-the-left_1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets" Condition="Exists('..\packages\WPFMediaKit.2.2.0\build\WPFMediaKit.targets')" />
