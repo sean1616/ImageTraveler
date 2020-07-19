@@ -22,7 +22,7 @@ namespace ImageTraveler.ViewModels
         #region ICommand
         public ICommand WindowLoadedCommand { get { return new Delegatecommand(WindowLoaded); } }
         
-        public ICommand LoadCommand { get { return new Delegatecommand(LoadPic); } }
+        public ICommand LoadCommand { get { return new Delegatecommand(Load_Camera_Page); } }
        
         public ICommand DeleteCommand { get { return new Delegatecommand(DeleteImage); } }
 
@@ -127,17 +127,28 @@ namespace ImageTraveler.ViewModels
 
         private void mediaElement_play_pause()
         {
-            if (media_Page.mediaElement.HasVideo)
+            if (media_Page != null)
             {
-                if (mediaState == true)
+                if (media_Page.mediaElement.HasVideo)
                 {
-                    mediaControl.MediaPause();
-                }
-                else
-                {                    
-                    mediaControl.MediaPlay();
+                    if (mediaState == true)
+                    {
+                        mediaControl.MediaPause();
+                    }
+                    else
+                    {
+                        mediaControl.MediaPlay();
+                    }
+                    return;
                 }
             }
+
+            if (camera_Page != null)
+            {
+                if (camera_Page.LocalWebCam.IsRunning) camera_Page.LocalWebCam.Stop();
+                else camera_Page.LocalWebCam.Start();
+            }
+           
         }
 
         private void mediaElement_play()
@@ -172,11 +183,20 @@ namespace ImageTraveler.ViewModels
 
         private void mediaElement_Stop()
         {
-            if (media_Page.mediaElement.HasVideo)
+            if (media_Page != null)
+                if (media_Page.mediaElement.HasVideo)
+                {
+                    media_Page.mediaElement.Stop();
+                    mediaState = false;
+                    mediaBtn_play_pause = "../Resources/下_1.png";
+
+                    return;
+                }
+
+            if (camera_Page != null)
             {
-                media_Page.mediaElement.Stop();
-                mediaState = false;
-                mediaBtn_play_pause = "../Resources/下_1.png";
+                if (camera_Page.LocalWebCam.IsRunning) camera_Page.LocalWebCam.Stop();
+                else camera_Page.LocalWebCam.Start();
             }
         }
 
@@ -210,7 +230,10 @@ namespace ImageTraveler.ViewModels
                 port_Arduino.Close();
             }
             catch { }
-            
+
+            if (camera_Page != null)
+                if (camera_Page.LocalWebCam.IsRunning) camera_Page.LocalWebCam.Stop();
+
             App.mainWindow.Close();
         }
 
@@ -706,6 +729,16 @@ namespace ImageTraveler.ViewModels
             catch { }
         }
 
+        private void Load_Camera_Page()
+        {
+            if (camera_Page == null) camera_Page = new Camera_Page();
+            if (mediaBar_Page == null) mediaBar_Page = new MediaBar_Page(this);
+
+            //Navigate to Media Page
+            App.mainWindow.Frame_main.Content = camera_Page;
+            App.mainWindow.Frame_bar.Content = mediaBar_Page;
+        }
+
         // load an image into memory and use it as an image source, and the image could be delete when it was used by process
         private ImageSource BitmapFromUri(Uri source)
         {
@@ -798,6 +831,8 @@ namespace ImageTraveler.ViewModels
 
         private void nextMedia()
         {
+            //if (media_Page == null) return;
+
             if (ImgOrMedia == 0)  //Picture
                 FindNextFld_in_parentFld(true);
             else
@@ -808,6 +843,8 @@ namespace ImageTraveler.ViewModels
 
         private void preMedia()
         {
+            //if (media_Page == null) return;
+
             if (ImgOrMedia == 0)   //Picture
                 FindNextFld_in_parentFld(false);
             else
@@ -864,11 +901,15 @@ namespace ImageTraveler.ViewModels
 
         private void JumpToPostion()
         {
+            if (media_Page == null) return;
+
             media_Page.mediaElement.Position = TimeSpan.FromSeconds(mediaBar_Page.Slider_mediabar.Value);
         }
 
         private void JumpTo()
         {
+            if (media_Page == null) return;
+
             TimeSpan ts = new TimeSpan(0, 0, 0, 5);
 
             media_Page.mediaElement.Position = media_Page.mediaElement.Position + ts;
@@ -878,6 +919,8 @@ namespace ImageTraveler.ViewModels
 
         private void BackTo()
         {
+            if (media_Page == null) return;
+
             // Overloaded constructor takes the arguments days, hours, minutes, seconds, miniseconds.
             // Create a TimeSpan with miliseconds equal to the slider value.
             TimeSpan ts = new TimeSpan(0, 0, 0, 5);

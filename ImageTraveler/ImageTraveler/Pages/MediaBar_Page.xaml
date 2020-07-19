@@ -376,7 +376,9 @@
                 PreviewMouseLeftButtonDown="BackBorer_PreviewMouseLeftButtonDown">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="4.7*" />
+                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btnGap_gridLength}" />
                         <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
                         <ColumnDefinition Width="{Binding btnGap_gridLength}" />
                         <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
@@ -433,8 +435,18 @@
                     </Button>
 
                     <Button
-                        x:Name="Btn_Stop"
+                        x:Name="Btn_fullscreen"
                         Grid.Column="3"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
+                        Command="{Binding MaximumCommand}"
+                        Style="{DynamicResource ButtonStyle}"
+                        Tag="../Resources/full.png">
+                        <Image Source="../Resources/full.png" Visibility="Collapsed" />
+                    </Button>
+
+                    <Button
+                        x:Name="Btn_Stop"
+                        Grid.Column="5"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding MediaStopCommand}"
                         Style="{DynamicResource ButtonStyle}"
@@ -444,7 +456,7 @@
 
                     <Button
                         x:Name="Btn_Back"
-                        Grid.Column="5"
+                        Grid.Column="7"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding BackToCommand}"
                         Style="{DynamicResource ButtonStyle}"
@@ -454,7 +466,7 @@
 
                     <Button
                         x:Name="Btn_paly_pause"
-                        Grid.Column="7"
+                        Grid.Column="9"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding mediaPlayPauseCommand}"
                         Style="{DynamicResource ButtonStyle}">
@@ -463,7 +475,7 @@
 
                     <Button
                         x:Name="Btn_Jump"
-                        Grid.Column="9"
+                        Grid.Column="11"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding JumpToCommand}"
                         Style="{DynamicResource ButtonStyle}"
@@ -473,7 +485,7 @@
 
                     <ToggleButton
                         x:Name="Btn_Speed"
-                        Grid.Column="11"
+                        Grid.Column="13"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         IsChecked="{Binding bool_mediaSpeed, Mode=OneWayToSource}"
                         Style="{DynamicResource ToggleButtonStyle}"
@@ -483,7 +495,7 @@
 
                     <Grid
                         x:Name="rectangle_outer"
-                        Grid.Column="13"
+                        Grid.Column="15"
                         Height="{Binding ActualHeight, ElementName=Btn_Load, Mode=OneWay}">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="0.8*" />
@@ -666,15 +678,7 @@
                         </Viewbox>
                     </Grid>
 
-                    <Button
-                        x:Name="Btn_fullscreen"
-                        Grid.Column="15"
-                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
-                        Command="{Binding MaximumCommand}"
-                        Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/full.png">
-                        <Image Source="../Resources/full.png" Visibility="Collapsed" />
-                    </Button>
+
 
                     <!--<Button
                         x:Name="Btn_fullscreen"

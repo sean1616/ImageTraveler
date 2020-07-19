@@ -215,6 +215,13 @@ namespace ImageTraveler.ViewModels
             //await AccessDelayAsync(200);
         }
 
+        private Camera_Page _camera_Page;
+        public Camera_Page camera_Page
+        {
+            get { return _camera_Page; }
+            set { SetProperty(ref _camera_Page, value); }
+        }
+
         private Media_Page _media_Page;
         public Media_Page media_Page
         {
