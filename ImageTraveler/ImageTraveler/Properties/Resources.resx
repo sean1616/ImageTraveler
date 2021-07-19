@@ -139,21 +139,6 @@
   <data name="下_2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\下_2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="_1442760789" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1442760789.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1442760789___複製" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1442760789 - 複製.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1442760873" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1442760873.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1442760873___複製" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1442760873 - 複製.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="_1442760873___複製2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\1442760873 - 複製2.jpg;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="CenterMax_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\CenterMax-1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -240,5 +225,14 @@
   </data>
   <data name="下_1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\下_1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="close" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\close.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="normal" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\normal.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Min_white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Min_white.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

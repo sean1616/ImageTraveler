@@ -606,7 +606,6 @@ D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\ro\Xcee
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
-D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\ImageTraveler.csprojAssemblyReference.cache
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\Style_Resources\MainStyle.baml
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\Style_Resources\ProgressBar_sty1.baml
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\App.g.cs
@@ -648,3 +647,12 @@ D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\AForge.
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\AForge.Video.DirectShow.xml
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\Pages\Camera_Page.g.cs
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\Pages\Camera_Page.baml
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\ImageTraveler.csproj.AssemblyReference.cache
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\Pages\TextViewer_Page.g.cs
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\Pages\TextViewer_Page.baml
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\Pages\TextViewerBar_Page.g.cs
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\Pages\TextViewerBar_Page.baml
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\Lierda.WPFHelper.dll
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\Lierda.WPFHelper.xml
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\ICSharpCode.AvalonEdit.dll
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\ICSharpCode.AvalonEdit.xml

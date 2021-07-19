@@ -19,6 +19,9 @@ namespace ImageTraveler
         [STAThread]
         public static void Main(string[] args)
         {
+            Lierda.WPFHelper.LierdaCracker cracker = new Lierda.WPFHelper.LierdaCracker();
+            cracker.Cracker(100);
+
             //多載寫法
             var application = new App();
             application.InitializeComponent();

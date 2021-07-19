@@ -14,7 +14,6 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using Microsoft.Win32;
 using System.IO;
-using System.Diagnostics;
 using System.Windows.Threading;
 using Microsoft.Expression.Interactivity.Input;
 using ImageTraveler.ViewModels;
@@ -29,10 +28,10 @@ namespace ImageTraveler
     /// MainWindow.xaml 的互動邏輯
     /// </summary>
     public partial class MainWindow : Window
-    {        
-        public static Main_Command main_Command { get; set; } = new Main_Command();        
+    {
+        public static Main_Command main_Command { get; set; } = new Main_Command();
         public static int aa;
-        bool isDragging = false, media_state_check=false;      
+        bool isDragging = false, media_state_check = false;
         DispatcherTimer mousemove_timer;
         Point mouse_position;
         string ini_path = System.AppDomain.CurrentDomain.BaseDirectory;
@@ -42,15 +41,24 @@ namespace ImageTraveler
         public MainWindow()
         {
             InitializeComponent();
-            
+
             main_Command = (Main_Command)DataContext;
-                        
+
+            //For Debug
+            //圖片路徑、檔名、輸入狀態設定
+            //string args = @"C:\Users\user\Pictures\arduino_mini_upload.png";
+            string args = @"D:\SeanWu\Novels\斬風.txt";
+            main_Command.imgPath = args;
+            main_Command.fileName = Path.GetFileName(args);
+            main_Command.fileName_Extension = Path.GetExtension(args);
+            main_Command.ArgsInput = true;
+
             //時間軸timer
             mousemove_timer = new DispatcherTimer();
             mousemove_timer.Interval = TimeSpan.FromSeconds(4);
             mousemove_timer.Tick += new EventHandler(timer_Tick);
 
-            mousemove_timer.Start();
+            //mousemove_timer.Start();
 
             if (File.Exists(ini_path + "ImagTraver\\ImagTraver.ini"))
             {
@@ -81,8 +89,8 @@ namespace ImageTraveler
         public MainWindow(string args)
         {
             InitializeComponent();
-            
-            main_Command = (Main_Command)DataContext;            
+
+            main_Command = (Main_Command)DataContext;
 
             //圖片路徑、檔名、輸入狀態設定
             main_Command.imgPath = args;
@@ -96,7 +104,7 @@ namespace ImageTraveler
             mousemove_timer.Tick += new EventHandler(timer_Tick);
 
             mousemove_timer.Start();
-                        
+
             if (File.Exists(ini_path + "ImagTraver\\ImagTraver.ini") || main_Command.ImgOrMedia == 1)
             {
                 //讀取ini media volume
@@ -129,7 +137,7 @@ namespace ImageTraveler
             else
                 mouse_position = Mouse.GetPosition(this);
         }
-        
+
         private void Window_MouseMove(object sender, MouseEventArgs e)
         {
             Mouse.OverrideCursor = Cursors.Arrow;
@@ -152,23 +160,19 @@ namespace ImageTraveler
             Ink1.Visibility = Visibility.Visible;
 
             System.Drawing.Bitmap bitmap = ImageManager.ImageSourceToBitmap(PicBoxView.Source);
-
-            //Ink1.Width = bitmap.Width;
-            //Ink1.Height = bitmap.Height;
-            
         }
 
         private void Btn_Save_Click(object sender, RoutedEventArgs e)
         {
             //將Image.source轉成bitmap
             System.Drawing.Bitmap bitmap = ImageManager.ImageSourceToBitmap(PicBoxView.Source);
-            
+
 
             //get the dimensions of the ink control
             int margin = (int)this.Ink1.Margin.Left;
             int width = (int)this.Ink1.ActualWidth;
             int height = (int)this.Ink1.ActualHeight;
-            
+
             if (width == 0 || height == 0) return;
 
             //render ink to bitmap
@@ -179,8 +183,8 @@ namespace ImageTraveler
             //save the ink to a memory stream
             BmpBitmapEncoder encoder = new BmpBitmapEncoder();
             encoder.Frames.Add(BitmapFrame.Create(rtb));
-            byte[] bitmapBytesInk,bitmapBytes;            
-                       
+            byte[] bitmapBytesInk;
+
             using (MemoryStream ms = new MemoryStream())
             {
                 //save stream to encoder
@@ -194,11 +198,9 @@ namespace ImageTraveler
                 bitmapBytesInk = ms.ToArray();
 
                 FileStream fileStream = new FileStream("C:\\Users\\user\\Pictures\\圖片1.png", FileMode.OpenOrCreate, FileAccess.ReadWrite);
-                               
+
                 fileStream.Write(bitmapBytesInk, 0, (int)ms.Length);
                 fileStream.Dispose();
-
-
 
                 //將PictureBoxView內的圖存到BitmapEncoder中
                 MemoryStream mms = new MemoryStream();
@@ -212,57 +214,99 @@ namespace ImageTraveler
                 //儲存Image
                 img2.Save("C:\\Users\\user\\Pictures\\Test1.png");
 
+                using (var dialog = new System.Windows.Forms.FolderBrowserDialog())
+                {
+                    System.Windows.Forms.DialogResult result = dialog.ShowDialog();
 
-
+                    //Save control to image
+                    if (result == System.Windows.Forms.DialogResult.OK)
+                        SaveControlImage(Grid_PicBoxView, dialog.SelectedPath + @"\Image_1.png");
+                }
 
                 #region 將已存在的圖讀取成stream後修改再儲存
 
-                //自圖檔路徑讀取成FileStream
-                MemoryStream mmss = new MemoryStream();
-                Stream stream1 = new FileStream("C:\\Users\\user\\Pictures\\圖片1 - copy.png", FileMode.Open, FileAccess.Read, FileShare.Read);
+                ////自圖檔路徑讀取成FileStream
+                //MemoryStream mmss = new MemoryStream();
+                //Stream stream1 = new FileStream("C:\\Users\\user\\Pictures\\Test1.png", FileMode.Open, FileAccess.Read, FileShare.Read);
 
-                //將FileStream轉成MemoryStream
-                stream1.CopyTo(mmss);
-                //stream1.Dispose();
+                ////將FileStream轉成MemoryStream
+                //stream1.CopyTo(mmss);
+                ////stream1.Dispose();
 
-                //將Stream轉成陣列
-                bitmapBytes = mmss.ToArray();
+                ////將Stream轉成陣列
+                //bitmapBytes = mmss.ToArray();
 
-                //將Stream轉成Bitmap
-                System.Drawing.Bitmap bm = (System.Drawing.Bitmap)System.Drawing.Image.FromStream(mmss);
+                ////將Stream轉成Bitmap
+                //System.Drawing.Bitmap bm = (System.Drawing.Bitmap)System.Drawing.Image.FromStream(mmss);
 
-                System.Drawing.Color color_tranparent = System.Drawing.Color.FromArgb(255, 0, 0, 0);
+                //System.Drawing.Color color_tranparent = System.Drawing.Color.FromArgb(255, 0, 0, 0);
 
-                for (int i = 0; i < bmInk.Width; i++)
-                {
-                    for (int j = 0; j < bmInk.Height; j++)
-                    {                        
-                        if (bmInk.GetPixel(i, j) != color_tranparent)
-                        {
-                            bm.SetPixel(i, j, bmInk.GetPixel(i, j));
-                        }
-                    }
-                }
+                //for (int i = 0; i < bmInk.Width; i++)
+                //{
+                //    for (int j = 0; j < bmInk.Height; j++)
+                //    {                        
+                //        if (bmInk.GetPixel(i, j) != color_tranparent)
+                //        {
+                //            bm.SetPixel(i, j, bmInk.GetPixel(i, j));
+                //        }
+                //    }
+                //}
 
-                //將bitmap轉成
-                bm.Save("C:\\Users\\user\\Pictures\\Test3.png");
+                ////將bitmap轉成
+                //bm.Save("C:\\Users\\user\\Pictures\\Test3.png");
 
-                //將陣列轉成System.Drawing.Image
-                System.Drawing.Image image = BufferToImage(bitmapBytes);
+                ////將陣列轉成System.Drawing.Image
+                //System.Drawing.Image image = BufferToImage(bitmapBytes);
 
-                // Get the color of a pixel within myBitmap.
-                System.Drawing.Color pixelColor = bm.GetPixel(50, 50);
+                //// Get the color of a pixel within myBitmap.
+                //System.Drawing.Color pixelColor = bm.GetPixel(50, 50);
 
-                // Transform color to solidbrush
-                System.Drawing.SolidBrush pixelBrush = new System.Drawing.SolidBrush(pixelColor);
+                //// Transform color to solidbrush
+                //System.Drawing.SolidBrush pixelBrush = new System.Drawing.SolidBrush(pixelColor);
 
-                //儲存Image
-                image.Save("C:\\Users\\user\\Pictures\\Test2.png");
+                ////儲存Image
+                //image.Save("C:\\Users\\user\\Pictures\\Test2.png");
                 #endregion                
             }
         }
 
-        
+        // Save a control's image.
+        private void SaveControlImage(FrameworkElement control,
+            string filename)
+        {
+            // Get the size of the Visual and its descendants.
+            Rect rect = VisualTreeHelper.GetDescendantBounds(control);
+
+            // Make a DrawingVisual to make a screen
+            // representation of the control.
+            DrawingVisual dv = new DrawingVisual();
+
+            // Fill a rectangle the same size as the control
+            // with a brush containing images of the control.
+            using (DrawingContext ctx = dv.RenderOpen())
+            {
+                VisualBrush brush = new VisualBrush(control);
+                ctx.DrawRectangle(brush, null, new Rect(rect.Size));
+            }
+
+            // Make a bitmap and draw on it.
+            int width = (int)control.ActualWidth;
+            int height = (int)control.ActualHeight;
+            RenderTargetBitmap rtb = new RenderTargetBitmap(
+                width, height, 96, 96, PixelFormats.Pbgra32);
+            rtb.Render(dv);
+
+            // Make a PNG encoder.
+            PngBitmapEncoder encoder = new PngBitmapEncoder();
+            encoder.Frames.Add(BitmapFrame.Create(rtb));
+
+            // Save the file.
+            using (FileStream fs = new FileStream(filename,
+                FileMode.Create, FileAccess.Write, FileShare.None))
+            {
+                encoder.Save(fs);
+            }
+        }
 
         private System.Drawing.Image BufferToImage(byte[] Buffer)
         {
@@ -352,19 +396,19 @@ namespace ImageTraveler
                 encoder.Frames.Add(BitmapFrame.Create(renderBitmap));
                 using (FileStream stream = new FileStream(filePath, FileMode.Create))
                     encoder.Save(stream);
-            }                        
+            }
 
             // Restore previously saved layout
             surface.LayoutTransform = transform;
         }
-                                      
+
         private void mediaTimeBar_DragStarted(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
-        {           
+        {
             isDragging = true;
         }
 
         private void mediaTimeBar_DragCompleted(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
-        {            
+        {
             isDragging = false;
             //mediaElement.Position = TimeSpan.FromSeconds(Slider_mediabar.Value);            
         }
@@ -385,7 +429,7 @@ namespace ImageTraveler
 
                 media_state_check = false;
             }
-            
+
             //if (main_Command.mediaPauseCommand.CanExecute(null))
             //{
             //    main_Command.mediaPauseCommand.Execute(null);
@@ -406,7 +450,7 @@ namespace ImageTraveler
 
         private void Grid_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
-            if (main_Command.mediaState == false && media_state_check ==true)
+            if (main_Command.mediaState == false && media_state_check == true)
             {
                 ellipse_image.Source = new BitmapImage(new Uri(@"Resources/pause.png", UriKind.Relative));
 
@@ -446,7 +490,7 @@ namespace ImageTraveler
                         PicP.Y = main_Command.picY;
                     }
                 }
-            } 
+            }
         }
 
         private void Img_girl_background_MouseRightButtonDown(object sender, MouseButtonEventArgs e)
@@ -457,7 +501,7 @@ namespace ImageTraveler
             if (!_isBackgroundImg_show)
                 img_girl_background.Visibility = Visibility.Collapsed;
             else
-                img_girl_background.Visibility = Visibility.Visible;                        
+                img_girl_background.Visibility = Visibility.Visible;
 
             ini.IniWriteValue("Window", "Background_Image", (_isBackgroundImg_show).ToString(), ini_filename);
         }
@@ -478,9 +522,9 @@ namespace ImageTraveler
 
                     mouse_P = e.GetPosition(mainGrid);
                 }
-            }                            
+            }
         }
-                
+
         //Transform Bitmap bytes into BitmapImage
         private static BitmapImage LoadImage(byte[] imageData)
         {
@@ -508,7 +552,7 @@ namespace ImageTraveler
             ini.IniWriteValue("Window", "Width", this.Width.ToString(), ini_filename);
         }
     }
-    
+
     public class SetupIniIP
     {
         public string path;

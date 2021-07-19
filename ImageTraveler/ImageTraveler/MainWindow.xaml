@@ -14,7 +14,7 @@
     Title="MainWindow"
     Width="1080"
     Height="700"
-    MinWidth="950"
+    MinWidth="350"
     MinHeight="550"
     AllowsTransparency="True"
     Background="Transparent"
@@ -331,7 +331,7 @@
                                                     <Image
                                                         x:Name="ImageName"
                                                         Grid.Row="1"
-                                                        Source="Resources/004-arrow-down-sign-to-navigate_1.png"
+                                                        Source="Resources/Min_white.png"
                                                         Stretch="Uniform" />
                                                 </Grid>
                                                 <ContentPresenter
@@ -405,7 +405,7 @@
                                                     <Image
                                                         x:Name="ImageName"
                                                         Grid.Row="1"
-                                                        Source="Resources/001-browser_1.png"
+                                                        Source="Resources/normal.png"
                                                         Stretch="Uniform" />
                                                 </Grid>
                                                 <ContentPresenter
@@ -506,7 +506,11 @@
             </Border>
         </Grid>
 
-
+        <Frame
+            x:Name="Frame_main_for_txt"
+            Grid.Row="0"
+            Grid.RowSpan="3"
+            NavigationUIVisibility="Hidden" />
 
         <!--  MainPictureBox  -->
         <Grid
@@ -526,6 +530,7 @@
                         Header="Pointer" />
                     <MenuItem
                         x:Name="Btn_Pen"
+                        Background="#FFFD0000"
                         Click="Btn_Pen_Click"
                         Header="Pen" />
                     <MenuItem Header="Drag" />
@@ -609,6 +614,7 @@
             <Viewbox>
                 <Frame x:Name="Frame_main" NavigationUIVisibility="Hidden" />
             </Viewbox>
+
         </Grid>
 
 
@@ -624,6 +630,7 @@
                 <ColumnDefinition Width="15.5*" />
                 <ColumnDefinition MinWidth="30" />
             </Grid.ColumnDefinitions>
+
             <Button
                 x:Name="Btn_Previous"
                 Grid.Column="0"
@@ -724,7 +731,7 @@
                 Panel.ZIndex="{Binding zIndex_group[0]}"
                 MouseRightButtonDown="Img_girl_background_MouseRightButtonDown"
                 Source="Resources/1442760789 - 複製.jpg"
-                Visibility="Visible" />
+                Visibility="Hidden" />
         </Grid>
     </Grid>
 </Window>

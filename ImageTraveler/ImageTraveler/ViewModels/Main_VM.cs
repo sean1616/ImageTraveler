@@ -25,7 +25,24 @@ namespace ImageTraveler.ViewModels
     public class Main_VM : NotifyBase
     {
         public System.Timers.Timer timer_Arduino = new System.Timers.Timer();
-        
+        public DispatcherTimer tm;
+
+        public enum img_all_type
+        {
+            png,
+            jpg,
+            bmp,
+            gif
+        }
+
+        public enum media_all_type
+        {
+            mp3,
+            mp4,
+            avi,
+            wmv
+        }
+
 
         private SerialPort _port_Arduino = new SerialPort("COM8", 9600);
         public SerialPort port_Arduino
@@ -58,6 +75,37 @@ namespace ImageTraveler.ViewModels
                 OnPropertyChanged("ini");
             }
         }
+
+        public long allLineCount { get; set; } = 0;
+
+        public StreamReader sr { get; set; }
+
+        public StringBuilder _sb;
+        public StringBuilder sb
+        {
+            get { return _sb; }
+            set
+            {
+                _sb = value;
+            }
+        }
+
+        private string _txtbox_content = string.Empty;
+        public string txtbox_content
+        {
+            get { return _txtbox_content; }
+            set
+            {
+                _txtbox_content = value;
+                OnPropertyChanged("txtbox_content");
+
+
+            }
+        }
+
+        public int chapter_now_index { get; set; } = 0;
+        public Dictionary<int, string[]> chapter_dictionary { get; set; } = new Dictionary<int, string[]>();
+
         //string ini_path = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver";
         private string _folderName = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver";
         public string folderName
@@ -261,7 +309,13 @@ namespace ImageTraveler.ViewModels
             set
             {
                 _media_speed = value;
-                media_Page.mediaElement.SpeedRatio = Math.Round(value, 1);
+
+                if (media_Page!=null)
+                    media_Page.mediaElement.SpeedRatio = Math.Round(value, 1);
+
+                if (tm != null)
+                    tm.Interval = TimeSpan.FromSeconds(0.05 / media_speed);
+
                 OnPropertyChanged("media_speed");
             }
             get
@@ -428,8 +482,20 @@ namespace ImageTraveler.ViewModels
             get { return _mediaBar_Page; }
         }
 
-        
-                
+        private TextViewer_Page _textViewer_Page;
+        public TextViewer_Page textViewer_Page
+        {
+            set { SetProperty(ref _textViewer_Page, value); }
+            get { return _textViewer_Page; }
+        }
+
+        private TextViewerBar_Page _textViewerBar_Page;
+        public TextViewerBar_Page textViewerBar_Page
+        {
+            set { SetProperty(ref _textViewerBar_Page, value); }
+            get { return _textViewerBar_Page; }
+        }
+
         private MediaControl _mediaControl;
         public MediaControl mediaControl
         {
@@ -584,6 +650,8 @@ namespace ImageTraveler.ViewModels
                 OnPropertyChanged_Normal("mediaTimePosition");
             }
         }
+
+        public double TxtViewer_Position { get; set; } = 0;
 
         private int _pic_error_code = 0;
         public int pic_error_code
