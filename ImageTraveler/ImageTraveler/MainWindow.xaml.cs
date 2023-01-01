@@ -21,6 +21,7 @@ using ImageTraveler.Pages;
 using System.Windows.Media.Animation;
 using System.Runtime.InteropServices;
 using System.Drawing.Imaging;
+using System.Globalization;
 
 namespace ImageTraveler
 {
@@ -47,7 +48,8 @@ namespace ImageTraveler
             //For Debug
             //圖片路徑、檔名、輸入狀態設定
             //string args = @"C:\Users\user\Pictures\arduino_mini_upload.png";
-            string args = @"D:\SeanWu\Novels\斬風.txt";
+            //string args = @"D:\SeanWu\Novels\回到明朝當王爺.txt";
+            string args = @"D:\SeanWu\Media\即刻救援1\Taken.2008.1080p.BluRay.H264.AAC-RARBG.mp4";
             main_Command.imgPath = args;
             main_Command.fileName = Path.GetFileName(args);
             main_Command.fileName_Extension = Path.GetExtension(args);
@@ -60,12 +62,13 @@ namespace ImageTraveler
 
             //mousemove_timer.Start();
 
-            if (File.Exists(ini_path + "ImagTraver\\ImagTraver.ini"))
+            if (File.Exists(Path.Combine(ini_path + "ImagTraver.ini")))
             {
                 //讀取ini media volume
                 main_Command.media_volume = Convert.ToDouble(main_Command.ini.IniReadValue("Bar", "volume", main_Command.ini_filename));
                 this.Height = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Height", main_Command.ini_filename));
                 this.Width = Convert.ToDouble(main_Command.ini.IniReadValue("Window", "Width", main_Command.ini_filename));
+
 
                 try
                 {
@@ -506,6 +509,15 @@ namespace ImageTraveler
             ini.IniWriteValue("Window", "Background_Image", (_isBackgroundImg_show).ToString(), ini_filename);
         }
 
+        private void TitleBar_ControlGrid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            //if (main_Command.isBarAnimation)
+            //{
+            //    Storyboard sb = FindResource("TitleBar_StoryBoard") as Storyboard;
+            //    sb.Begin();
+            //}
+        }
+
         private void PicBoxView_MouseMove(object sender, MouseEventArgs e)
         {
             if (!main_Command.ImgPaintMode)
@@ -579,6 +591,23 @@ namespace ImageTraveler
             StringBuilder temp = new StringBuilder(255);
             int i = GetPrivateProfileString(Section, Key, "", temp, 255, path);
             return temp.ToString();
+        }
+    }
+
+    public class BoolToVisibility : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            bool booleanVal = (bool)value;
+            if (booleanVal)
+                return Visibility.Visible;
+            else
+                return Visibility.Collapsed;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

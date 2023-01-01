@@ -80,9 +80,9 @@
     </Page.Resources>
 
     <Page.Triggers>
-        <EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid">
+        <!--<EventTrigger RoutedEvent="UIElement.MouseEnter" SourceName="grid">
             <BeginStoryboard x:Name="Btn_group_StoryBoard1_BeginStoryboard" Storyboard="{StaticResource Btn_group_StoryBoard1}" />
-        </EventTrigger>
+        </EventTrigger>-->
         <EventTrigger RoutedEvent="UIElement.MouseLeave" SourceName="grid1">
             <BeginStoryboard x:Name="Btn_group_StoryBoard2_BeginStoryboard" Storyboard="{StaticResource Btn_group_StoryBoard2}" />
         </EventTrigger>
@@ -102,6 +102,7 @@
 
     <Grid
         x:Name="grid"
+        MouseEnter="grid_MouseEnter"
         HorizontalAlignment="Stretch"
         VerticalAlignment="Stretch"
         FocusVisualStyle="{x:Null}"
@@ -178,7 +179,7 @@
                     Style="{DynamicResource Horizontal_Slider}"
                     Thumb.DragCompleted="mediaTimeBar_DragCompleted"
                     Thumb.DragStarted="mediaTimeBar_DragStarted"
-                      ValueChanged="Slider_mediabar_ValueChanged"
+                    ValueChanged="Slider_mediabar_ValueChanged"
                     Value="{Binding mediaTimePosition}">
                     <Slider.Resources>
                         <Style x:Key="Horizontal_Slider" TargetType="{x:Type Slider}">
@@ -325,12 +326,12 @@
                             Focusable="True"
                             IsMoveToPointEnabled="True"
                             IsTabStop="False"
-                            Maximum="5"
+                            Maximum="10"
                             Minimum="1"
                             RenderTransformOrigin="0.5,0.5"
                             Style="{DynamicResource Horizontal_Slider}"
                             TickFrequency="0.1"
-                            Value="{Binding media_speed}">
+                            Value="{Binding txt_rolling_speed}">
                             <Slider.RenderTransform>
                                 <TransformGroup>
                                     <ScaleTransform />
@@ -357,7 +358,7 @@
                             KeyDown="Media_Speed_KeyDown"
                             LostFocus="txt_LostFocus"
                             Style="{StaticResource style_txtbox}"
-                            Text="{Binding media_speed}" />
+                            Text="{Binding txt_rolling_speed}" />
                     </Viewbox>
                 </Grid>
             </Grid>
@@ -365,28 +366,32 @@
             <Border
                 x:Name="Btn_group"
                 Grid.Row="4"
+                Panel.ZIndex="6"
                 Background="Transparent"
                 MouseMove="BackBorer_MouseMove"
                 PreviewMouseLeftButtonDown="BackBorer_PreviewMouseLeftButtonDown">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="2.5*" />
-                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="2.3*" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" MaxWidth="55"/>
                         <ColumnDefinition Width="{Binding btnGap_gridLength}" />
-                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" MaxWidth="55"/>
                         <ColumnDefinition Width="{Binding btnGap_gridLength}" />
-                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" MaxWidth="55"/>
                         <ColumnDefinition Width="{Binding btnGap_gridLength}" />
-                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" MaxWidth="55"/>
                         <ColumnDefinition Width="{Binding btnGap_gridLength}" />
-                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" MaxWidth="55"/>
                         <ColumnDefinition Width="{Binding btnGap_gridLength}" />
-                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" MaxWidth="55"/>
+                        <ColumnDefinition Width="{Binding btnGap_gridLength}" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" MaxWidth="55"/>
 
-                        <ColumnDefinition Width="2.2*" />
-                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
+                        <ColumnDefinition Width="2*" />
+                        <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" MaxWidth="55"/>
                         <ColumnDefinition Width="0.2*" />
                     </Grid.ColumnDefinitions>
+                    
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition
@@ -423,15 +428,8 @@
                         <Image Source="../Resources/001-share.png" Visibility="Collapsed" />
                     </Button>
 
-                    <Button
-                        x:Name="Btn_fullscreen"
-                        Grid.Column="13"
-                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
-                        Command="{Binding MaximumCommand}"
-                        Style="{DynamicResource ButtonStyle}"
-                        Tag="../Resources/full.png">
-                        <Image Source="../Resources/full.png" Visibility="Collapsed" />
-                    </Button>
+                    
+                   
 
                     <Button
                         x:Name="Btn_Stop"
@@ -482,8 +480,29 @@
                         <Image Source="../Resources/Media_SpeedMeter_W.png" Visibility="Collapsed" />
                     </ToggleButton>
 
+                    <ToggleButton
+                        x:Name="Btn_Chapter"
+                        Grid.Column="13"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
+                        Click="Btn_Chapter_Click"
+                        IsChecked="{Binding bool_txtChapter, Mode=TwoWay}"
+                        Style="{DynamicResource ToggleButtonStyle}">
+                        <Image Source="../Resources/list_white.png" Visibility="Collapsed" />
+                    </ToggleButton>
+
+                    <Button
+                        x:Name="Btn_fullscreen"
+                        Grid.Column="15"
+                        Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
+                        Command="{Binding MaximumCommand}"
+                        Style="{DynamicResource ButtonStyle}"
+                        Tag="../Resources/full.png">
+                        <Image Source="../Resources/full.png" Visibility="Collapsed" />
+                    </Button>
+
                     <Grid
                         x:Name="rectangle_outer"
+                        Visibility="Collapsed"
                         Grid.Column="15"
                         Height="{Binding ActualHeight, ElementName=Btn_Load, Mode=OneWay}">
                         <Grid.ColumnDefinitions>

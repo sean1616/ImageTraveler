@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Runtime.InteropServices;
 using ImageTraveler.ViewModels;
+using System.Globalization;
 
 namespace ImageTraveler.Pages
 {
@@ -191,8 +192,10 @@ namespace ImageTraveler.Pages
             if (e.Key == Key.Enter)
             {
                 TextBox obj = (TextBox)sender;
-                main_Command.media_volume = double.Parse(obj.Text);
-
+                //main_Command.media_volume = double.Parse(obj.Text);
+                //volume_txt.Text = main_Command.media_volume.ToString();
+                string a = main_Command.media_volume.ToString();
+                string b = obj.Text;
 
                 main_Command.media_Page.grid_mediaElement.Focus();               
             }
@@ -282,6 +285,22 @@ namespace ImageTraveler.Pages
             StringBuilder temp = new StringBuilder(255);
             int i = GetPrivateProfileString(Section, Key, "", temp, 255, path);
             return temp.ToString();
+        }
+    }
+
+    public class DoubleToString_Converter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            value = (double)value;
+            string str = value.ToString();
+
+            return str;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
     }
 }

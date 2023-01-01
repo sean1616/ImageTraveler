@@ -23,7 +23,7 @@ namespace ImageTraveler.Utils
         public void IniWriteValue(string Section, string Key, string Value, string inipath)
         {
             string path = System.AppDomain.CurrentDomain.BaseDirectory;
-            WritePrivateProfileString(Section, Key, Value, @path + "ImagTraver\\" + inipath);
+            WritePrivateProfileString(Section, Key, Value, System.IO.Path.Combine(path + inipath));
             //WritePrivateProfileString(Section, Key, Value, @"d:\ImagTraver\" + inipath);
 
         }
@@ -33,7 +33,7 @@ namespace ImageTraveler.Utils
         {
             string path = System.AppDomain.CurrentDomain.BaseDirectory;
             StringBuilder temp = new StringBuilder(255);
-            int i = GetPrivateProfileString(Section, Key, "", temp, 255, @path +"ImagTraver\\"+ inipath);
+            int i = GetPrivateProfileString(Section, Key, "", temp, 255, System.IO.Path.Combine(path + inipath));
 
             //int i = GetPrivateProfileString(Section, Key, "", temp, 255, @"d:\ImagTraver\" + inipath);
             return temp.ToString();

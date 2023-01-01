@@ -656,3 +656,4 @@ D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\Lierda.
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\Lierda.WPFHelper.xml
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\ICSharpCode.AvalonEdit.dll
 D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\bin\Debug\ICSharpCode.AvalonEdit.xml
+D:\SeanWu\Repository\ImageTraveler\ImageTraveler\ImageTraveler\obj\Debug\ImageTraveler.csproj.SuggestedBindingRedirects.cache

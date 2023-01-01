@@ -23,7 +23,7 @@
                                             Storyboard.TargetProperty="(Border.Opacity)"
                                             From="0"
                                             To="0.6"
-                                            Duration="0:0:0.7" />
+                                            Duration="0:0:0.4" />
                                         <!--<ColorAnimationUsingKeyFrames Storyboard.TargetName="border" Storyboard.TargetProperty="(Border.Opacity)">
                                             <DiscreteColorKeyFrame KeyTime="0:0:0.04" Value="#FF3C3C3C" />
                                         </ColorAnimationUsingKeyFrames>-->

@@ -31,6 +31,7 @@
     <Window.Resources>
         <vm:Main_VM x:Key="main_vm" />
         <vm:Main_Command x:Key="main_cmd" />
+        <local:BoolToVisibility x:Key="boolToVis"/>
         <Storyboard x:Key="TitleBar_StoryBoard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetName="TitleBar" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.Y)">
                 <EasingDoubleKeyFrame KeyTime="0" Value="-43" />
@@ -190,6 +191,8 @@
             x:Name="TitleBar_ControlGrid"
             Grid.Row="0"
             Panel.ZIndex="3"
+            Visibility="{Binding isBarAnimation, Converter={StaticResource boolToVis}}"
+            MouseEnter="TitleBar_ControlGrid_MouseEnter"
             Background="Transparent">
             <Grid.Triggers>
                 <!--  路由事件  -->
@@ -697,6 +700,7 @@
             Panel.ZIndex="3"
             d:IsHidden="True"
             FocusVisualStyle="{x:Null}"
+            Visibility="{Binding isBarAnimation, Converter={StaticResource boolToVis}}"
             Focusable="False">
             <Frame
                 x:Name="Frame_bar"

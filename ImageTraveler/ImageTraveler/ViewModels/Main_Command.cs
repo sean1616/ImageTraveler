@@ -21,6 +21,7 @@ namespace ImageTraveler.ViewModels
 {
     public class Main_Command : Main_VM
     {
+        
         //ICommand
         #region ICommand
         public ICommand WindowLoadedCommand { get { return new Delegatecommand(WindowLoaded); } }
@@ -211,7 +212,7 @@ namespace ImageTraveler.ViewModels
 
         //設定初始化載入功能頁面
         private void WindowLoaded()
-        {
+        {            
             imageBar_Page = new ImageBar_Page(this);
             if (string.IsNullOrEmpty(imgPath))
                 App.mainWindow.Frame_bar.Content = imageBar_Page;
@@ -428,12 +429,27 @@ namespace ImageTraveler.ViewModels
                             else { mediaControl.MediaPlay(); }
                         }
                     }
-                    else if (ImgOrMedia == 2)
+                    else if (ImgOrMedia == 2)  //Text mode
                     {
                         if (tm != null)
                         {
-                            if (tm.IsEnabled) tm.Stop();
-                            else tm.Start();
+                            if (tm.IsEnabled)
+                            {
+                                tm.Stop();
+
+                                mediaBtn_play_pause = "../Resources/下_1.png";
+
+                                string NovelName = fileName.Replace(".txt", "");
+
+                                if (!string.IsNullOrEmpty(NovelName))
+                                    ini.IniWriteValue("Novel_" + NovelName, "TxtViewer_Position", TxtViewer_Position.ToString(), ini_filename);
+                            }
+                            else
+                            {
+                                mediaBtn_play_pause = "../Resources/pause.png";
+
+                                tm.Start();
+                            }
                         }
                     }
 
@@ -620,6 +636,7 @@ namespace ImageTraveler.ViewModels
 
                 App.mainWindow.Frame_main.Content = null;
 
+                App.mainWindow.Frame_main_for_txt.Content = null;
                 App.mainWindow.Frame_main_for_txt.Content = textViewer_Page;
 
                 App.mainWindow.Frame_bar.Content = textViewerBar_Page;
@@ -627,6 +644,28 @@ namespace ImageTraveler.ViewModels
                 titleBar = fileName + " - ImageTraveler";
 
                 ImgOrMedia = 2; //txt=2
+
+                //讀取ini txt setting
+                txt_rolling_speed = Convert.ToDouble(ini.IniReadValue("Bar", "txt_rolling_speed", ini_filename));
+
+                string NovelName = fileName.Replace(".txt", "");
+                if (!string.IsNullOrEmpty(NovelName))
+                    TxtViewer_Position = Convert.ToDouble(ini.IniReadValue("Novel_" + NovelName, "TxtViewer_Position", ini_filename));
+
+                chapter_dictionary.Clear();
+                _isChapterAnalyzed = false;
+                chapter_index = 0;
+                //UpdateTextViewer();
+                //textViewer_Page.avalonTxt.Text = txtbox_content;
+
+                //string chap_content = "";
+
+                //for (int i = 0; i < chapter_dictionary.Count; i++)
+                //{
+                //    chap_content = chapter_dictionary[i][1];
+                //    if (!string.IsNullOrEmpty(chap_content))
+                //        textViewer_Page.listbox_Chapters.Items.Add(chap_content);
+                //}
             }
 
             GroupOpacity = new double[] { 0, 0, 0 };
@@ -649,7 +688,7 @@ namespace ImageTraveler.ViewModels
         }
 
         string line = string.Empty;
-        public void UpdateTextViewer()
+        public async void UpdateTextViewer()
         {
             using (StreamReader sr = new StreamReader(imgPath, Encoding.Default))
             {
@@ -667,9 +706,15 @@ namespace ImageTraveler.ViewModels
             txtbox_content = sb.ToString();
 
             Chapter_Analyze();
+
+            await Task.Delay(1);
+
+            //Jump to log position
+            TxtVerJumpTo(TxtViewer_Position);
+
         }
 
-        public void UpdateTextViewer(long startIndex, long maxLines)
+        public async void UpdateTextViewer(long startIndex, long maxLines)
         {
             using (StreamReader sr = new StreamReader(imgPath, Encoding.Default))
             {
@@ -692,6 +737,12 @@ namespace ImageTraveler.ViewModels
             txtbox_content = sb.ToString();
 
             Chapter_Analyze();
+
+            await Task.Delay(1);
+
+            //Jump to log position
+            TxtVerJumpTo(TxtViewer_Position);
+
         }
 
         int chapter_index = 0; bool _isChapterAnalyzed = false; long allTXTLines = 0;
@@ -703,28 +754,63 @@ namespace ImageTraveler.ViewModels
 
                 long lineCount = 0;
 
+                char[] chapTitle = new char[] { '章', '集', '部' };
+
                 using (StreamReader sr = new StreamReader(imgPath, Encoding.Default))
                 {
                     while ((line = sr.ReadLine()) != null)
                     {
                         if (line.Length > 2)
                         {
-                            if (line[0] == '第')
+                            for (int i = 0; i < line.Length - 2; i++)
                             {
-                                if (line[2] == '章' || line[2] == '集')
+                                if (i > 9) break;
+                                if (line[i] == '第')
                                 {
-                                    chapter_dictionary.Add(chapter_index++, new string[] { lineCount.ToString(), line });
+                                    bool isFindoutChapTitle = false;
+                                    for (int j = 2;  j < 5;  j++)
+                                    {
+                                        if (i + j < line.Length)
+                                        {
+                                            if (line[i + j] == '章' || line[i + j] == '集' || line[i + j] == '部')
+                                            {
+                                                chapter_dictionary.Add(chapter_index++, new string[] { lineCount.ToString(), line });
+                                                isFindoutChapTitle = true;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (isFindoutChapTitle) break;
                                 }
                             }
                         }
+
                         lineCount++;
                     }
                 }
 
                 allTXTLines = lineCount;
 
-                _isChapterAnalyzed = true;                
+                _isChapterAnalyzed = true;
             }
+        }
+
+        public void TxtVerJumpTo(double position)
+        {
+            double maxTxtVerPosition = textViewer_Page.avalonTxt.TextArea.TextView.GetVisualTopByDocumentLine(textViewer_Page.avalonTxt.LineCount);
+            mediaTimePosition = (position / maxTxtVerPosition) * 500;
+
+            //textViewer_Page.avalonTxt.ScrollToVerticalOffset(position);
+        }
+
+        public void TxtVerJumpToLine(int line)
+        {
+            double maxTxtVerPosition = textViewer_Page.avalonTxt.TextArea.TextView.GetVisualTopByDocumentLine(textViewer_Page.avalonTxt.LineCount);
+            double Target = textViewer_Page.avalonTxt.TextArea.TextView.GetVisualTopByDocumentLine(line);
+            mediaTimePosition = (Target / maxTxtVerPosition) * 500;
+
+            //textViewer_Page.avalonTxt.ScrollToVerticalOffset(position);
         }
 
         private void UpdateTitleBarText()  //計算圖片所在資料夾之圖片陣列並顯示TitleBar文字

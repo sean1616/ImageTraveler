@@ -11,9 +11,9 @@
     FocusVisualStyle="{x:Null}"
     mc:Ignorable="d">
 
-    <Grid>
+    <Grid FocusVisualStyle="{x:Null}">
         <!--  MediaElement  -->
-        <Grid x:Name="grid_mediaElement" Focusable="True">
+        <Grid x:Name="grid_mediaElement" Focusable="True" FocusVisualStyle="{x:Null}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="9*" />
                 <RowDefinition MinHeight="40" />
@@ -49,6 +49,7 @@
             <TextBlock
                 x:Name="Subtitle_TextBlock"
                 Grid.Row="1"
+                FocusVisualStyle="{x:Null}"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Bottom"
                 FontSize="45"

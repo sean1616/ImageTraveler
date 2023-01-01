@@ -13,7 +13,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using ImageTraveler.Utils;
 using ImageTraveler.ViewModels;
+using System.Windows.Media.Animation;
 
 namespace ImageTraveler.Pages
 {
@@ -26,6 +28,8 @@ namespace ImageTraveler.Pages
         
         double txtline_count = 0;
 
+        Storyboard sb;
+
         public TextViewerBar_Page(Main_Command main_Command)
         {
             InitializeComponent();
@@ -34,15 +38,17 @@ namespace ImageTraveler.Pages
             this.DataContext = main_Command;
 
             main_Command.tm = new DispatcherTimer();
-            main_Command.tm.Interval = TimeSpan.FromSeconds(0.05/ main_Command.media_speed);
+            main_Command.tm.Interval = TimeSpan.FromSeconds(0.1/ main_Command.media_speed);
             main_Command.tm.Tick += Tm_Tick; ;
+
+            sb = this.FindResource("Btn_group_StoryBoard1") as Storyboard;
         }
 
         private void Tm_Tick(object sender, EventArgs e)
         {
-            txtline_count+=2;
+            main_Command.TxtViewer_Position += 0.5;  //defaul:2
 
-            main_Command.textViewer_Page.avalonTxt.ScrollToVerticalOffset(txtline_count);
+            main_Command.textViewer_Page.avalonTxt.ScrollToVerticalOffset(main_Command.TxtViewer_Position);
 
         }
 
@@ -121,6 +127,13 @@ namespace ImageTraveler.Pages
 
             main_Command.TxtViewer_Position = value;
 
+            //Save to ini
+            string NovelName = main_Command.fileName.Replace(".txt", "");
+
+            if (!string.IsNullOrEmpty(NovelName))
+                main_Command.ini.IniWriteValue("Novel_" + NovelName, "TxtViewer_Position", main_Command.TxtViewer_Position.ToString(), main_Command.ini_filename);
+
+
             main_Command.mediaBar_mediaDurationTime = string.Format("{0}%", Math.Round(percentage * 100, 2).ToString());
         }
 
@@ -155,17 +168,53 @@ namespace ImageTraveler.Pages
         {
             if (!_isPlayOrPause)
             {
+                main_Command.tm.Interval = TimeSpan.FromSeconds(0.1 / main_Command.txt_rolling_speed);
+
                 txtline_count = main_Command.TxtViewer_Position;
                 main_Command.tm.Start();
+
+                main_Command.mediaBtn_play_pause = "../Resources/pause.png";
             }
-            else main_Command.tm.Stop();
+            else
+            {
+                string NovelName = main_Command.fileName.Replace(".txt", "");
+
+                if (!string.IsNullOrEmpty(NovelName))
+                    main_Command.ini.IniWriteValue("Novel_" + NovelName, "TxtViewer_Position", main_Command.TxtViewer_Position.ToString(), main_Command.ini_filename);
+
+                main_Command.tm.Stop();
+
+                main_Command.mediaBtn_play_pause = "../Resources/下_1.png";
+
+            }
             _isPlayOrPause = !_isPlayOrPause;
         }
 
         private void Btn_Stop_Click(object sender, RoutedEventArgs e)
         {
             main_Command.textViewer_Page.avalonTxt.ScrollToLine(main_Command.textViewer_Page.avalonTxt.LineCount);
-        }              
+        }
+
+        private void Btn_Chapter_Click(object sender, RoutedEventArgs e)
+        {
+            
+
+            //Animation of the Grid width of the chapter view
+            //Because the Grid width (Height) is not a animation supported property
+            //It can't setting by Blender
+
+            GridLengthAnimation gla = new GridLengthAnimation();  //Custom Animation Class
+            gla.From = new GridLength(main_Command.bool_txtChapter ? 0 : 1.5, GridUnitType.Star);
+            gla.To = new GridLength(main_Command.bool_txtChapter ? 1.5 : 0, GridUnitType.Star); ;
+            gla.Duration = new TimeSpan(0, 0, 0, 0, 100);
+            main_Command.textViewer_Page.grid_txtMainGrid.ColumnDefinitions[0].BeginAnimation(ColumnDefinition.WidthProperty, gla);
+        }
+
+        private void grid_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (main_Command.isBarAnimation)
+                sb.Begin();
+        }
 
         private void Media_Speed_KeyDown(object sender, KeyEventArgs e)
         {

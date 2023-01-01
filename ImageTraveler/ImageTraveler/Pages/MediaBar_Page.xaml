@@ -169,6 +169,7 @@
                 x:Name="grid_slider"
                 Grid.Row="2"
                 Focusable="False"
+                FocusVisualStyle="{x:Null}"
                 MouseMove="BackBorer_MouseMove"
                 SizeChanged="grid_slider_SizeChanged"
                 Visibility="{Binding vis_mediaSlider}">
@@ -299,6 +300,7 @@
 
             <Grid
                 x:Name="grid_Top_Function"
+                FocusVisualStyle="{x:Null}"
                 Grid.Row="0"
                 Grid.RowSpan="4"
                 Focusable="False">
@@ -371,10 +373,11 @@
             <Border
                 x:Name="Btn_group"
                 Grid.Row="4"
+                FocusVisualStyle="{x:Null}"
                 Background="Transparent"
                 MouseMove="BackBorer_MouseMove"
                 PreviewMouseLeftButtonDown="BackBorer_PreviewMouseLeftButtonDown">
-                <Grid>
+                <Grid FocusVisualStyle="{x:Null}">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="4*" />
                         <ColumnDefinition Width="{Binding btn_gridLength}" MinWidth="35" />
@@ -425,7 +428,7 @@
 
                     <Button
                         x:Name="Btn_Load"
-                        Grid.Column="1"
+                        Grid.Column="3"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding LoadCommand}"
                         MouseEnter="Btn_Load_MouseEnter"
@@ -436,7 +439,7 @@
 
                     <Button
                         x:Name="Btn_fullscreen"
-                        Grid.Column="3"
+                        Grid.Column="17"
                         Height="{Binding ActualWidth, Mode=OneWay, RelativeSource={RelativeSource Self}}"
                         Command="{Binding MaximumCommand}"
                         Style="{DynamicResource ButtonStyle}"
@@ -672,9 +675,9 @@
                                 KeyboardNavigation.ControlTabNavigation="None"
                                 KeyboardNavigation.DirectionalNavigation="None"
                                 KeyboardNavigation.TabNavigation="None"
-                                LostFocus="txt_LostFocus"
+                                LostFocus="txt_LostFocus"                                
                                 Style="{StaticResource style_txtbox}"
-                                Text="{Binding media_volume}" />
+                                Text="{Binding media_volume}"/>
                         </Viewbox>
                     </Grid>
 

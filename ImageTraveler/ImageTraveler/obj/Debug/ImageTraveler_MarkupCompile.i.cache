@@ -12,9 +12,9 @@ DEBUG;TRACE
 
 11323278308
 
-29-48692309
+30-890909666
 101407804858
 App.xaml;MainWindow.xaml;Pages\Camera_Page.xaml;Pages\ImageBar_Page.xaml;Pages\Image_Page.xaml;Pages\MediaBar_Page.xaml;Pages\Media_Page.xaml;Pages\TextViewerBar_Page.xaml;Pages\TextViewer_Page.xaml;Style_Resources\MainStyle.xaml;Style_Resources\ProgressBar_sty1.xaml;
 
-True
+False
 

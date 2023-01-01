@@ -103,8 +103,44 @@ namespace ImageTraveler.ViewModels
             }
         }
 
+        private double _TxtViewer_Position = 0;
+        public double TxtViewer_Position
+        {
+            get { return _TxtViewer_Position; }
+            set
+            {
+                _TxtViewer_Position = value;
+                //OnPropertyChanged("TxtViewer_Position");
+
+
+            }
+        }
+
         public int chapter_now_index { get; set; } = 0;
         public Dictionary<int, string[]> chapter_dictionary { get; set; } = new Dictionary<int, string[]>();
+
+        private double _txt_rolling_speed = 1;
+        public double txt_rolling_speed
+        {
+            set
+            {
+                _txt_rolling_speed = value;
+
+                if (media_Page != null)
+                    media_Page.mediaElement.SpeedRatio = Math.Round(value, 1);
+
+                if (tm != null)
+                    tm.Interval = TimeSpan.FromSeconds(0.05 / _txt_rolling_speed);
+
+                OnPropertyChanged("txt_rolling_speed");
+
+                ini.IniWriteValue("Bar", "txt_rolling_speed", _txt_rolling_speed.ToString(), ini_filename); //覆寫ini音量設定
+            }
+            get
+            {
+                return Math.Round(_txt_rolling_speed, 1);
+            }
+        }
 
         //string ini_path = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver";
         private string _folderName = System.AppDomain.CurrentDomain.BaseDirectory + "ImagTraver";
@@ -248,19 +284,12 @@ namespace ImageTraveler.ViewModels
             await Task.Delay(delayTime);
         }
 
-        public async Task mediaVolume_ReadArduino()
+        public Task mediaVolume_ReadArduino()
         {
             port_Arduino.Open();
 
             timer_Arduino.Start();
-            
-            //string s = port_Arduino.ReadLine();
-
-            //s = s.Replace("\r", "");
-
-            //media_volume = Convert.ToInt32(s) * 100 / 378;
-
-            //await AccessDelayAsync(200);
+            return Task.CompletedTask;
         }
 
         private Camera_Page _camera_Page;
@@ -282,12 +311,14 @@ namespace ImageTraveler.ViewModels
         {
             set
             {
+                if (!double.TryParse(value.ToString(), out double n)) return;
+
                 _media_volume = value;
                 if (_media_volume >= 100) _media_volume = 100;
 
                 if (media_Page != null)
                 {
-                    double y = Math.Pow(_media_volume / 6, 2);
+                    //double y = Math.Pow(_media_volume / 6, 2);
                     media_Page.mediaElement.Volume = _media_volume / 100;
                 }
 
@@ -365,6 +396,38 @@ namespace ImageTraveler.ViewModels
                 OnPropertyChanged_Normal("MediaSpeed_sliderVisible");
             }
             get { return _MediaSpeed_sliderVisible; }
+        }
+
+        //private Visibility _vis_txtChapter = Visibility.Collapsed;
+        //public Visibility vis_txtChapter
+        //{
+        //    get { return _vis_txtChapter; }
+        //    set
+        //    {
+        //        _vis_txtChapter = value;
+        //        OnPropertyChanged("vis_txtChapter");
+        //    }
+        //}
+
+        private bool _bool_txtChapter = false;
+        public bool bool_txtChapter
+        {
+            get { return _bool_txtChapter; }
+            set
+            {
+                _bool_txtChapter = value;
+                //if (value)
+                //{
+                //    vis_txtChapter = Visibility.Visible;
+                //}
+                //else
+                //{
+                //    vis_txtChapter = Visibility.Collapsed;
+                //}
+                OnPropertyChanged("bool_txtChapter");
+
+                isBarAnimation = !value;
+            }
         }
 
         private int _ImgOrMedia = 0;  //0 is Img, 1 is Media
@@ -535,6 +598,17 @@ namespace ImageTraveler.ViewModels
             get { return _EditingMode; }
         }
 
+        private bool _isBarAnimation = true;
+        public bool isBarAnimation
+        {
+            get { return _isBarAnimation; }
+            set
+            {
+                _isBarAnimation = value;
+                OnPropertyChanged("isBarAnimation");
+            }
+        }
+
         private string _imgPath;
         public string imgPath
         {
@@ -651,7 +725,6 @@ namespace ImageTraveler.ViewModels
             }
         }
 
-        public double TxtViewer_Position { get; set; } = 0;
 
         private int _pic_error_code = 0;
         public int pic_error_code
